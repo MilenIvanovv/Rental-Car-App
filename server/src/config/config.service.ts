@@ -28,7 +28,6 @@ export class ConfigService {
       DB_USERNAME: Joi.string().required(),
       DB_PASSWORD: Joi.string().required(),
       DB_DATABASE_NAME: Joi.string().required(),
-      JWT_SECRET: Joi.string().required(),
     });
 
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(
@@ -70,7 +69,4 @@ export class ConfigService {
     return this.envConfig.DB_TYPE as DatabaseType;
   }
 
-  public get jwtSecret(): string {
-    return this.envConfig.JWT_SECRET;
-  }
 }
