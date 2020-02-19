@@ -6,7 +6,7 @@ export default function CarsList(props) {
   const cars = props.cars.map((car) => <CarCard car={car} />)
 
   return (
-    <div className="row">
+    <div className="row mt-3">
       {cars}
     </div>
   )

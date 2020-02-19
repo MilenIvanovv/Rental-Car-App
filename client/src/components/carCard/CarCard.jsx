@@ -7,7 +7,7 @@ export default class CarCard extends Component {
     const car = this.props.car;
 
     return (
-      <div className="col-3">
+      <div className="col-3 mb-3">
         <div className="card-container">
           <div className="img-container">
             <img src={car.picture} />
