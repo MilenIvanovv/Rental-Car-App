@@ -1,8 +1,11 @@
 .card-container {
   height: 175px;
   width: 140px;
-  border: solid 0.5px black;
   padding: 6px;
+}
+
+.card-border-black {
+  border: solid 0.5px black;
 }
 
 .card-container .img-container {

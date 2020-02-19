@@ -8,7 +8,7 @@ export default class CarCard extends Component {
 
     return (
       <div className="col-3 mb-3">
-        <div className="card-container">
+        <div className={this.props.noBorder ? 'card-container' : 'card-container  card-border-black'}>
           <div className="img-container">
             <img src={car.picture} />
           </div>
