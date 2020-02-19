@@ -23,16 +23,6 @@
   margin-top: 8px;
 }
 
-.card-details div {
-  display: flex;
-  flex-direction: column;
-}
-
-.card-details div span {
-  margin-bottom: 2px;
-  width: 57px;
-}
-
 .card-btn-container {
   display: flex;
   justify-content: center;

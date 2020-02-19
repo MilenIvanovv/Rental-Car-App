@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import CarCard from '../carCard/CarCard'
 import RentCarForm from './RentCarForm'
+import EstimatedPrice from './EstimatedPrice'
 
 export default class CheckoutPage extends Component {
   render() {
@@ -16,6 +17,10 @@ export default class CheckoutPage extends Component {
             <div className="col-4">
               <h3>Booking</h3>
               <RentCarForm/>
+            </div>
+            <div className="col-4">
+              <h3>Estimated Price</h3>
+              <EstimatedPrice estimated={{}}/>
             </div>
           </div>
         </div>

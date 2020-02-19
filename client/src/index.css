@@ -3,3 +3,13 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.card-details div {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-details div span {
+  margin-bottom: 2px;
+  width: 57px;
+}

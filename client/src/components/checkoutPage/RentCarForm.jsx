@@ -12,7 +12,6 @@ export default class RentCarForm extends Component {
       returnDate: '',
     }
 
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
     this.handleLasttNameChange = this.handleLasttNameChange.bind(this);
     this.handleAgeChange = this.handleAgeChange.bind(this);
@@ -20,16 +19,11 @@ export default class RentCarForm extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.submit) {
+    if (this.props.submitForm) {
       // pass form data
       // get it from state
       const formData = {};
-      this.finallySubmit();
     }
-  }
-
-  handleFormSubmit(ev) {
-    ev.preventDefault();
   }
 
   handleFirstNameChange(ev) {
@@ -58,7 +52,7 @@ export default class RentCarForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleFormSubmit}>
+      <form>
         <label>First name</label>
         <input type="text" value={this.state.firstName} onChange={this.handleFirstNameChange}/>
         <label>Last name</label>
