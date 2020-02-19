@@ -1,5 +1,5 @@
 import React from 'react'
-import CarCard from './CarCard'
+import CarCard from './carCard/CarCard'
 
 export default function CarsList(props) {
 
