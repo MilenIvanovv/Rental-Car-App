@@ -1,8 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 export default function RentedCarsRow(props) {
-
-  const rental = props.rental;
+  const { rental } = props;
 
   return (
     <tr>
@@ -17,5 +16,5 @@ export default function RentedCarsRow(props) {
       <td>{rental.curTotalPrice}</td>
       <td><button>Return car</button></td>
     </tr>
-  )
+  );
 }

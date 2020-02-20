@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import './checkoutPage.css';
 
 export default class RentCarForm extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       firstName: '',
       lastName: '',
       age: '',
       returnDate: '',
-    }
+    };
 
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
     this.handleLasttNameChange = this.handleLasttNameChange.bind(this);
@@ -19,8 +20,10 @@ export default class RentCarForm extends Component {
     this.handleReturnDateChange = this.handleReturnDateChange.bind(this);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.submitForm) {
+  componentDidUpdate() {
+    const { submitForm } = this.props;
+
+    if (submitForm) {
       // pass form data
       // get it from state
       const formData = {};
@@ -29,49 +32,60 @@ export default class RentCarForm extends Component {
 
   handleFirstNameChange(ev) {
     this.setState({
-      firstName: ev.target.value
-    })
+      firstName: ev.target.value,
+    });
   }
 
   handleLasttNameChange(ev) {
     this.setState({
-      lastName: ev.target.value
-    })
+      lastName: ev.target.value,
+    });
   }
 
   handleAgeChange(ev) {
     this.setState({
-      age: ev.target.value
-    })
+      age: ev.target.value,
+    });
   }
 
   handleReturnDateChange(ev) {
     this.setState({
-      returnDate: ev.target.value
-    })
+      returnDate: ev.target.value,
+    });
   }
 
   render() {
+    const {
+      firstName,
+      lastName,
+      age,
+      returnDate,
+    } = this.state;
+
     return (
       <form>
         <div className="form-group">
-          <label>First name</label>
-          <input type="email" className="form-control" value={this.state.firstName} onChange={this.handleFirstNameChange}/>
-          <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+          <div>First name</div>
+          <input type="email" className="form-control" value={firstName} onChange={this.handleFirstNameChange} />
+          <small id="emailHelp" className="form-text text-muted">We&apos;ll never share your email with anyone else.</small>
         </div>
         <div className="form-group">
-          <label>Last name</label>
-          <input type="password" className="form-control" value={this.state.lastName} onChange={this.handleLasttNameChange}/>
+          <div>Last name</div>
+          <input type="password" className="form-control" value={lastName} onChange={this.handleLasttNameChange} />
         </div>
         <div className="form-group">
-          <label>Age</label>
-          <input type="password" className="form-control" value={this.state.age} onChange={this.handleAgeChange}/>
+          <div>Age</div>
+          <input type="password" className="form-control" value={age} onChange={this.handleAgeChange} />
         </div>
         <div className="form-group">
-          <label>Return date</label>
-          <input type="password" className="form-control" value={this.state.returnDate} onChange={this.handleReturnDateChange}/>
+          <div>Return date</div>
+          <input type="password" className="form-control" value={returnDate} onChange={this.handleReturnDateChange} />
         </div>
       </form>
-    )
+    );
   }
 }
+
+RentCarForm.propTypes = {
+  submitForm: PropTypes.bool.isRequired,
+};

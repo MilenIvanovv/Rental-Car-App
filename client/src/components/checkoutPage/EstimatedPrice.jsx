@@ -1,24 +1,41 @@
-import React from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function EstimatedPrice(props) {
-
-  const estimated = props.estimated;
+  const { estimated } = props;
 
   return (
-    <div className="card" style={{ width: "18rem" }}>
+    <div className="card" style={{ width: '18rem' }}>
       <div className="card-body">
         <p className="card-text">
-          Days <span>{estimated.days}</span><br />
-          Price per day <span>{estimated.pricePerDay}</span><br />
-          Total <span>{estimated.pricePerDay}</span><br />
+          Days
+          {' '}
+          <span>{estimated.days}</span>
+          <br />
+          Price per day
+          {' '}
+          <span>{estimated.pricePerDay}</span>
+          <br />
+          Total
+          {' '}
+          <span>{estimated.totalPrice}</span>
+          <br />
         </p>
-        <a href="#" className="btn btn-primary">
+        <button type="button" className="btn btn-primary">
           Confirm
-        </a>
-        <a href="#" className="btn btn-primary">
+        </button>
+        <button type="button" className="btn btn-primary">
           Cencel
-        </a>
+        </button>
       </div>
     </div>
-  )
+  );
 }
+
+EstimatedPrice.propTypes = {
+  estimated: PropTypes.exact({
+    days: PropTypes.string,
+    pricePerDay: PropTypes.string,
+    totalPrice: PropTypes.string,
+  }).isRequired,
+};
