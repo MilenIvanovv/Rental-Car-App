@@ -7,20 +7,16 @@ export default class CarCard extends Component {
     const car = this.props.car;
 
     return (
-      <div className="card" style={{ width: "18rem" }}>
-        <img src={car.picture} className="card-img-top" alt="..." />
-        <div className="card-body">
-          <p className="card-text">
-            <div>
-              Model <span><b>{car.model}</b></span>
-            </div>
-            <div>
-              Class <span>{car.class}</span>
-            </div>
-            <div>
-              Price per day <span>{car.price}</span>
-            </div>
-          </p>
+      <div className="col-4 mb-2">
+        <div className="card" style={{ width: "18rem" }}>
+          <img src={car.picture} className="card-img-top" alt="..." />
+          <div className="card-body">
+            <p className="card-text">
+              Model <span><b>{car.model}</b></span><br />
+              Class <span>{car.class}</span><br />
+              Price per day <span>{car.price}</span><br />
+            </p>
+          </div>
         </div>
       </div>
     )
