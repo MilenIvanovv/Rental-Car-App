@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import CarCard from '../carCard/CarCard';
 import RentCarForm from './RentCarForm';
@@ -11,6 +11,11 @@ function CheckoutPage(props) {
   const { carId } = useParams();
 
   const carToRent = cars.find((car) => car.id === carId);
+
+  if (!carToRent) {
+    return <Redirect to="/not-found" />;
+  }
+
   return (
     <div>
       <h2 className="p-2">Checkout rental car</h2>

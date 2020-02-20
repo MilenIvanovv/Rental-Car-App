@@ -10,6 +10,7 @@ import combinedReducer from './reducers/index';
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import NotFoundPage from './components/NotFoundPage';
 
 const store = createStore(combinedReducer,
   // eslint-disable-next-line no-underscore-dangle
@@ -29,6 +30,9 @@ export default function App() {
           </Route>
           <Route path="/cars">
             <CarsPage />
+          </Route>
+          <Route path="/not-found">
+            <NotFoundPage />
           </Route>
           <Route path="/">
             <h1>Home Page</h1>
