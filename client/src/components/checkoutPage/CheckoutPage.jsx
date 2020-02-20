@@ -1,9 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import CarCard from '../carCard/CarCard';
 import RentCarForm from './RentCarForm';
 import EstimatedPrice from './EstimatedPrice';
 
-export default function CheckoutPage() {
+function CheckoutPage(props) {
+  const { cars } = props;
+  const { carId } = useParams();
+
+  const carToRent = cars.find((car) => car.id === carId);
   return (
     <div>
       <h2 className="p-2">Checkout rental car</h2>
@@ -11,7 +18,7 @@ export default function CheckoutPage() {
         <div className="row">
           <div className="col-4">
             <h4>Car</h4>
-            <CarCard car={{}} />
+            <CarCard car={carToRent} />
           </div>
           <div className="col-4">
             <h4>Booking</h4>
@@ -26,3 +33,19 @@ export default function CheckoutPage() {
     </div>
   );
 }
+
+const mapStateToProps = (state) => ({
+  cars: state.cars,
+});
+
+CheckoutPage.propTypes = {
+  cars: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    model: PropTypes.string,
+    class: PropTypes.string,
+    price: PropTypes.string,
+    picture: PropTypes.string,
+  })).isRequired,
+};
+
+export default connect(mapStateToProps)(CheckoutPage);

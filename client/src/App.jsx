@@ -24,7 +24,7 @@ export default function App() {
           <Route path="/current-rentals">
             <CurrentRentals />
           </Route>
-          <Route path="/cars/:id">
+          <Route path="/cars/:carId">
             <CheckoutPage />
           </Route>
           <Route path="/cars">
