@@ -53,15 +53,24 @@ export default class RentCarForm extends Component {
 
   render() {
     return (
-      <form className="rental-car-form">
-        <div>First name</div>
-        <input type="text" value={this.state.firstName} onChange={this.handleFirstNameChange}/>
-        <div>Last name</div>
-        <input type="text" value={this.state.lastName} onChange={this.handleLasttNameChange}/>
-        <div>Age</div>
-        <input type="text" value={this.state.age} onChange={this.handleAgeChange}/>
-        <div>Return date</div>
-        <input type="text" value={this.state.returnDate} onChange={this.handleReturnDateChange}/>
+      <form>
+        <div className="form-group">
+          <label>First name</label>
+          <input type="email" className="form-control" value={this.state.firstName} onChange={this.handleFirstNameChange}/>
+          <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div className="form-group">
+          <label>Last name</label>
+          <input type="password" className="form-control" value={this.state.lastName} onChange={this.handleLasttNameChange}/>
+        </div>
+        <div className="form-group">
+          <label>Age</label>
+          <input type="password" className="form-control" value={this.state.age} onChange={this.handleAgeChange}/>
+        </div>
+        <div className="form-group">
+          <label>Return date</label>
+          <input type="password" className="form-control" value={this.state.returnDate} onChange={this.handleReturnDateChange}/>
+        </div>
       </form>
     )
   }
