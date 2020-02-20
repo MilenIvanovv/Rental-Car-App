@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function RentedCarsRow(props) {
   const { rental } = props;
@@ -14,7 +15,21 @@ export default function RentedCarsRow(props) {
       <td>{rental.curDaysRented}</td>
       <td>{rental.curPricePerDay}</td>
       <td>{rental.curTotalPrice}</td>
-      <td><button>Return car</button></td>
+      <td><button type="button">Return car</button></td>
     </tr>
   );
 }
+
+RentedCarsRow.propTypes = {
+  rental: PropTypes.exact({
+    model: PropTypes.string.isRequired,
+    customer: PropTypes.string.isRequired,
+    dateFrom: PropTypes.string.isRequired,
+    estimatedDate: PropTypes.string.isRequired,
+    estimatedDays: PropTypes.string.isRequired,
+    estimatedPricePerDay: PropTypes.string.isRequired,
+    curDaysRented: PropTypes.string.isRequired,
+    curPricePerDay: PropTypes.string.isRequired,
+    curTotalPrice: PropTypes.string.isRequired,
+  }).isRequired,
+};

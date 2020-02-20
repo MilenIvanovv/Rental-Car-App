@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 export default function Navigation() {
   return (
@@ -11,16 +11,18 @@ export default function Navigation() {
         <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
             <Link className="nav-link" to="/current-rentals">
-              Dashboard <span className="sr-only">(current)</span>
+              Dashboard
+              {' '}
+              <span className="sr-only">(current)</span>
             </Link>
           </li>
           <li className="nav-item">
             <Link className="nav-link" to="/cars">
               Cars
-          </Link>
+            </Link>
           </li>
         </ul>
       </div>
     </nav>
-  )
+  );
 }
