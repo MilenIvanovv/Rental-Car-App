@@ -87,5 +87,9 @@ export default class RentCarForm extends Component {
 }
 
 RentCarForm.propTypes = {
-  submitForm: PropTypes.bool.isRequired,
+  submitForm: PropTypes.bool,
+};
+
+RentCarForm.defaultProps = {
+  submitForm: false,
 };
