@@ -39,5 +39,6 @@ CarCard.propTypes = {
     model: PropTypes.string,
     class: PropTypes.string,
     price: PropTypes.string,
+    picture: PropTypes.string,
   }).isRequired,
 };
