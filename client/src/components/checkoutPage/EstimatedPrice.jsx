@@ -5,20 +5,19 @@ export default function EstimatedPrice(props) {
   const estimated = props.estimated;
 
   return (
-    <div className="card-details">
-      <div>
-        <span>Days</span>
-        <span>Price per day</span>
-        <span>Total</span>
-      </div>
-      <div>
-        <span>{estimated.days}</span>
-        <span>{estimated.pricePerDay}</span>
-        <span>{estimated.totalPrice}</span>
-      </div>
-      <div className="card-buttons">
-        <button>Confirm</button>
-        <button>Cencel</button>
+    <div className="card" style={{ width: "18rem" }}>
+      <div className="card-body">
+        <p className="card-text">
+          Days <span>{estimated.days}</span><br />
+          Price per day <span>{estimated.pricePerDay}</span><br />
+          Total <span>{estimated.pricePerDay}</span><br />
+        </p>
+        <a href="#" className="btn btn-primary">
+          Confirm
+        </a>
+        <a href="#" className="btn btn-primary">
+          Cencel
+        </a>
       </div>
     </div>
   )
