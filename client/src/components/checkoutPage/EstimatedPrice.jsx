@@ -16,6 +16,10 @@ export default function EstimatedPrice(props) {
         <span>{estimated.pricePerDay}</span>
         <span>{estimated.totalPrice}</span>
       </div>
+      <div className="card-buttons">
+        <button>Confirm</button>
+        <button>Cencel</button>
+      </div>
     </div>
   )
 }

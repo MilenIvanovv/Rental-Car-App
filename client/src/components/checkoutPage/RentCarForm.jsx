@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import './checkoutPage.css';
 
 export default class RentCarForm extends Component {
 
@@ -52,14 +53,14 @@ export default class RentCarForm extends Component {
 
   render() {
     return (
-      <form>
-        <label>First name</label>
+      <form className="rental-car-form">
+        <div>First name</div>
         <input type="text" value={this.state.firstName} onChange={this.handleFirstNameChange}/>
-        <label>Last name</label>
+        <div>Last name</div>
         <input type="text" value={this.state.lastName} onChange={this.handleLasttNameChange}/>
-        <label>Age</label>
+        <div>Age</div>
         <input type="text" value={this.state.age} onChange={this.handleAgeChange}/>
-        <label>Return date</label>
+        <div>Return date</div>
         <input type="text" value={this.state.returnDate} onChange={this.handleReturnDateChange}/>
       </form>
     )

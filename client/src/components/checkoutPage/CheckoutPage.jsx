@@ -11,15 +11,15 @@ export default class CheckoutPage extends Component {
         <div className="container">
           <div className="row">
             <div className="col-4">
-              <h3>Car</h3>
+              <h4>Car</h4>
               <CarCard noBorder={true} car={{}}/>
             </div>
             <div className="col-4">
-              <h3>Booking</h3>
+              <h4>Booking</h4>
               <RentCarForm/>
             </div>
             <div className="col-4">
-              <h3>Estimated Price</h3>
+              <h4>Estimated Price</h4>
               <EstimatedPrice estimated={{}}/>
             </div>
           </div>
