@@ -1,15 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link, useRouteMatch } from 'react-router-dom';
 
 import './carCard.css';
 
 export default function CarCard(props) {
+  const match = useRouteMatch();
+
   const { car } = props;
 
   return (
     <div className="col-4 mb-2">
       <div className="card" style={{ width: '18rem' }}>
-        <img src={car.picture} className="card-img-top" alt="..." />
+        <Link to={`${match.url}/${car.id}`}>
+          <img src={car.picture} className="card-img-top" alt="..." />
+        </Link>
         <div className="card-body">
           <p className="card-text">
             Model
@@ -30,6 +35,7 @@ export default function CarCard(props) {
 
 CarCard.propTypes = {
   car: PropTypes.exact({
+    id: PropTypes.string,
     model: PropTypes.string,
     class: PropTypes.string,
     price: PropTypes.string,

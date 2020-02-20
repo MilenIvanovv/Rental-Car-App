@@ -16,11 +16,11 @@ export default function App() {
         <Route path="/current-rentals">
           <CurrentRentals />
         </Route>
+        <Route path="/cars/:id">
+          <CheckoutPage />
+        </Route>
         <Route path="/cars">
           <CarsPage />
-        </Route>
-        <Route path="/checkouts">
-          <CheckoutPage />
         </Route>
         <Route path="/">
           <h1>Home Page</h1>

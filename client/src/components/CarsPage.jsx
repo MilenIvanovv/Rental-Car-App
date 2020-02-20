@@ -5,6 +5,7 @@ import SearchBar from './SearchBar';
 export default function CarsPage() {
   const cars = [
     {
+      id: '1234',
       model: 'Ford Fiesta',
       class: 'A',
       price: '28$',
