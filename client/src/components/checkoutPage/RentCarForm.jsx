@@ -69,15 +69,15 @@ export default class RentCarForm extends Component {
         </div>
         <div className="form-group">
           <div>Last name</div>
-          <input type="password" className="form-control" value={lastName} onChange={this.handleLasttNameChange} />
+          <input type="text" className="form-control" value={lastName} onChange={this.handleLasttNameChange} />
         </div>
         <div className="form-group">
           <div>Age</div>
-          <input type="password" className="form-control" value={age} onChange={this.handleAgeChange} />
+          <input type="number" min="18" className="form-control" value={age} onChange={this.handleAgeChange} />
         </div>
         <div className="form-group">
           <div>Return date</div>
-          <input type="password" className="form-control" value={returnDate} onChange={this.handleReturnDateChange} />
+          <input type="date" className="form-control" value={returnDate} onChange={this.handleReturnDateChange} />
         </div>
       </form>
     );
