@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default function EstimatedPrice(props) {
-  const { estimated } = props;
+  const { estimated, confirmHanlder } = props;
 
   return (
     <div className="card" style={{ width: '18rem' }}>
@@ -21,12 +22,14 @@ export default function EstimatedPrice(props) {
           <span>{estimated.totalPrice}</span>
           <br />
         </p>
-        <button type="button" className="btn btn-primary">
+        <button type="button" className="btn btn-primary" onClick={confirmHanlder}>
           Confirm
         </button>
-        <button type="button" className="btn btn-primary">
-          Cencel
-        </button>
+        <Link to="/cars">
+          <button type="button" className="btn btn-primary">
+            Cencel
+          </button>
+        </Link>
       </div>
     </div>
   );
@@ -38,4 +41,5 @@ EstimatedPrice.propTypes = {
     pricePerDay: PropTypes.string,
     totalPrice: PropTypes.string,
   }).isRequired,
+  confirmHanlder: PropTypes.func.isRequired,
 };

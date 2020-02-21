@@ -21,12 +21,10 @@ export default class RentCarForm extends Component {
   }
 
   componentDidUpdate() {
-    const { submitForm } = this.props;
+    const { submitForm, onSubmit } = this.props;
 
     if (submitForm) {
-      // pass form data
-      // get it from state
-      const formData = {};
+      onSubmit(this.state);
     }
   }
 
@@ -88,6 +86,7 @@ export default class RentCarForm extends Component {
 
 RentCarForm.propTypes = {
   submitForm: PropTypes.bool,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 RentCarForm.defaultProps = {
