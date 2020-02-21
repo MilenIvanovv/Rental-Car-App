@@ -2,15 +2,15 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import Navigation from './components/Navigation';
-import CarsPage from './components/CarsPage';
-import CurrentRentals from './components/CurrentRentals';
+import Navigation from './components/common/Navigation';
+import CarsPage from './components/carsPage/CarsPage';
+import CurrentRentals from './components/CurrentRentalsPage';
 import CheckoutPage from './components/checkoutPage/CheckoutPage';
 import combinedReducer from './reducers/index';
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import NotFoundPage from './components/NotFoundPage';
+import NotFoundPage from './components/common/NotFoundPage';
 
 const store = createStore(combinedReducer,
   // eslint-disable-next-line no-underscore-dangle

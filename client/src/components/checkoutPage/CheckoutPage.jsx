@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useParams, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import CarCard from '../carCard/CarCard';
+import CarCard from '../shared/carCard/CarCard';
 import RentCarForm from './RentCarForm';
 import EstimatedPrice from './EstimatedPrice';
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CarsList from './CarsList';
 import SearchBar from './SearchBar';
-import { setCars } from '../actions/setCarsAction';
+import { setCars } from '../../actions/setCarsAction';
 
 class CarsPage extends Component {
   componentDidMount() {

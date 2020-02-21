@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CarCard from './carCard/CarCard';
+import CarCard from '../shared/carCard/CarCard';
 
 export default function CarsList(props) {
   const { cars } = props;
