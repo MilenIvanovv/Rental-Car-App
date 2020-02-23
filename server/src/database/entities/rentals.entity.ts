@@ -1,4 +1,4 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import { Car } from './cars.entity';
 import { RentalStatus } from '../../common/rental-status.enum';
 
@@ -7,8 +7,7 @@ export class RentedCar extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @OneToOne(type => Car)
-  @JoinColumn()
+  @ManyToOne(type => Car, car => car.rentals)
   car: Car;
 
   @Column({ type: 'varchar', length: 100, nullable: false })

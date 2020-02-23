@@ -1,4 +1,5 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Car } from './cars.entity';
 
 @Entity('Classes')
 export class CarClass extends BaseEntity {
@@ -10,4 +11,7 @@ export class CarClass extends BaseEntity {
 
   @Column({ type: 'varchar', length: 100, nullable: false })
   price: string;
+
+  @OneToMany(type => Car, car => car.class)
+  car: Car;
 }
