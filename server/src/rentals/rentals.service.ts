@@ -3,7 +3,7 @@ import { RentedCar } from '../database/entities/rentals.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Car } from '../database/entities/cars.entity';
-import { Client } from './models/client.dto';
+import { ClientDTO } from './models/client.dto';
 import { RentalStatus } from '../common/rental-status.enum';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class RentalsService {
     return await this.rentalsRepository.find({ relations:['car'] });
   }
 
-  async rentCar(carId: number, returnDate: string, client: Client) {
+  async rentCar(carId: number, returnDate: string, client: ClientDTO) {
     const carToRent = await this.carRepository.findOne(carId);
 
     if (!carToRent) {
