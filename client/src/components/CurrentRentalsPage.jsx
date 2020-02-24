@@ -4,11 +4,14 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import RentedCarsTable from './rentedCarsTable/RentedCarsTable';
 import { API_ROOT } from '../constants/constants';
+import { setRentals } from '../actions/setRentalsAction';
 
 class CurrentRentals extends Component {
   async componentDidMount() {
+    const { setRentals } = this.props;
     const rentals = await axios.get(`${API_ROOT}/rentals`);
-    console.log(rentals);
+
+    setRentals(rentals.data);
   }
 
   render() {
@@ -29,7 +32,7 @@ const mapStateToProps = (state) => ({
   rentals: state.rentals,
 });
 
-export default connect(mapStateToProps)(CurrentRentals);
+export default connect(mapStateToProps, { setRentals })(CurrentRentals);
 
 // CurrentRentals.propTypes = {
 //   rentals: PropTypes.arrayOf(PropTypes.shape({
