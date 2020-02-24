@@ -12,19 +12,19 @@ describe('RentalsService', () => {
   beforeEach(async () => {
     rentalsRepo = {
       find() {
-
+        //implementation
       },
       save() {
-
+        //implementation
       }
     }
 
     carRepo = {
       find() {
-
+        //implementation
       },
       findOne() {
-
+        //implementation
       }
     }
 
@@ -55,7 +55,7 @@ describe('RentalsService', () => {
     });
   });
 
-  fdescribe('rentCar', () => {
+  describe('rentCar', () => {
     it('should call carRepository.findOne with correct parameters', () => {
       const spy = jest
         .spyOn(carRepo, 'findOne');
@@ -67,30 +67,46 @@ describe('RentalsService', () => {
       expect(spy).toHaveBeenCalledWith(carId);
     });
 
-    it('should throw if carRepository.findOne returns undefiend', () => {
-      const spy = jest
+    it('should throw if carRepository.findOne doesn\'t ', () => {
+      jest
         .spyOn(carRepo, 'findOne')
-        .mockImplementation(() => undefined);
+        .mockImplementation(async () => undefined);
       const carId = 3;
 
-      service.rentCar(carId, '' as any, '' as any);
-
-      expect(spy).toHaveBeenCalled();
-      expect(service).toThrow();
+      expect(service.rentCar(carId, '' as any, '' as any)).rejects.toThrow();
     });
 
-    it('should call carRepository.save with correct parameters', () => {
-      const carId = 3;
+    it('should call carRepository.save with correct parameters', async () => {
+      const car = { id: 3 };
+      jest
+        .spyOn(carRepo, 'findOne')
+        .mockImplementation(() => car);
       const spy = jest
-        .spyOn(carRepo, 'save')
-        .mockImplementation(() => ({ id: carId }))
-      const client = { firstName: 'Ivan', lastName: 'Ivanov', age: 18 };
+        .spyOn(rentalsRepo, 'save');
+      const client = { firstName: 'Ivan', lastName: 'Ivanov', age: '18' };
       const date = 'date';
 
-      service.rentCar(0, date, client);
+      await service.rentCar(0, date, client);
 
       expect(spy).toHaveBeenCalled();
-      expect(spy).toHaveBeenCalledWith({ returnDate: date, status: 'open', car: carId, ...client });
+      expect(spy).toHaveBeenCalledWith({ returnDate: date, status: 'open', car: car, ...client });
+    });
+
+    it('should return the correct result', async () => {
+      const carId = 3;
+      const testObj = {}
+      jest
+        .spyOn(carRepo, 'findOne')
+        .mockImplementation(() => ({ id: carId }));
+      jest
+        .spyOn(rentalsRepo, 'save')
+        .mockImplementation(() => testObj);
+      const client = { firstName: 'Ivan', lastName: 'Ivanov', age: '18' };
+      const date = 'date';
+
+      const result = await service.rentCar(0, date, client);
+
+      expect(result).toBe(testObj);
     });
   });
 });

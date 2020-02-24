@@ -16,7 +16,7 @@ export class RentalsController {
   }
 
   @Post()
-  async rentCar(@Body('carId') carId: string, @Body('returnDate') returnDate: string, @Body('client') client: Client ): Promise<void>  {
+  async rentCar(@Body('carId') carId: number, @Body('returnDate') returnDate: string, @Body('client') client: Client ): Promise<RentedCar>  {
     return await this.rentalsService.rentCar(carId, returnDate, client);
   }
 }

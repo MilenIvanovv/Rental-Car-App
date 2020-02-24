@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { RentedCar } from '../database/entities/rentals.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Car } from '../database/entities/cars.entity';
+import { Client } from './models/client.dto';
+import { RentalStatus } from '../common/rental-status.enum';
 
 @Injectable()
 export class RentalsService {
@@ -12,11 +14,17 @@ export class RentalsService {
     @InjectRepository(Car) private readonly carRepository: Repository<Car>,
   ) { }
 
-  getRenals() {
-    return this.rentalsRepository.find({ relations:['car'] });
+  async getRenals() {
+    return await this.rentalsRepository.find({ relations:['car'] });
   }
 
-  rentCar(carId, returnDate, { firstName, lastName, age}) {
+  async rentCar(carId: number, returnDate: string, client: Client) {
+    const carToRent = await this.carRepository.findOne(carId);
 
+    if (!carToRent) {
+      throw new NotFoundException(`Car with ${carId} was not found`);
+    }
+
+    return await this.rentalsRepository.save({ car: carToRent, returnDate, status: RentalStatus.open, ...client})
   }
 }
