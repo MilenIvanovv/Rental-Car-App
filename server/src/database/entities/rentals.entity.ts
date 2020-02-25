@@ -19,8 +19,8 @@ export class RentedCar extends BaseEntity {
   @Column({ type: 'varchar', length: 100, nullable: false })
   lastName: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: false })
-  age: string;
+  @Column({ type: 'numeric', nullable: false })
+  age: number;
 
   @Column({ type: 'enum', enum: ['open', 'returned']})
   status: RentalStatus;

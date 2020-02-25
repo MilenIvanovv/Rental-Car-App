@@ -9,8 +9,8 @@ export class CarClass extends BaseEntity {
   @Column({ type: 'varchar', length: 100, nullable: false })
   name: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: false })
-  price: string;
+  @Column({ type: 'numeric', nullable: false })
+  price: number;
 
   @OneToMany(type => Car, car => car.class)
   car: Car;
