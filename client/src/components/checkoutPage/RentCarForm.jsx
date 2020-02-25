@@ -1,5 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
+// import axios from 'axios';
 import PropTypes from 'prop-types';
+// import { API_ROOT } from '../../constants/constants';
 
 import './checkoutPage.css';
 
@@ -52,6 +55,11 @@ export default class RentCarForm extends Component {
     });
   }
 
+  async confirmHanlder() {
+    // await axios.put(`${API_ROOT}/`);
+    console.log(this.state);
+  }
+
   render() {
     const {
       firstName,
@@ -60,26 +68,63 @@ export default class RentCarForm extends Component {
       returnDate,
     } = this.state;
 
+    const { estimations } = this.props;
+
     return (
-      <form>
-        <div className="form-group">
-          <div>First name</div>
-          <input type="email" className="form-control" value={firstName} onChange={this.handleFirstNameChange} />
-          <small id="emailHelp" className="form-text text-muted">We&apos;ll never share your email with anyone else.</small>
+      // eslint-disable-next-line react/jsx-fragments
+      <Fragment>
+        <div className="col-4">
+          <h4>Booking</h4>
+          <form>
+            <div className="form-group">
+              <div>First name</div>
+              <input type="email" className="form-control" value={firstName} onChange={this.handleFirstNameChange} />
+              <small id="emailHelp" className="form-text text-muted">We&apos;ll never share your email with anyone else.</small>
+            </div>
+            <div className="form-group">
+              <div>Last name</div>
+              <input type="text" className="form-control" value={lastName} onChange={this.handleLasttNameChange} />
+            </div>
+            <div className="form-group">
+              <div>Age</div>
+              <input type="number" min="18" className="form-control" value={age} onChange={this.handleAgeChange} />
+            </div>
+            <div className="form-group">
+              <div>Return date</div>
+              <input type="date" className="form-control" value={returnDate} onChange={this.handleReturnDateChange} />
+            </div>
+          </form>
         </div>
-        <div className="form-group">
-          <div>Last name</div>
-          <input type="text" className="form-control" value={lastName} onChange={this.handleLasttNameChange} />
+        <div className="col-4">
+          <h4>Estimated Price</h4>
+          <div className="card" style={{ width: '18rem' }}>
+            <div className="card-body">
+              <p className="card-text">
+                Days
+                {' '}
+                <span>{estimations.days}</span>
+                <br />
+                Price per day
+                {' '}
+                <span>{estimations.pricePerDay}</span>
+                <br />
+                Total
+                {' '}
+                <span>{estimations.totalPrice}</span>
+                <br />
+              </p>
+              <button type="button" className="btn btn-primary" onClick={this.confirmHanlder}>
+                Confirm
+              </button>
+              <Link to="/cars">
+                <button type="button" className="btn btn-primary">
+                  Cencel
+                </button>
+              </Link>
+            </div>
+          </div>
         </div>
-        <div className="form-group">
-          <div>Age</div>
-          <input type="number" min="18" className="form-control" value={age} onChange={this.handleAgeChange} />
-        </div>
-        <div className="form-group">
-          <div>Return date</div>
-          <input type="date" className="form-control" value={returnDate} onChange={this.handleReturnDateChange} />
-        </div>
-      </form>
+      </Fragment>
     );
   }
 }
@@ -87,6 +132,11 @@ export default class RentCarForm extends Component {
 RentCarForm.propTypes = {
   submitForm: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
+  estimations: PropTypes.shape({
+    days: PropTypes.number.isRequired,
+    pricePerDay: PropTypes.number.isRequired,
+    totalPrice: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 RentCarForm.defaultProps = {

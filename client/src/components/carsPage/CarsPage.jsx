@@ -5,7 +5,7 @@ import axios from 'axios';
 import CarsList from './CarsList';
 import SearchBar from './SearchBar';
 import { setCars } from '../../actions/setCarsAction';
-import API_ROOT from '../../constants/constants';
+import { API_ROOT } from '../../constants/constants';
 
 class CarsPage extends Component {
   constructor(props) {

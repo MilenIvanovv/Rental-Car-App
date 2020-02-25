@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 export default function RentedCarsRow(props) {
   const { rental } = props;
 
+
   return (
     <tr>
       <td>{rental.car.model}</td>
@@ -16,7 +17,7 @@ export default function RentedCarsRow(props) {
       <td>{rental.curDaysRented}</td>
       <td>{rental.curPricePerDay}</td>
       <td>{rental.curTotalPrice}</td>
-      <td><button type="button">Return car</button></td>
+      <td><button type="button" onClick={(ev) => props.returnCar(ev, rental.id)}>Return car</button></td>
     </tr>
   );
 }
@@ -41,6 +42,8 @@ RentedCarsRow.propTypes = {
     curDaysRented: PropTypes.number,
     curPricePerDay: PropTypes.number,
     curTotalPrice: PropTypes.number,
-    status: PropTypes.oneOf(['open', 'closed']),
+    status: PropTypes.oneOf(['open', 'returned']),
   }).isRequired,
+
+  returnCar: PropTypes.func.isRequired,
 };

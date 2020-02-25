@@ -8,7 +8,17 @@ import { setRentals } from '../actions/setRentalsAction';
 import * as calucalte from '../utils/calculate-rent';
 
 class CurrentRentals extends Component {
+  constructor(props) {
+    super(props);
+
+    this.returnCar = this.returnCar.bind(this);
+  }
+
   async componentDidMount() {
+    await this.getCurrentRentals();
+  }
+
+  async getCurrentRentals() {
     // eslint-disable-next-line no-shadow
     const { setRentals } = this.props;
     const rentals = await axios.get(`${API_ROOT}/rentals`);
@@ -16,10 +26,17 @@ class CurrentRentals extends Component {
     setRentals(rentals.data);
   }
 
+  async returnCar(ev, id) {
+    await axios.put(`${API_ROOT}/rentals/${id}`);
+    await this.getCurrentRentals();
+  }
+
   render() {
     const { rentals } = this.props;
 
-    const transformedRentals = rentals.map((rental) => {
+    const openRentals = rentals.filter((rental) => rental.status === 'open');
+
+    const transformedRentals = openRentals.map((rental) => {
       const transformed = JSON.parse(JSON.stringify(rental));
       const rentedDate = new Date(rental.dateFrom);
       const estimatedDate = new Date(rental.estimatedDate);
@@ -43,7 +60,7 @@ class CurrentRentals extends Component {
       <div>
         <div className="p-3">
           <h3>Current rentals</h3>
-          <RentedCarsTable rentals={transformedRentals} />
+          <RentedCarsTable rentals={transformedRentals} returnCar={this.returnCar} />
         </div>
       </div>
     );
@@ -69,7 +86,7 @@ CurrentRentals.propTypes = {
     age: PropTypes.number.isRequired,
     returnDate: PropTypes.string.isRequired,
     dateFrom: PropTypes.string.isRequired,
-    status: PropTypes.oneOf(['open', 'closed']).isRequired,
+    status: PropTypes.oneOf(['open', 'returned']).isRequired,
   })).isRequired,
 
   setRentals: PropTypes.func.isRequired,

@@ -5,9 +5,9 @@ import './RentedCarsTable.css';
 
 
 export default function RentedCarsTable(props) {
-  const { rentals } = props;
+  const { rentals, returnCar } = props;
   const elements = rentals
-    .map((rental) => <RentedCarsRow key={rental.car.model} rental={rental} />);
+    .map((rental) => <RentedCarsRow key={rental.car.model} rental={rental} returnCar={returnCar} />);
 
   return (
     <table className="table">
@@ -52,6 +52,8 @@ RentedCarsTable.propTypes = {
     curDaysRented: PropTypes.number.isRequired,
     curPricePerDay: PropTypes.number.isRequired,
     curTotalPrice: PropTypes.number.isRequired,
-    status: PropTypes.oneOf(['open', 'closed']).isRequired,
+    status: PropTypes.oneOf(['open', 'returned']).isRequired,
   })).isRequired,
+
+  returnCar: PropTypes.func.isRequired,
 };
