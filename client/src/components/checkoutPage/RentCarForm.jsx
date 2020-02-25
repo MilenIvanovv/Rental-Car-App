@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-// import axios from 'axios';
+import axios from 'axios';
 import PropTypes from 'prop-types';
-// import { API_ROOT } from '../../constants/constants';
+import { API_ROOT } from '../../constants/constants';
 
 import './checkoutPage.css';
+import CarCard from '../shared/carCard/CarCard';
 
 export default class RentCarForm extends Component {
   constructor(props) {
@@ -21,14 +22,7 @@ export default class RentCarForm extends Component {
     this.handleLasttNameChange = this.handleLasttNameChange.bind(this);
     this.handleAgeChange = this.handleAgeChange.bind(this);
     this.handleReturnDateChange = this.handleReturnDateChange.bind(this);
-  }
-
-  componentDidUpdate() {
-    const { submitForm, onSubmit } = this.props;
-
-    if (submitForm) {
-      onSubmit(this.state);
-    }
+    this.confirmHanlder = this.confirmHanlder.bind(this);
   }
 
   handleFirstNameChange(ev) {
@@ -56,8 +50,20 @@ export default class RentCarForm extends Component {
   }
 
   async confirmHanlder() {
-    // await axios.put(`${API_ROOT}/`);
-    console.log(this.state);
+    const { car } = this.props;
+
+    const client = {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      age: this.state.age,
+    };
+
+    console.log(this.state.returnDate);
+    const result = await axios.post(`${API_ROOT}/rentals`, {
+      estimatedDate: new Date(this.state.returnDate),
+      client,
+      carId: car.id,
+    });
   }
 
   render() {
@@ -68,11 +74,15 @@ export default class RentCarForm extends Component {
       returnDate,
     } = this.state;
 
-    const { estimations } = this.props;
+    const { estimations, car } = this.props;
 
     return (
       // eslint-disable-next-line react/jsx-fragments
       <Fragment>
+        <div className="col-4">
+          <h4>Car</h4>
+          <CarCard car={car} />
+        </div>
         <div className="col-4">
           <h4>Booking</h4>
           <form>
@@ -91,7 +101,7 @@ export default class RentCarForm extends Component {
             </div>
             <div className="form-group">
               <div>Return date</div>
-              <input type="date" className="form-control" value={returnDate} onChange={this.handleReturnDateChange} />
+              <input type="date" min={new Date().toISOString().split("T")[0]} className="form-control" value={returnDate} onChange={this.handleReturnDateChange} />
             </div>
           </form>
         </div>
@@ -129,16 +139,16 @@ export default class RentCarForm extends Component {
   }
 }
 
-RentCarForm.propTypes = {
-  submitForm: PropTypes.bool,
-  onSubmit: PropTypes.func.isRequired,
-  estimations: PropTypes.shape({
-    days: PropTypes.number.isRequired,
-    pricePerDay: PropTypes.number.isRequired,
-    totalPrice: PropTypes.number.isRequired,
-  }).isRequired,
-};
+// RentCarForm.propTypes = {
+//   submitForm: PropTypes.bool,
+//   onSubmit: PropTypes.func.isRequired,
+//   estimations: PropTypes.shape({
+//     days: PropTypes.number.isRequired,
+//     pricePerDay: PropTypes.number.isRequired,
+//     totalPrice: PropTypes.number.isRequired,
+//   }).isRequired,
+// };
 
-RentCarForm.defaultProps = {
-  submitForm: false,
-};
+// RentCarForm.defaultProps = {
+//   submitForm: false,
+// };
