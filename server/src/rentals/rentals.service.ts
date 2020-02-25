@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { RentedCar } from '../database/entities/rentals.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -19,14 +19,21 @@ export class RentalsService {
     return await this.rentalsRepository.find({ relations:['car', 'car.class'] });
   }
 
-  async rentCar(carId: number, returnDate: string, client: ClientDTO) {
+  async rentCar(carId: number, estimatedDate: string, client: ClientDTO) {
     const carToRent = await this.carRepository.findOne(carId);
 
     if (!carToRent) {
       throw new NotFoundException(`Car with ${carId} was not found`);
     }
 
-    return await this.rentalsRepository.save({ car: carToRent, returnDate, status: RentalStatus.open, ...client})
+    if (carToRent.status === CarStatus.borrowed) {
+      throw new BadRequestException(`Car with ${carId} is borrowed`);
+    }
+
+    carToRent.status = CarStatus.borrowed;
+    await this.carRepository.save(carToRent);
+
+    return await this.rentalsRepository.save({ car: carToRent, estimatedDate, returnDate:'', dateFrom: new Date().toString(), status: RentalStatus.open, ...client})
   }
 
   async returnCar(rentalId: string) {
@@ -37,7 +44,6 @@ export class RentalsService {
     }
 
     rental.status = RentalStatus.returned;
-    rental.returnDate = new Date().toString();
     rental.car.status = CarStatus.listed;
 
     return await this.rentalsRepository.save(rental);

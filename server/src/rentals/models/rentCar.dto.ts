@@ -1,5 +1,5 @@
 import { ClientDTO } from './client.dto';
-import { IsNumber, IsNotEmpty, IsString } from 'class-validator';
+import { IsNumber, IsNotEmpty, IsString, IsNotEmptyObject } from 'class-validator';
 
 export class RentCarDTO {
   @IsNumber()
@@ -8,6 +8,8 @@ export class RentCarDTO {
 
   @IsString()
   @IsNotEmpty()
-  returnDate: string;
+  estimatedDate: string;
+
+  @IsNotEmptyObject()
   client: ClientDTO;
 }
