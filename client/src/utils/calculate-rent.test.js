@@ -2,37 +2,33 @@ import * as calucalte from './calculate-rent';
 
 describe('calculate days', () => {
   it('should should throw if 1st day is invalid', () => {
-    const date1 = '';
+    const date1 = new Date('test');
     const date2 = new Date(2020, 1, 13, 10);
   
-    const result = calucalte.Days(date1, date2);
-  
-    expect(result).toEqual(1);
+    expect(() => calucalte.days(date1, date2)).toThrow();
   });
 
   it('should should throw if 2nd day is invalid', () => {
     const date1 = new Date(2020, 1, 12, 10);
-    const date2 = '';
+    const date2 = new Date('test');
   
-    const result = calucalte.Days(date1, date2);
-  
-    expect(result).toEqual(1);
+    expect(() => calucalte.days(date1, date2)).toThrow();
   });
 
   it('should calculate correct on 1 day diff', () => {
     const date1 = new Date(2020, 1, 12, 10);
     const date2 = new Date(2020, 1, 13, 10);
   
-    const result = calucalte.Days(date1, date2);
+    const result = calucalte.days(date1, date2);
   
     expect(result).toEqual(1);
   });
 
   it('should calculate correct on 1 day 1min diff', () => {
     const date1 = new Date(2020, 1, 12, 10);
-    const date2 = new Date(2020, 1, 13, 10);
+    const date2 = new Date(2020, 1, 13, 10, 1);
   
-    const result = calucalte.Days(date1, date2);
+    const result = calucalte.days(date1, date2);
   
     expect(result).toEqual(2);
   });
@@ -41,7 +37,7 @@ describe('calculate days', () => {
     const date1 = new Date(2020, 1, 12, 10);
     const date2 = new Date(2020, 1, 13, 9);
   
-    const result = calucalte.Days(date1, date2);
+    const result = calucalte.days(date1, date2);
   
     expect(result).toEqual(1);
   });
