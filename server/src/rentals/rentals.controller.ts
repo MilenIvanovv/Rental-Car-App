@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, ValidationPipe, Param, Put } from '@nestjs/common';
 import { RentalsService } from './rentals.service';
 import { RentedCar } from '../database/entities/rentals.entity';
 import { RentCarDTO } from './models/rentCar.dto';
@@ -19,5 +19,10 @@ export class RentalsController {
   async rentCar(@Body(new ValidationPipe({ transform: true, whitelist: true })) body: RentCarDTO ): Promise<RentedCar>  {
     const { carId, returnDate, client } = body;
     return await this.rentalsService.rentCar(carId, returnDate, client);
+  }
+
+  @Put('/:rentalId')
+  async returnCar(@Param('rentalId') rentalId: string): Promise<RentedCar>  {
+    return await this.rentalsService.returnCar(rentalId);
   }
 }

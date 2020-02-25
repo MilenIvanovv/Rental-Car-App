@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Car } from '../database/entities/cars.entity';
 import { ClientDTO } from './models/client.dto';
 import { RentalStatus } from '../common/rental-status.enum';
+import { CarStatus } from '../common/car-status.enum';
 
 @Injectable()
 export class RentalsService {
@@ -26,5 +27,19 @@ export class RentalsService {
     }
 
     return await this.rentalsRepository.save({ car: carToRent, returnDate, status: RentalStatus.open, ...client})
+  }
+
+  async returnCar(rentalId: string) {
+    const rental = await this.rentalsRepository.findOne({ where: { id: rentalId }, relations: ['car']});
+
+    if (!rental) {
+      throw new NotFoundException(`Contract with id ${rentalId} not found`);
+    }
+
+    rental.status = RentalStatus.returned;
+    rental.returnDate = new Date().toString();
+    rental.car.status = CarStatus.listed;
+
+    return await this.rentalsRepository.save(rental);
   }
 }
