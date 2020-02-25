@@ -6,6 +6,7 @@ export default [{
   status: 'open',
   estimatedDate: 'Mon Feb 24 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
   returnDate: 'Mon Feb 25 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
+  dateFrom: 'Mon Feb 23 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
 },
 {
   car: 7,
@@ -15,6 +16,7 @@ export default [{
   status: 'open',
   estimatedDate: 'Mon Feb 24 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
   returnDate: 'Mon Feb 25 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
+  dateFrom: 'Mon Feb 23 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
 },
 {
   car: 8,
@@ -24,4 +26,5 @@ export default [{
   status: 'open',
   estimatedDate: 'Mon Feb 24 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
   returnDate: 'Mon Feb 25 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
+  dateFrom: 'Mon Feb 23 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
 }];

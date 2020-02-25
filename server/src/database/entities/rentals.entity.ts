@@ -27,4 +27,7 @@ export class RentedCar extends BaseEntity {
 
   @Column({ type: 'varchar'})
   returnDate: string;
+
+  @Column({ type: 'varchar', default: '' })
+  dateFrom: string;
 }
