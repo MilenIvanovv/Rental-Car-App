@@ -15,7 +15,7 @@ export class RentalsService {
   ) { }
 
   async getRenals() {
-    return await this.rentalsRepository.find({ relations:['car'] });
+    return await this.rentalsRepository.find({ relations:['car', 'car.class'] });
   }
 
   async rentCar(carId: number, returnDate: string, client: ClientDTO) {

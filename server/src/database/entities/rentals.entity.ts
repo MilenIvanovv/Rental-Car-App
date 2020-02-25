@@ -19,7 +19,7 @@ export class RentedCar extends BaseEntity {
   @Column({ type: 'varchar', length: 100, nullable: false })
   lastName: string;
 
-  @Column({ type: 'numeric', nullable: false })
+  @Column({ type: 'integer', nullable: false })
   age: number;
 
   @Column({ type: 'enum', enum: ['open', 'returned']})
