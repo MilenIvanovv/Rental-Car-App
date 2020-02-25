@@ -1,4 +1,5 @@
 import React from 'react';
+import Moment from 'react-moment';
 import PropTypes from 'prop-types';
 
 export default function RentedCarsRow(props) {
@@ -6,10 +7,10 @@ export default function RentedCarsRow(props) {
 
   return (
     <tr>
-      <td>{rental.model}</td>
-      <td>{rental.customer}</td>
-      <td>{rental.dateFrom}</td>
-      <td>{rental.estimatedDate}</td>
+      <td>{rental.car.model}</td>
+      <td>{`${rental.firstName} ${rental.lastName}`}</td>
+      <td><Moment>{rental.dateFrom}</Moment></td>
+      <td><Moment>{rental.estimatedDate}</Moment></td>
       <td>{rental.estimatedDays}</td>
       <td>{rental.estimatedPricePerDay}</td>
       <td>{rental.curDaysRented}</td>
@@ -22,14 +23,24 @@ export default function RentedCarsRow(props) {
 
 RentedCarsRow.propTypes = {
   rental: PropTypes.exact({
-    model: PropTypes.string.isRequired,
-    customer: PropTypes.string.isRequired,
-    dateFrom: PropTypes.string.isRequired,
-    estimatedDate: PropTypes.string.isRequired,
-    estimatedDays: PropTypes.string.isRequired,
-    estimatedPricePerDay: PropTypes.string.isRequired,
-    curDaysRented: PropTypes.string.isRequired,
-    curPricePerDay: PropTypes.string.isRequired,
-    curTotalPrice: PropTypes.string.isRequired,
+    id: PropTypes.number,
+    car: PropTypes.shape({
+      id: PropTypes.number,
+      model: PropTypes.string,
+      picture: PropTypes.string,
+    }),
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    age: PropTypes.number,
+    dateFrom: PropTypes.string,
+    estimatedDate: PropTypes.string,
+
+    returnDate: PropTypes.string,
+    estimatedDays: PropTypes.number,
+    estimatedPricePerDay: PropTypes.number,
+    curDaysRented: PropTypes.number,
+    curPricePerDay: PropTypes.number,
+    curTotalPrice: PropTypes.number,
+    status: PropTypes.oneOf(['open', 'closed']),
   }).isRequired,
 };

@@ -17,10 +17,12 @@ export default function RentedCarsTable(props) {
           <th>Customer</th>
           <th>From</th>
           <th>Estimated Return date</th>
+          <th>Estimated days rented</th>
           <th>Estimated price per day</th>
           <th>Current days rented</th>
           <th>Current price per day</th>
           <th>Current total price</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -30,33 +32,26 @@ export default function RentedCarsTable(props) {
   );
 }
 
-// RentedCarsTable.propTypes = {
-//   rentals: PropTypes.arrayOf(PropTypes.shape({
-//     id: PropTypes.number.isRequired,
-//     estimatedDate: PropTypes.string.isRequired,
-//     firstName: PropTypes.string.isRequired,
-//     lastName: PropTypes.string.isRequired,
-//     age: PropTypes.number.isRequired,
-//     status: PropTypes.oneOf(['open', 'closed']).isRequired,
-//     returnDate: PropTypes.string.isRequired,
-//     car: PropTypes.shape({
-//       id: PropTypes.number.isRequired,
-//       model: PropTypes.string.isRequired,
-//       picture: PropTypes.string.isRequired,
-//     }).isRequired,
-//   })).isRequired,
-// };
-
 RentedCarsTable.propTypes = {
   rentals: PropTypes.arrayOf(PropTypes.shape({
-    model: PropTypes.string.isRequired,
-    customer: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    car: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      model: PropTypes.string.isRequired,
+      picture: PropTypes.string.isRequired,
+    }),
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    age: PropTypes.number.isRequired,
     dateFrom: PropTypes.string.isRequired,
     estimatedDate: PropTypes.string.isRequired,
-    estimatedDays: PropTypes.string.isRequired,
-    estimatedPricePerDay: PropTypes.string.isRequired,
-    curDaysRented: PropTypes.string.isRequired,
-    curPricePerDay: PropTypes.string.isRequired,
-    curTotalPrice: PropTypes.string.isRequired,
-  })),
+
+
+    estimatedDays: PropTypes.number.isRequired,
+    estimatedPricePerDay: PropTypes.number.isRequired,
+    curDaysRented: PropTypes.number.isRequired,
+    curPricePerDay: PropTypes.number.isRequired,
+    curTotalPrice: PropTypes.number.isRequired,
+    status: PropTypes.oneOf(['open', 'closed']).isRequired,
+  })).isRequired,
 };
