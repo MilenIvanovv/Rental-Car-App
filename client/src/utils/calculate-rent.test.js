@@ -67,7 +67,7 @@ describe('calculate applyDaysToPrice', () => {
 
   it('should not change the price if days are less then 2', () => {
     const days = 1;
-    const price = -3;
+    const price = 3;
 
     const result = calucalte.applyDaysToPrice(price, days);
 
