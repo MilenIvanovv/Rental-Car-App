@@ -22,8 +22,6 @@ export const days = (from, to) => {
   const timeInMs = to - from;
   const timeInDays = timeInMs / (1000 * 3600 * 24);
   
-  console.log(timeInMs, timeInDays, Math.ceil(timeInDays));
-
   return Math.ceil(timeInDays);
 } 
 
