@@ -28,12 +28,20 @@ const mapStateToProps = (state) => ({
 
 CheckoutPage.propTypes = {
   cars: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    model: PropTypes.string.isRequired,
-    class: PropTypes.string.isRequired,
-    price: PropTypes.string.isRequired,
+    id: PropTypes.number,
+    model: PropTypes.string,
+    class: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+    }),
     picture: PropTypes.string.isRequired,
-  })).isRequired,
+    status: PropTypes.string.isRequired,
+  })),
+};
+
+CheckoutPage.defaultProps = {
+  cars: null,
 };
 
 export default connect(mapStateToProps)(CheckoutPage);

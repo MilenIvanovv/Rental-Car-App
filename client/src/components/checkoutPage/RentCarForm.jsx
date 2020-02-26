@@ -13,10 +13,10 @@ export default class RentCarForm extends Component {
     super(props);
 
     this.state = {
-      firstName: null,
-      lastName: null,
-      age: null,
-      returnDate: null,
+      firstName: '',
+      lastName: '',
+      age: '',
+      returnDate: '',
       estimations: {},
       redirect: null,
     };
@@ -59,7 +59,7 @@ export default class RentCarForm extends Component {
   estimatePrices() {
     const { age, returnDate } = this.state;
 
-    if (!(age && returnDate)) {
+    if (age === '' || returnDate === '') {
       return;
     }
 

@@ -45,9 +45,10 @@ CarCard.propTypes = {
     class: PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
-      price: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
     }),
     price: PropTypes.string,
     picture: PropTypes.string,
+    status: PropTypes.string.isRequired,
   }).isRequired,
 };
