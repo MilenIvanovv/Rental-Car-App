@@ -1,5 +1,5 @@
 export default [{
-  car: 6,
+  car: 1,
   firstName: 'Bill',
   lastName: 'Gates',
   age: 18,
@@ -9,7 +9,7 @@ export default [{
   dateFrom: 'Mon Feb 23 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
 },
 {
-  car: 7,
+  car: 2,
   firstName: 'Ivan',
   lastName: 'Ivanov',
   age: 30,
@@ -19,7 +19,7 @@ export default [{
   dateFrom: 'Mon Feb 23 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
 },
 {
-  car: 8,
+  car: 3,
   firstName: 'Petar',
   lastName: 'Gerogiev',
   age: 25,
