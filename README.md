@@ -5,7 +5,7 @@ All the cars you need!
 
 ## Setup
 
-1. Be sure to have insalled docker! 
+1. Be sure to have docker insalled! 
 
 If you don't have it, follow the steps <a src="https://docs.docker.com/install/linux/docker-ce/ubuntu/">here</a>   
 Recomended **Install using the repository** guide path
