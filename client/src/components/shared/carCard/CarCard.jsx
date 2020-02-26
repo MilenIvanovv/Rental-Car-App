@@ -33,16 +33,16 @@ export default function CarCard(props) {
   );
 }
 
-// CarCard.propTypes = {
-//   car: PropTypes.exact({
-//     id: PropTypes.number,
-//     model: PropTypes.string,
-//     class: PropTypes.shape({
-//       id: PropTypes.number.isRequired,
-//       name: PropTypes.string.isRequired,
-//       price: PropTypes.string.isRequired,
-//     }),
-//     price: PropTypes.string,
-//     picture: PropTypes.string,
-//   }).isRequired,
-// };
+CarCard.propTypes = {
+  car: PropTypes.exact({
+    id: PropTypes.number,
+    model: PropTypes.string,
+    class: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      price: PropTypes.string.isRequired,
+    }),
+    price: PropTypes.string,
+    picture: PropTypes.string,
+  }).isRequired,
+};

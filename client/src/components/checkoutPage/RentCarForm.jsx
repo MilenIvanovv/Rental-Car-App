@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { API_ROOT } from '../../constants/constants';
+import * as calculate from '../../utils/calculate-rent';
 
 import './checkoutPage.css';
 import CarCard from '../shared/carCard/CarCard';
@@ -12,10 +13,11 @@ export default class RentCarForm extends Component {
     super(props);
 
     this.state = {
-      firstName: '',
-      lastName: '',
-      age: '',
-      returnDate: '',
+      firstName: null,
+      lastName: null,
+      age: null,
+      returnDate: null,
+      estimations: {},
     };
 
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
@@ -41,11 +43,37 @@ export default class RentCarForm extends Component {
     this.setState({
       age: ev.target.value,
     });
+
+    this.estimatePrices();
   }
 
   handleReturnDateChange(ev) {
     this.setState({
       returnDate: ev.target.value,
+    });
+    
+    this.estimatePrices();
+  }
+
+  estimatePrices() {
+    const { age, returnDate } = this.state;
+
+    if (!(age && returnDate)) {
+      return;
+    }
+
+    const { car } = this.props;
+
+    const days = calculate.days(new Date(), new Date(this.state.returnDate));
+    const pricePerDay = calculate.applyAllToPrice(car.class.price, days, this.state.age);
+    const totalPrice = calculate.totalPrice(pricePerDay, days);
+
+    this.setState({
+      estimations: {
+        days,
+        pricePerDay,
+        totalPrice
+      }
     });
   }
 
@@ -58,8 +86,7 @@ export default class RentCarForm extends Component {
       age: this.state.age,
     };
 
-    console.log(this.state.returnDate);
-    const result = await axios.post(`${API_ROOT}/rentals`, {
+    await axios.post(`${API_ROOT}/rentals`, {
       estimatedDate: new Date(this.state.returnDate),
       client,
       carId: car.id,
@@ -74,7 +101,7 @@ export default class RentCarForm extends Component {
       returnDate,
     } = this.state;
 
-    const { estimations, car } = this.props;
+    const { car } = this.props;
 
     return (
       // eslint-disable-next-line react/jsx-fragments
@@ -101,7 +128,7 @@ export default class RentCarForm extends Component {
             </div>
             <div className="form-group">
               <div>Return date</div>
-              <input type="date" min={new Date().toISOString().split("T")[0]} className="form-control" value={returnDate} onChange={this.handleReturnDateChange} />
+              <input type="datetime-local" min={new Date().toISOString().slice(0, 16)} className="form-control" value={returnDate} onChange={this.handleReturnDateChange} />
             </div>
           </form>
         </div>
@@ -112,15 +139,15 @@ export default class RentCarForm extends Component {
               <p className="card-text">
                 Days
                 {' '}
-                <span>{estimations.days}</span>
+                <span>{this.state.estimations.days || 0}</span>
                 <br />
                 Price per day
                 {' '}
-                <span>{estimations.pricePerDay}</span>
+                <span>{this.state.estimations.pricePerDay || 0} $</span>
                 <br />
                 Total
                 {' '}
-                <span>{estimations.totalPrice}</span>
+                <span>{this.state.estimations.totalPrice || 0} $</span>
                 <br />
               </p>
               <button type="button" className="btn btn-primary" onClick={this.confirmHanlder}>
@@ -140,15 +167,9 @@ export default class RentCarForm extends Component {
 }
 
 // RentCarForm.propTypes = {
-//   submitForm: PropTypes.bool,
-//   onSubmit: PropTypes.func.isRequired,
 //   estimations: PropTypes.shape({
 //     days: PropTypes.number.isRequired,
 //     pricePerDay: PropTypes.number.isRequired,
 //     totalPrice: PropTypes.number.isRequired,
 //   }).isRequired,
-// };
-
-// RentCarForm.defaultProps = {
-//   submitForm: false,
 // };
