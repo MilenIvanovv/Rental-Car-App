@@ -7,7 +7,7 @@ import './carCard.css';
 export default function CarCard(props) {
   const match = useRouteMatch();
 
-  const { car } = props;
+  const { car, noButton } = props;
 
   return (
     <div className="col-4 mb-2">
@@ -27,6 +27,11 @@ export default function CarCard(props) {
             <span>{car.price}</span>
             <br />
           </p>
+          {noButton
+            ? ''
+            : <Link to={`${match.url}/${car.id}`} className="btn btn-primary">
+                Checkout
+              </Link>}
         </div>
       </div>
     </div>

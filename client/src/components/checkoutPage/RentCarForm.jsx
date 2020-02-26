@@ -120,7 +120,7 @@ export default class RentCarForm extends Component {
       <Fragment>
         <div className="col-4">
           <h4>Car</h4>
-          <CarCard car={car} />
+          <CarCard car={car} noButton={true}/>
         </div>
         <div className="col-4">
           <h4>Booking</h4>
