@@ -7,7 +7,13 @@ import './RentedCarsTable.css';
 export default function RentedCarsTable(props) {
   const { rentals, returnCar } = props;
   const elements = rentals
-    .map((rental) => <RentedCarsRow key={rental.car.model} rental={rental} returnCar={returnCar} />);
+    .map((rental) => (
+      <RentedCarsRow
+        key={rental.car.model}
+        rental={rental}
+        returnCar={returnCar}
+      />
+    ));
 
   return (
     <table className="table">

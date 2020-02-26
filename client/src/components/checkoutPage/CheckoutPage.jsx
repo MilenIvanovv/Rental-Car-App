@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import RentCarForm from './RentCarForm';
 import axios from 'axios';
+import RentCarForm from './RentCarForm';
 import { API_ROOT } from '../../constants/constants';
 
 function CheckoutPage(props) {
@@ -20,12 +20,12 @@ function CheckoutPage(props) {
         .then((data) => {
           setCarToRent(data.data);
         })
-        .catch((er) =>  setRedirect('/not-found'));
+        .catch(() => setRedirect('/not-found'));
     }
   }, []);
 
   if (redirect) {
-    return <Redirect to={redirect}/>
+    return <Redirect to={redirect} />;
   }
 
   return (

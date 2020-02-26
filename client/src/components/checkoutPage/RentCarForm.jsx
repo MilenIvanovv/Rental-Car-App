@@ -52,7 +52,7 @@ export default class RentCarForm extends Component {
     this.setState({
       returnDate: ev.target.value,
     });
-    
+
     this.estimatePrices();
   }
 
@@ -65,52 +65,53 @@ export default class RentCarForm extends Component {
 
     const { car } = this.props;
 
-    const days = calculate.days(new Date(), new Date(this.state.returnDate));
-    const pricePerDay = calculate.applyAllToPrice(car.class.price, days, this.state.age);
+    const days = calculate.days(new Date(), new Date(returnDate));
+    const pricePerDay = calculate.applyAllToPrice(car.class.price, days, age);
     const totalPrice = calculate.totalPrice(pricePerDay, days);
 
     this.setState({
       estimations: {
         days,
         pricePerDay,
-        totalPrice
-      }
+        totalPrice,
+      },
     });
   }
 
   async confirmHanlder() {
     const { car } = this.props;
+    const {
+      firstName, lastName, age, returnDate,
+    } = this.state;
 
     const client = {
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      age: this.state.age,
+      firstName, lastName, age,
     };
 
     try {
       await axios.post(`${API_ROOT}/rentals`, {
-        estimatedDate: new Date(this.state.returnDate),
+        estimatedDate: new Date(returnDate),
         client,
         carId: car.id,
       });
     } catch (error) {
-      
+      console.log(error);
     }
-    this.setState({ redirect: '/current-rentals'});
+    this.setState({ redirect: '/current-rentals' });
   }
 
   render() {
-
     const {
       firstName,
       lastName,
       age,
       returnDate,
       redirect,
+      estimations,
     } = this.state;
 
     if (redirect) {
-      return <Redirect to={redirect} />
+      return <Redirect to={redirect} />;
     }
 
     const { car } = this.props;
@@ -120,7 +121,7 @@ export default class RentCarForm extends Component {
       <Fragment>
         <div className="col-4">
           <h4>Car</h4>
-          <CarCard car={car} noButton={true}/>
+          <CarCard car={car} noButton />
         </div>
         <div className="col-4">
           <h4>Booking</h4>
@@ -151,15 +152,23 @@ export default class RentCarForm extends Component {
               <p className="card-text">
                 Days
                 {' '}
-                <span>{this.state.estimations.days || 0}</span>
+                <span>{estimations.days || 0}</span>
                 <br />
                 Price per day
                 {' '}
-                <span>{this.state.estimations.pricePerDay || 0} $</span>
+                <span>
+                  {estimations.pricePerDay || 0}
+                  {' '}
+                  $
+                </span>
                 <br />
                 Total
                 {' '}
-                <span>{this.state.estimations.totalPrice || 0} $</span>
+                <span>
+                  {estimations.totalPrice || 0}
+                  {' '}
+                  $
+                </span>
                 <br />
               </p>
               <button type="button" className="btn btn-primary" onClick={this.confirmHanlder}>
@@ -179,9 +188,15 @@ export default class RentCarForm extends Component {
 }
 
 RentCarForm.propTypes = {
-  estimations: PropTypes.shape({
-    days: PropTypes.number.isRequired,
-    pricePerDay: PropTypes.number.isRequired,
-    totalPrice: PropTypes.number.isRequired,
+  car: PropTypes.shape({
+    id: PropTypes.number,
+    model: PropTypes.string,
+    class: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+    }),
+    picture: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
   }).isRequired,
 };

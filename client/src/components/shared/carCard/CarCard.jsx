@@ -29,9 +29,11 @@ export default function CarCard(props) {
           </p>
           {noButton
             ? ''
-            : <Link to={`${match.url}/${car.id}`} className="btn btn-primary">
+            : (
+              <Link to={`${match.url}/${car.id}`} className="btn btn-primary">
                 Checkout
-              </Link>}
+              </Link>
+            )}
         </div>
       </div>
     </div>
@@ -50,6 +52,7 @@ CarCard.propTypes = {
     picture: PropTypes.string,
     status: PropTypes.string,
   }),
+  noButton: PropTypes.bool,
 };
 
 CarCard.defaultProps = {
@@ -63,5 +66,6 @@ CarCard.defaultProps = {
     },
     picture: '',
     status: '',
-  }
+  },
+  noButton: false,
 };
