@@ -178,10 +178,10 @@ export default class RentCarForm extends Component {
   }
 }
 
-// RentCarForm.propTypes = {
-//   estimations: PropTypes.shape({
-//     days: PropTypes.number.isRequired,
-//     pricePerDay: PropTypes.number.isRequired,
-//     totalPrice: PropTypes.number.isRequired,
-//   }).isRequired,
-// };
+RentCarForm.propTypes = {
+  estimations: PropTypes.shape({
+    days: PropTypes.number.isRequired,
+    pricePerDay: PropTypes.number.isRequired,
+    totalPrice: PropTypes.number.isRequired,
+  }).isRequired,
+};
