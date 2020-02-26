@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Car } from '../database/entities/cars.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,6 +10,16 @@ export class CarsService {
   ) { }
 
   async getCars(): Promise<Car[]> {
-    return this.carsRepository.find({ relations: ['class']});;
+    return await this.carsRepository.find({ relations: ['class']});;
+  }
+
+  async getCar(carId: number): Promise<Car> {
+    const car = await this.carsRepository.findOne({ where: { id: carId }, relations: ['class']});
+
+    if (!car) {
+      throw new NotFoundException(`Car with id ${carId} not found`);
+    }
+
+    return car;
   }
 }
