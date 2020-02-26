@@ -43,8 +43,14 @@ export class RentalsService {
       throw new NotFoundException(`Contract with id ${rentalId} not found`);
     }
 
+    if (rental.status === RentalStatus.returned) {
+      throw new BadRequestException(`Contract with id ${rentalId} is closed`);
+    }
+
     rental.status = RentalStatus.returned;
-    rental.car.status = CarStatus.listed;
+    rental.car.status = CarStatus.listed
+
+    await this.carRepository.save(rental.car);
 
     return await this.rentalsRepository.save(rental);
   }
