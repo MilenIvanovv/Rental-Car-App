@@ -24,7 +24,7 @@ export default function CarCard(props) {
             <span>{car.class.name}</span>
             <br />
             Price per day
-            <span>{car.price}</span>
+            <span>{car.class.price}</span>
             <br />
           </p>
           {noButton
@@ -43,12 +43,25 @@ CarCard.propTypes = {
     id: PropTypes.number,
     model: PropTypes.string,
     class: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
+      id: PropTypes.number,
+      name: PropTypes.string,
+      price: PropTypes.number,
     }),
-    price: PropTypes.string,
     picture: PropTypes.string,
-    status: PropTypes.string.isRequired,
-  }).isRequired,
+    status: PropTypes.string,
+  }),
+};
+
+CarCard.defaultProps = {
+  car: {
+    id: 0,
+    model: '',
+    class: {
+      id: 0,
+      name: '',
+      price: 0,
+    },
+    picture: '',
+    status: '',
+  }
 };

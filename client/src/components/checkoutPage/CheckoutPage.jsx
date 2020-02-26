@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import RentCarForm from './RentCarForm';
+import axios from 'axios';
+import { API_ROOT } from '../../constants/constants';
 
 function CheckoutPage(props) {
   const { cars } = props;
   const { carId } = useParams();
+  const [redirect, setRedirect] = useState();
+  const [carToRent, setCarToRent] = useState();
 
-  const carToRent = cars.find((car) => +car.id === +carId);
+  useEffect(() => {
+    setCarToRent(cars.find((car) => +car.id === +carId));
+
+    if (!carToRent) {
+      axios.get(`${API_ROOT}/cars/${carId}`)
+        .then((data) => {
+          setCarToRent(data.data);
+        })
+        .catch((er) =>  setRedirect('/not-found'));
+    }
+  }, []);
+
+  if (redirect) {
+    return <Redirect to={redirect}/>
+  }
 
   return (
     <div>
