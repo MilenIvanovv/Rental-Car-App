@@ -33,12 +33,13 @@ class CarsPage extends Component {
   render() {
     const { cars } = this.props;
     const { filter } = this.state;
-    const filteredCars = cars.filter((car) => car.model.includes(filter));
+    const filteredByStatus = cars.filter((car) => car.status === 'listed');
+    const filteredByModel = filteredByStatus.filter((car) => car.model.includes(filter));
 
     return (
       <div className="container">
         <SearchBar onSearch={this.searchHandler} />
-        <CarsList cars={filteredCars} />
+        <CarsList cars={filteredByModel} />
       </div>
     );
   }

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { API_ROOT } from '../../constants/constants';
@@ -18,6 +18,7 @@ export default class RentCarForm extends Component {
       age: null,
       returnDate: null,
       estimations: {},
+      redirect: null,
     };
 
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
@@ -86,20 +87,31 @@ export default class RentCarForm extends Component {
       age: this.state.age,
     };
 
-    await axios.post(`${API_ROOT}/rentals`, {
-      estimatedDate: new Date(this.state.returnDate),
-      client,
-      carId: car.id,
-    });
+    try {
+      await axios.post(`${API_ROOT}/rentals`, {
+        estimatedDate: new Date(this.state.returnDate),
+        client,
+        carId: car.id,
+      });
+    } catch (error) {
+      
+    }
+    this.setState({ redirect: '/current-rentals'});
   }
 
   render() {
+
     const {
       firstName,
       lastName,
       age,
       returnDate,
+      redirect,
     } = this.state;
+
+    if (redirect) {
+      return <Redirect to={redirect} />
+    }
 
     const { car } = this.props;
 
