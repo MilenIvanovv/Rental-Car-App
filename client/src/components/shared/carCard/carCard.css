@@ -1,0 +1,8 @@
+.align-card-text .card-text{
+  display: flex;
+}
+
+.align-card-text .card-text p {
+  display: flex;
+  flex-direction: column;
+}

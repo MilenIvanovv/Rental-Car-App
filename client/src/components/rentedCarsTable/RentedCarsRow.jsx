@@ -10,13 +10,22 @@ export default function RentedCarsRow(props) {
     <tr>
       <td>{rental.car.model}</td>
       <td>{`${rental.firstName} ${rental.lastName}`}</td>
-      <td><Moment>{rental.dateFrom}</Moment></td>
-      <td><Moment>{rental.estimatedDate}</Moment></td>
+      <td><Moment format="YYYY/MM/DD HH:mm">{rental.dateFrom}</Moment></td>
+      <td><Moment format="YYYY/MM/DD HH:mm">{rental.estimatedDate}</Moment></td>
       <td>{rental.estimatedDays}</td>
-      <td>{rental.estimatedPricePerDay}</td>
+      <td>
+        {rental.estimatedPricePerDay}
+        {' $'}
+      </td>
       <td>{rental.curDaysRented}</td>
-      <td>{rental.curPricePerDay}</td>
-      <td>{rental.curTotalPrice}</td>
+      <td>
+        {rental.curPricePerDay}
+        {' $'}
+      </td>
+      <td>
+        {rental.curTotalPrice}
+        {' $'}
+      </td>
       <td><button type="button" onClick={(ev) => props.returnCar(ev, rental.id)}>Return car</button></td>
     </tr>
   );

@@ -15,25 +15,32 @@ export default function CarCard(props) {
         <Link to={`${match.url}/${car.id}`}>
           <img src={car.picture} className="card-img-top" alt="..." />
         </Link>
-        <div className="card-body">
-          <p className="card-text">
-            Model
-            <span><b>{car.model}</b></span>
-            <br />
-            Class
-            <span>{car.class.name}</span>
-            <br />
-            Price per day
-            <span>{car.class.price}</span>
-            <br />
-          </p>
-          {noButton
-            ? ''
-            : (
-              <Link to={`${match.url}/${car.id}`} className="btn btn-primary">
-                Checkout
-              </Link>
-            )}
+        <div className="card-body align-card-text">
+          <div className="card-text">
+            <p className="w-50">
+              <span>Model</span>
+              <span>Class</span>
+              <span>Price per day</span>
+            </p>
+            <p>
+              <span><b>{car.model}</b></span>
+              <span>{car.class.name}</span>
+              <span>
+                {car.class.price}
+                {' $'}
+              </span>
+            </p>
+          </div>
+          <div className="d-flex justify-content-center">
+            {noButton
+              ? ''
+              : (
+                <Link to={`${match.url}/${car.id}`} className="btn btn-primary">
+                  Checkout
+                </Link>
+              )}
+          </div>
+
         </div>
       </div>
     </div>
