@@ -148,37 +148,35 @@ export default class RentCarForm extends Component {
         <div className="col-4">
           <h4>Estimated Price</h4>
           <div className="card" style={{ width: '18rem' }}>
-            <div className="card-body">
-              <p className="card-text">
-                Days
-                {' '}
-                <span>{estimations.days || 0}</span>
-                <br />
-                Price per day
-                {' '}
-                <span>
-                  {estimations.pricePerDay || 0}
-                  {' '}
-                  $
-                </span>
-                <br />
-                Total
-                {' '}
-                <span>
-                  {estimations.totalPrice || 0}
-                  {' '}
-                  $
-                </span>
-                <br />
-              </p>
-              <button type="button" className="btn btn-primary" onClick={this.confirmHanlder}>
-                Confirm
-              </button>
-              <Link to="/cars">
-                <button type="button" className="btn btn-primary">
-                  Cencel
+            <div className="card-body align-card-text">
+              <div className="card-text">
+                <p className="w-50">
+                  <span>Days</span>
+                  <span>Price per day</span>
+                  <span>Total</span>
+                </p>
+                <p>
+                  <span>{estimations.days || 0}</span>
+                  <span>
+                    {estimations.pricePerDay || 0}
+                    {' $'}
+                  </span>
+                  <span>
+                    {estimations.totalPrice || 0}
+                    {' $'}
+                  </span>
+                </p>
+              </div>
+              <div className="d-flex justify-content-around">
+                <button type="button" className="btn btn-primary" onClick={this.confirmHanlder}>
+                  Confirm
                 </button>
-              </Link>
+                <Link to="/cars">
+                  <button type="button" className="btn btn-primary">
+                    Cencel
+                  </button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
