@@ -58,10 +58,33 @@ export const applyAgeToPrice = (price, age) => {
 };
 
 export const applyPenaltyDays = (price, penaltyDays) => {
+  if (price <= 0) {
+    throw new Error('Invalid price');
+  }
 
-}
+  if (penaltyDays <= 0) {
+    throw new Error('Invalid penalty days');
+  }
 
-export const applyAllToPrice = (price, daysRented, age) => {
-  const tempPrice = applyDaysToPrice(price, daysRented);
+  let newPrice;
+
+  if (penaltyDays <= 2) {
+    newPrice = (price + ((price * 20) / 100));
+  } else if (penaltyDays < 6) {
+    newPrice = (price + ((price * 50) / 100));
+  } else if (penaltyDays >= 6) {
+    newPrice = (price + ((price * 100) / 100));
+  }
+
+  return Math.floor(newPrice * 100) / 100;
+};
+
+export const applyAllToPrice = (price, daysRented, age, penaltyDays) => {
+  let tempPrice = applyDaysToPrice(price, daysRented);
+
+  if (penaltyDays && penaltyDays > 0) {
+    tempPrice = applyPenaltyDays(tempPrice, penaltyDays);
+  }
+
   return applyAgeToPrice(tempPrice, age);
 };

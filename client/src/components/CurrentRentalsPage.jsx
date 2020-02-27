@@ -40,6 +40,7 @@ class CurrentRentals extends Component {
       const transformed = JSON.parse(JSON.stringify(rental));
       const rentedDate = new Date(rental.dateFrom);
       const estimatedDate = new Date(rental.estimatedDate);
+      const today = new Date();
       const pricePerDay = transformed.car.class.price;
       const { age } = transformed;
 
@@ -48,8 +49,9 @@ class CurrentRentals extends Component {
       transformed.estimatedPricePerDay = calucalte.applyAllToPrice(pricePerDay, transformed.estimatedDays, age);
 
       // Client real current prices
-      transformed.curDaysRented = calucalte.days(rentedDate, new Date());
-      transformed.curPricePerDay = calucalte.applyAllToPrice(pricePerDay, transformed.curDaysRented, age);
+      const penaltyDays = calucalte.days(estimatedDate, rentedDate);
+      transformed.curDaysRented = calucalte.days(rentedDate, today);
+      transformed.curPricePerDay = calucalte.applyAllToPrice(pricePerDay, transformed.curDaysRented, age, penaltyDays);
 
       transformed.curTotalPrice = calucalte.totalPrice(transformed.curPricePerDay, transformed.curDaysRented);
 

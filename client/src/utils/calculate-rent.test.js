@@ -154,7 +154,7 @@ describe('calculate applyPenaltyDays', () => {
   });
 
   it('should increase if penalty days is >= 6 with 100%', () => {
-    const penaltyDays = 3;
+    const penaltyDays = 7;
     const price = 100;
 
     const result = calucalte.applyPenaltyDays(price, penaltyDays);
