@@ -44,13 +44,6 @@ describe('calculate days', () => {
 });
 
 describe('calculate applyDaysToPrice', () => {
-  it('should throw if price is 0', () => {
-    const days = 1;
-    const price = 0;
-
-    expect(() => calucalte.applyDaysToPrice(price, days)).toThrow();
-  });
-
   it('should throw if price is negative', () => {
     const days = 1;
     const price = -3;
