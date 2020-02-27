@@ -13,7 +13,7 @@ export const days = (from, to) => {
   return Math.ceil(timeInDays);
 };
 
-export const totalPrice = (price, daysRented) => price * daysRented;
+export const totalPrice = (price, daysRented) => Math.floor(price * daysRented * 100) / 100;
 
 export const applyDaysToPrice = (price, daysRented) => {
   if (price < 0) {

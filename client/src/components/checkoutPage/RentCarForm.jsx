@@ -17,6 +17,8 @@ export default class RentCarForm extends Component {
       lastName: '',
       age: '',
       returnDate: '',
+      errors: {},
+      formIsValid: true,
       estimations: {},
       redirect: null,
     };
@@ -28,32 +30,66 @@ export default class RentCarForm extends Component {
     this.confirmHanlder = this.confirmHanlder.bind(this);
   }
 
+
   handleFirstNameChange(ev) {
     this.setState({
       firstName: ev.target.value,
-    });
+    }, this.handleValidation);
   }
 
   handleLasttNameChange(ev) {
     this.setState({
       lastName: ev.target.value,
-    });
+    }, this.handleValidation);
   }
 
   handleAgeChange(ev) {
     this.setState({
       age: ev.target.value,
+    }, () => {
+      this.estimatePrices();
+      this.handleValidation();
     });
-
-    this.estimatePrices();
   }
 
   handleReturnDateChange(ev) {
     this.setState({
       returnDate: ev.target.value,
+    }, () => {
+      this.estimatePrices();
+      this.handleValidation();
     });
+  }
 
-    this.estimatePrices();
+  handleValidation() {
+    const {
+      firstName, lastName, age, returnDate,
+    } = this.state;
+    const errors = {};
+
+    let formIsValid = true;
+
+    if (firstName === '') {
+      formIsValid = false;
+      errors.firstName = 'Cannot be empty';
+    }
+
+    if (lastName === '') {
+      formIsValid = false;
+      errors.lastName = 'Cannot be empty';
+    }
+
+    if (age === '') {
+      formIsValid = false;
+      errors.age = 'Cannot be empty';
+    }
+
+    if (returnDate === '') {
+      formIsValid = false;
+      errors.returnDate = 'Cannot be empty';
+    }
+
+    this.setState({ errors, formIsValid });
   }
 
   estimatePrices() {
@@ -108,6 +144,8 @@ export default class RentCarForm extends Component {
       returnDate,
       redirect,
       estimations,
+      formIsValid,
+      errors,
     } = this.state;
 
     if (redirect) {
@@ -128,20 +166,33 @@ export default class RentCarForm extends Component {
           <form>
             <div className="form-group">
               <div>First name</div>
-              <input type="email" className="form-control" value={firstName} onChange={this.handleFirstNameChange} />
+              <input type="text" className={!formIsValid && errors.firstName ? 'form-control is-invalid' : 'form-control'} value={firstName} onChange={this.handleFirstNameChange} />
               <small id="emailHelp" className="form-text text-muted">We&apos;ll never share your email with anyone else.</small>
+
+              {errors.firstName && (
+                <small id="emailHelp" className="form-text text-muted">
+                  First name
+                  {errors.firstName}
+                </small>
+              )}
             </div>
             <div className="form-group">
               <div>Last name</div>
-              <input type="text" className="form-control" value={lastName} onChange={this.handleLasttNameChange} />
+              <input type="text" className={!formIsValid && errors.lastName ? 'form-control is-invalid' : 'form-control'} value={lastName} onChange={this.handleLasttNameChange} />
+              {errors.lastName && (
+                <small id="emailHelp" className="form-text text-muted">
+                  Last name
+                  {errors.lastName}
+                </small>
+              )}
             </div>
             <div className="form-group">
               <div>Age</div>
-              <input type="number" min="18" className="form-control" value={age} onChange={this.handleAgeChange} />
+              <input type="number" min="18" className={!formIsValid && errors.age ? 'form-control is-invalid' : 'form-control'} value={age} onChange={this.handleAgeChange} />
             </div>
             <div className="form-group">
               <div>Return date</div>
-              <input type="datetime-local" min={new Date().toISOString().slice(0, 16)} className="form-control" value={returnDate} onChange={this.handleReturnDateChange} />
+              <input type="datetime-local" min={new Date().toISOString().slice(0, 16)} className={!formIsValid && errors.returnDate ? 'form-control is-invalid' : 'form-control'} value={returnDate} onChange={this.handleReturnDateChange} />
             </div>
           </form>
         </div>
@@ -168,7 +219,7 @@ export default class RentCarForm extends Component {
                 </p>
               </div>
               <div className="d-flex justify-content-around">
-                <button type="button" className="btn btn-primary" onClick={this.confirmHanlder}>
+                <button type="button" className="btn btn-primary" disabled={!formIsValid} onClick={this.confirmHanlder}>
                   Confirm
                 </button>
                 <Link to="/cars">
@@ -196,5 +247,19 @@ RentCarForm.propTypes = {
     }),
     picture: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
+};
+
+RentCarForm.defaultProps = {
+  car: {
+    id: 0,
+    model: '',
+    class: {
+      id: 0,
+      name: '',
+      price: 0,
+    },
+    picture: '',
+    status: '',
+  },
 };
