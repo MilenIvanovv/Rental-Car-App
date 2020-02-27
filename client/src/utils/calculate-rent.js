@@ -57,6 +57,10 @@ export const applyAgeToPrice = (price, age) => {
   return Math.floor(newPrice * 100) / 100;
 };
 
+export const applyPenaltyDays = (price, penaltyDays) => {
+
+}
+
 export const applyAllToPrice = (price, daysRented, age) => {
   const tempPrice = applyDaysToPrice(price, daysRented);
   return applyAgeToPrice(tempPrice, age);
