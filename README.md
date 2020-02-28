@@ -27,7 +27,7 @@ Recomended **Install using the repository** guide path
     DB_DATABASE_NAME = postgres   
 
 3. Create file with exact name **ormconfig.json** in **/server** diretory and copy the text below.
-  (for connecting to the database only for running migrations)
+  (for connecting to the database only for running migrations and seed)
 ```json
 {
   "type": "postgres",
