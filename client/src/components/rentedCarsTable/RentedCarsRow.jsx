@@ -8,7 +8,7 @@ export default function RentedCarsRow(props) {
 
   return (
     <tr>
-      <td>{rental.car.model}</td>
+      <td data="current_rentals_model">{rental.car.model}</td>
       <td>{`${rental.firstName} ${rental.lastName}`}</td>
       <td><Moment format="YYYY/MM/DD HH:mm">{rental.dateFrom}</Moment></td>
       <td><Moment format="YYYY/MM/DD HH:mm">{rental.estimatedDate}</Moment></td>

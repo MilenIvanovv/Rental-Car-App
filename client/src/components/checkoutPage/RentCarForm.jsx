@@ -166,7 +166,13 @@ export default class RentCarForm extends Component {
           <form>
             <div className="form-group">
               <div>First name</div>
-              <input type="text" className={!formIsValid && errors.firstName ? 'form-control is-invalid' : 'form-control'} value={firstName} onChange={this.handleFirstNameChange} />
+              <input
+                type="text"
+                name="firstName"
+                className={!formIsValid && errors.firstName ? 'form-control is-invalid' : 'form-control'}
+                value={firstName}
+                onChange={this.handleFirstNameChange}
+              />
               <small id="emailHelp" className="form-text text-muted">We&apos;ll never share your email with anyone else.</small>
 
               {errors.firstName && (
@@ -178,7 +184,13 @@ export default class RentCarForm extends Component {
             </div>
             <div className="form-group">
               <div>Last name</div>
-              <input type="text" className={!formIsValid && errors.lastName ? 'form-control is-invalid' : 'form-control'} value={lastName} onChange={this.handleLasttNameChange} />
+              <input
+                type="text"
+                name="lastName"
+                className={!formIsValid && errors.lastName ? 'form-control is-invalid' : 'form-control'}
+                value={lastName}
+                onChange={this.handleLasttNameChange}
+              />
               {errors.lastName && (
                 <small id="emailHelp" className="form-text text-muted">
                   Last name
@@ -188,11 +200,25 @@ export default class RentCarForm extends Component {
             </div>
             <div className="form-group">
               <div>Age</div>
-              <input type="number" min="18" className={!formIsValid && errors.age ? 'form-control is-invalid' : 'form-control'} value={age} onChange={this.handleAgeChange} />
+              <input
+                type="number"
+                min="18"
+                name="age"
+                className={!formIsValid && errors.age ? 'form-control is-invalid' : 'form-control'}
+                value={age}
+                onChange={this.handleAgeChange}
+              />
             </div>
             <div className="form-group">
               <div>Return date</div>
-              <input type="datetime-local" min={new Date().toISOString().slice(0, 16)} className={!formIsValid && errors.returnDate ? 'form-control is-invalid' : 'form-control'} value={returnDate} onChange={this.handleReturnDateChange} />
+              <input
+                type="date"
+                min={new Date().toISOString().slice(0, 16)}
+                name="date"
+                className={!formIsValid && errors.returnDate ? 'form-control is-invalid' : 'form-control'}
+                value={returnDate}
+                onChange={this.handleReturnDateChange}
+              />
             </div>
           </form>
         </div>
@@ -219,7 +245,7 @@ export default class RentCarForm extends Component {
                 </p>
               </div>
               <div className="d-flex justify-content-around">
-                <button type="button" className="btn btn-primary" disabled={!formIsValid} onClick={this.confirmHanlder}>
+                <button name="confirm" type="button" className="btn btn-primary" disabled={!formIsValid} onClick={this.confirmHanlder}>
                   Confirm
                 </button>
                 <Link to="/cars">

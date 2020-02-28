@@ -17,7 +17,7 @@ export default function Navigation() {
             </Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/cars">
+            <Link className="nav-link" to="/cars" data="cars_link">
               Cars
             </Link>
           </li>

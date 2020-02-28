@@ -6,7 +6,7 @@ export default function CarsList(props) {
   const { cars } = props;
   const carElements = cars.map((car) => <CarCard key={car.model} car={car} />);
   return (
-    <div className="row">
+    <div className="row" id="car-list">
       {carElements}
     </div>
   );

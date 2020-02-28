@@ -23,7 +23,7 @@ export default function CarCard(props) {
               <span>Price per day</span>
             </p>
             <p>
-              <span><b>{car.model}</b></span>
+              <span><b data="model">{car.model}</b></span>
               <span>{car.class.name}</span>
               <span>
                 {car.class.price}
@@ -35,7 +35,7 @@ export default function CarCard(props) {
             {noButton
               ? ''
               : (
-                <Link to={`${match.url}/${car.id}`} className="btn btn-primary">
+                <Link to={`${match.url}/${car.id}`} className="btn btn-primary" data="card_checkout">
                   Checkout
                 </Link>
               )}
