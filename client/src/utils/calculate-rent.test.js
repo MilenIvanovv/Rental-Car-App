@@ -120,35 +120,35 @@ describe('calculate applyAgeToPrice', () => {
   });
 });
 
-describe('calculate applyPenaltyDays', () => {
+describe('calculate penalty', () => {
   it('should throw if penalty days is nagavite', () => {
     const penaltyDays = -3;
     const price = 100;
 
-    expect(() => calucalte.applyPenaltyDays(price, penaltyDays)).toThrow();
+    expect(() => calucalte.penalty(price, penaltyDays)).toThrow();
   });
 
   it('should throw if price is nagavite', () => {
     const penaltyDays = 3;
     const price = -100;
 
-    expect(() => calucalte.applyPenaltyDays(price, penaltyDays)).toThrow();
+    expect(() => calucalte.penalty(price, penaltyDays)).toThrow();
   });
 
   it('should increase if penalty days is 1 or 2 with 20%', () => {
     const penaltyDays = 2;
     const price = 100;
 
-    const result = calucalte.applyPenaltyDays(price, penaltyDays);
+    const result = calucalte.penalty(price, penaltyDays);
 
-    expect(result).toEqual(120);
+    expect(result).toEqual(40);
   });
 
   it('should increase if penalty days is between 2 and 6 with 50%', () => {
     const penaltyDays = 3;
     const price = 100;
 
-    const result = calucalte.applyPenaltyDays(price, penaltyDays);
+    const result = calucalte.penalty(price, penaltyDays);
 
     expect(result).toEqual(150);
   });
@@ -157,9 +157,9 @@ describe('calculate applyPenaltyDays', () => {
     const penaltyDays = 7;
     const price = 100;
 
-    const result = calucalte.applyPenaltyDays(price, penaltyDays);
+    const result = calucalte.penalty(price, penaltyDays);
 
-    expect(result).toEqual(200);
+    expect(result).toEqual(700);
   });
 });
 
