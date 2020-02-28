@@ -48,7 +48,8 @@ export class RentalsService {
     }
 
     rental.status = RentalStatus.returned;
-    rental.car.status = CarStatus.listed
+    rental.car.status = CarStatus.listed;
+    rental.returnDate = new Date().toString();
 
     await this.carRepository.save(rental.car);
 
