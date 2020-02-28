@@ -22,7 +22,7 @@ export default function RentedCarsRow(props) {
         {rental.curPricePerDay}
         {' $'}
       </td>
-      <td>
+      <td className={rental.hasPenalty ? 'red-penalty' : ''}>
         {rental.curTotalPrice}
         {' $'}
       </td>
@@ -52,6 +52,7 @@ RentedCarsRow.propTypes = {
     curPricePerDay: PropTypes.number,
     curTotalPrice: PropTypes.number,
     status: PropTypes.oneOf(['open', 'returned']),
+    hasPenalty: PropTypes.bool,
   }).isRequired,
 
   returnCar: PropTypes.func.isRequired,

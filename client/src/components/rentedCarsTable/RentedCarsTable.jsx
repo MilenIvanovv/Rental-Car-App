@@ -51,8 +51,6 @@ RentedCarsTable.propTypes = {
     age: PropTypes.number.isRequired,
     dateFrom: PropTypes.string.isRequired,
     estimatedDate: PropTypes.string.isRequired,
-
-
     estimatedDays: PropTypes.number.isRequired,
     estimatedPricePerDay: PropTypes.number.isRequired,
     curDaysRented: PropTypes.number.isRequired,

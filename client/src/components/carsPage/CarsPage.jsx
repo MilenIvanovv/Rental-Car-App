@@ -21,7 +21,12 @@ class CarsPage extends Component {
   async componentDidMount() {
     const { setCars: dispatchSetCars } = this.props;
 
-    const cars = await axios.get(`${API_ROOT}/cars`);
+    let cars;
+    try {
+      cars = await axios.get(`${API_ROOT}/cars`);
+    } catch (error) {
+      console.log(error);
+    }
     dispatchSetCars(cars.data);
   }
 

@@ -213,7 +213,7 @@ export default class RentCarForm extends Component {
               <div>Return date</div>
               <input
                 type="date"
-                min={new Date().toISOString().slice(0, 16)}
+                min={new Date().toISOString().split('T')[0]}
                 name="date"
                 className={!formIsValid && errors.returnDate ? 'form-control is-invalid' : 'form-control'}
                 value={returnDate}

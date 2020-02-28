@@ -49,11 +49,17 @@ class CurrentRentals extends Component {
       transformed.estimatedPricePerDay = calucalte.applyAllToPrice(pricePerDay, transformed.estimatedDays, age);
 
       // Client real current prices
-      const penaltyDays = calucalte.days(estimatedDate, rentedDate);
+      const penaltyDays = calucalte.days(estimatedDate, today);
       transformed.curDaysRented = calucalte.days(rentedDate, today);
-      transformed.curPricePerDay = calucalte.applyAllToPrice(pricePerDay, transformed.curDaysRented, age, penaltyDays);
+      transformed.curPricePerDay = calucalte.applyAllToPrice(pricePerDay, transformed.curDaysRented, age);
 
-      transformed.curTotalPrice = calucalte.totalPrice(transformed.curPricePerDay, transformed.curDaysRented);
+      let penalty = 0;
+      if (penaltyDays > 0) {
+        penalty = calucalte.penalty(pricePerDay, penaltyDays);
+        transformed.hasPenalty = true;
+      }
+
+      transformed.curTotalPrice = calucalte.totalPrice(transformed.curPricePerDay, transformed.curDaysRented) + penalty;
 
       return transformed;
     });
@@ -89,6 +95,7 @@ CurrentRentals.propTypes = {
     returnDate: PropTypes.string.isRequired,
     dateFrom: PropTypes.string.isRequired,
     status: PropTypes.oneOf(['open', 'returned']).isRequired,
+    hasPenalty: PropTypes.bool,
   })).isRequired,
 
   setRentals: PropTypes.func.isRequired,
