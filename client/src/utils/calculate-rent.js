@@ -80,11 +80,13 @@ export const applyPenaltyDays = (price, penaltyDays) => {
 };
 
 export const applyAllToPrice = (price, daysRented, age, penaltyDays) => {
-  let tempPrice = applyDaysToPrice(price, daysRented);
+  const changeFromDays = applyDaysToPrice(price, daysRented) - price;
+  const changeFromAge = applyAgeToPrice(price, age) - price;
 
+  let changeFromPenaltyDays = 0;
   if (penaltyDays && penaltyDays > 0) {
-    tempPrice = applyPenaltyDays(tempPrice, penaltyDays);
+    changeFromPenaltyDays = applyPenaltyDays(price, penaltyDays) - price;
   }
 
-  return applyAgeToPrice(tempPrice, age);
+  return (price + changeFromDays + changeFromAge + changeFromPenaltyDays);
 };
