@@ -64,10 +64,10 @@ Recomended **Install using the repository** guide path
 
 ## Running the app
 
-### You can skip the steps bellow  the **setup-project.sh** script;
+### You can skip the steps bellow  the **start.sh** script;
 Go to project directory and type 
 
-> bash setup-project.sh --password {{password}}
+> bash start.sh --password {{password}}
 
 ### Or follow steps bellow
 
