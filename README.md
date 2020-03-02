@@ -67,7 +67,13 @@ Recomended **Install using the repository** guide path
 ### You can skip the steps bellow  the **start.sh** script;
 Go to project directory and type 
 
-> bash start.sh --password {{password}}
+> bash start.sh --password {{password}} ...
+
+  -p or --password - database password    
+  -u or --username - database username     
+  -n or --db-name - database name     
+  (Optional) -c or --container - docker container name || default is postgres     
+  (Optional) --port - docker port || default is 5432   
 
 ### Or follow steps bellow
 
