@@ -50,7 +50,43 @@ elif [ "$DB_NAME" == "" ]; then
   echo "Add --db-name or -n with the database name you want for the db"
   exit
 else  
-  docker run --name "$CONTAINER_NAME" -e POSTGRES_PASSWORD="$DB_PASSWORD" -e POSTGRES_USER-"$DB_USERNAME" -e POSTGRES_DB="$DB_NAME" -d -p "$DB_PORT":"$DB_PORT" -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data  postgres
-  gnome-terminal --working-directory="$DIR/client" -- npm start
-  gnome-terminal --working-directory="$DIR/server" -- npm run start:dev
+
+  NL=$'\n\r'
+  CONTENT="DB_TYPE=postgres$NL
+  DB_HOST=localhost$NL
+  DB_PORT=$DB_PORT$NL
+  DB_USERNAME=$DB_USERNAME $NL
+  DB_PASSWORD=$DB_PASSWORD $NL
+  DB_DATABASE_NAME=$DB_NAME"
+  echo $CONTENT > "$DIR/server/.env"
+  echo "Created .env file in /server"
+
+  template="{$NL
+    \"type\": \"postgres\",$NL
+    \"host\": \"localhost\",$NL
+    \"port\": $DB_PORT,$NL
+    \"username\": \"$DB_USERNAME\",$NL
+    \"password\": \"$DB_PASSWORD\",$NL
+    \"database\": \"$DB_NAME\",$NL
+    \"synchronize\": false,$NL
+    \"logging\": false,$NL
+    \"entities\": [$NL
+      \"src/database/entities/**/*.ts\"$NL
+    ],$NL
+    \"migrations\": [$NL
+      \"src/database/migrations/**/*.ts\"$NL
+    ],$NL
+    \"cli\": {$NL
+      \"entitiesDir\": \"src/database/entities\",$NL
+      \"migrationsDir\": \"src/database/migrations\"$NL
+    }$NL
+  }"
+
+  echo $template > "$DIR/server/ormconfig.json"
+  echo "Created ormconfig.json file in /server"
+
+  echo "Runing docker container"
+  docker run --name "$CONTAINER_NAME" -e POSTGRES_PASSWORD="$DB_PASSWORD" -e POSTGRES_USER="$DB_USERNAME" -e POSTGRES_DB="$DB_NAME" -d -p "$DB_PORT":"$DB_PORT" -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data  postgres
+  gnome-terminal --working-directory="$DIR/client" -e 'sh -c "npm install; npm start; exec bash"'
+  gnome-terminal --working-directory="$DIR/server" -e 'sh -c "npm install; npm run typeorm -- migration:run; npm run seed; npm run start:dev; exec bash"'
 fi
