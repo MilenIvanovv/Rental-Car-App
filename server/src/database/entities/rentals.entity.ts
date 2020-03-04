@@ -10,7 +10,7 @@ export class RentedCar extends BaseEntity {
   @ManyToOne(type => Car, car => car.rentals)
   car: Car;
 
-  @Column({ type: 'varchar', length: 100, nullable: false })
+  @Column({ type: 'timestamp', nullable: false })
   estimatedDate: string;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
@@ -25,9 +25,9 @@ export class RentedCar extends BaseEntity {
   @Column({ type: 'enum', enum: ['open', 'returned']})
   status: RentalStatus;
 
-  @Column({ type: 'varchar'})
+  @Column({ type: 'timestamp', nullable: true })
   returnDate: string;
 
-  @Column({ type: 'varchar', default: '' })
+  @Column({ type: 'timestamp', nullable: false })
   dateFrom: string;
 }
