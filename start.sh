@@ -40,6 +40,23 @@ do
     esac
 done
 
+if [[ "$(docker images -q postgres:latest 2> /dev/null)" == "" ]]; then
+  echo "Postgress imgage is not found!"
+  x=1
+  while [ $x == 1 ]
+  do
+    read -p 'Do you want to pull image progres:latest [y/n]: ' answer
+    if [ "$answer" == "y" ]; then
+      x=0
+      docker pull postgres:latest
+    elif [ "$answer" == "n" ]; then
+      exit
+    fi
+  done
+else
+  echo "Postgress imgage found"
+fi
+
 if [ "$DB_PASSWORD" == "" ]; then
   echo "Add --password or -p arguemnt with the passward you want for the db"
   exit
