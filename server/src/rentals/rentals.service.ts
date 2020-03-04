@@ -1,13 +1,16 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { RentedCar } from '../database/entities/rentals.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, getManager } from 'typeorm';
 import { Car } from '../database/entities/cars.entity';
 import { ClientDTO } from './models/client.dto';
 import { RentalStatus } from '../common/rental-status.enum';
 import { CarStatus } from '../common/car-status.enum';
 
+
+
 @Injectable()
+
 export class RentalsService {
 
   constructor(
@@ -16,10 +19,11 @@ export class RentalsService {
   ) { }
 
   async getRenals() {
-    return await this.rentalsRepository.find({ relations:['car', 'car.class'] });
+    return await this.rentalsRepository.find({ relations: ['car', 'car.class'] });
   }
 
-  async rentCar(carId: number, estimatedDate: string, client: ClientDTO) {
+  async rentCar(carId: number, estimatedDate: Date, client: ClientDTO,
+  ) {
     const carToRent = await this.carRepository.findOne(carId);
 
     if (!carToRent) {
@@ -31,13 +35,16 @@ export class RentalsService {
     }
 
     carToRent.status = CarStatus.borrowed;
-    await this.carRepository.save(carToRent);
 
-    return await this.rentalsRepository.save({ car: carToRent, estimatedDate, returnDate:'', dateFrom: new Date().toString(), status: RentalStatus.open, ...client})
+    return await getManager().transaction(async transactionalEntityManager => {
+      await transactionalEntityManager.getRepository(Car).save(carToRent);
+      return await transactionalEntityManager.getRepository(RentedCar).save({ car: carToRent, estimatedDate, dateFrom: new Date(), status: RentalStatus.open, ...client });
+    });
   }
 
-  async returnCar(rentalId: string) {
-    const rental = await this.rentalsRepository.findOne({ where: { id: rentalId }, relations: ['car']});
+  async returnCar(rentalId: string,
+  ) {
+    const rental = await this.rentalsRepository.findOne({ where: { id: rentalId }, relations: ['car'] });
 
     if (!rental) {
       throw new NotFoundException(`Contract with id ${rentalId} not found`);
@@ -49,10 +56,11 @@ export class RentalsService {
 
     rental.status = RentalStatus.returned;
     rental.car.status = CarStatus.listed;
-    rental.returnDate = new Date().toString();
+    rental.returnDate = new Date();
 
-    await this.carRepository.save(rental.car);
-
-    return await this.rentalsRepository.save(rental);
+    return await getManager().transaction(async transactionalEntityManager => {
+      await transactionalEntityManager.getRepository(Car).save(rental.car);
+      return await transactionalEntityManager.getRepository(RentedCar).save(rental);
+    });
   }
 }

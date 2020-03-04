@@ -11,7 +11,7 @@ export class RentedCar extends BaseEntity {
   car: Car;
 
   @Column({ type: 'timestamp', nullable: false })
-  estimatedDate: string;
+  estimatedDate: Date;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
   firstName: string;
@@ -26,8 +26,8 @@ export class RentedCar extends BaseEntity {
   status: RentalStatus;
 
   @Column({ type: 'timestamp', nullable: true })
-  returnDate: string;
+  returnDate: Date;
 
   @Column({ type: 'timestamp', nullable: false })
-  dateFrom: string;
+  dateFrom: Date;
 }

@@ -92,7 +92,7 @@ CurrentRentals.propTypes = {
     firstName: PropTypes.string.isRequired,
     lastName: PropTypes.string.isRequired,
     age: PropTypes.number.isRequired,
-    returnDate: PropTypes.string.isRequired,
+    returnDate: PropTypes.string,
     dateFrom: PropTypes.string.isRequired,
     status: PropTypes.oneOf(['open', 'returned']).isRequired,
     hasPenalty: PropTypes.bool,
