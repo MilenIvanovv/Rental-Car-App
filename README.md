@@ -10,12 +10,24 @@ All the cars you need!
 If you don't have it, follow the steps <a src="https://docs.docker.com/install/linux/docker-ce/ubuntu/">here</a>   
 Recomended **Install using the repository** guide path
 
+### You can skip the steps bellow  the **start.sh** script;
+Go to project directory and type 
+
+> bash start.sh --password {{password}} ...
+
+  -p or --password - database password    
+  -u or --username - database username     
+  -n or --db-name - database name     
+  (Optional) -c or --container - docker container name || default is postgres     
+  (Optional) --port - docker port || default is 5432 
+
+### Or follow steps bellow
+
 2. Pull the postgres image with the command bellow
   > $ docker pull postgres
 
 
-
-2. Create file with exact name **.env** in **/server** diretory and copy the text below.  
+3. Create file with exact name **.env** in **/server** diretory and copy the text below.  
   (for connecting the server to the database)
 
     DB_TYPE = postgres      
@@ -25,7 +37,7 @@ Recomended **Install using the repository** guide path
     DB_PASSWORD = {{password}}        
     DB_DATABASE_NAME = postgres   
 
-3. Create file with exact name **ormconfig.json** in **/server** diretory and copy the text below.
+4. Create file with exact name **ormconfig.json** in **/server** diretory and copy the text below.
   (for connecting to the database only for running migrations and seed)
 ```json
 {
@@ -50,32 +62,19 @@ Recomended **Install using the repository** guide path
 }
 ```
 
-4. Install dependencies in **/server** and **/cleint** diretory.
+5. Install dependencies in **/server** and **/cleint** diretory.
 
 >  $ npm install
 
-5. Run migrations.
+6. Run migrations.
 
 >  $ npm run typeorm -- migration:run
 
-6. Run seed script.
+7. Run seed script.
 
 >  $ npm run seed
 
 ## Running the app
-
-### You can skip the steps bellow  the **start.sh** script;
-Go to project directory and type 
-
-> bash start.sh --password {{password}} ...
-
-  -p or --password - database password    
-  -u or --username - database username     
-  -n or --db-name - database name     
-  (Optional) -c or --container - docker container name || default is postgres     
-  (Optional) --port - docker port || default is 5432   
-
-### Or follow steps bellow
 
 1. Create and run the postgres conatiner with 
   > $ docker run --rm  --name {{name of the docker contanier}} -e POSTGRES_PASSWORD={{password}} -d -p {{PORT}}:{{PORT}} -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data  postgres
@@ -87,8 +86,6 @@ Go to project directory and type
 3. Run the command in **/client** diretory.
 
 >  $ npm start
-
-4. Go to http://localhost:3000/
 
 ### Enjoy!
 
