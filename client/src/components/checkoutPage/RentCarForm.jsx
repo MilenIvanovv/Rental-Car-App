@@ -132,8 +132,8 @@ export default class RentCarForm extends Component {
       });
     } catch (error) {
       console.log(error);
+      this.setState({ redirect: '/current-rentals' });
     }
-    this.setState({ redirect: '/current-rentals' });
   }
 
   render() {
