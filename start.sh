@@ -104,6 +104,6 @@ else
 
   echo "Runing docker container"
   docker run --name "$CONTAINER_NAME" -e POSTGRES_PASSWORD=$DB_PASSWORD -e POSTGRES_USER=$DB_USERNAME -e POSTGRES_DB=$DB_NAME -d -p "$DB_PORT":"$DB_PORT" postgres
-  gnome-terminal --working-directory="$DIR/client" -e 'sh -c "npm start; exec bash"'
-  gnome-terminal --working-directory="$DIR/server" -e 'sh -c "npm run typeorm -- migration:run; npm run seed; npm run start:dev; exec bash"'
+  gnome-terminal --working-directory="$DIR/client" -e 'sh -c "npm install; npm start; exec bash"'
+  gnome-terminal --working-directory="$DIR/server" -e 'sh -c "npm install; npm run typeorm -- migration:run; npm run seed; npm run start:dev; exec bash"'
 fi
