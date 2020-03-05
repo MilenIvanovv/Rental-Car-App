@@ -6,6 +6,8 @@ import RentedCarsTable from './rentedCarsTable/RentedCarsTable';
 import { API_ROOT } from '../constants/constants';
 import { setRentals } from '../actions/setRentalsAction';
 import * as calucalte from '../utils/calculate-rent';
+import { toastr } from 'react-redux-toastr';
+
 
 class CurrentRentals extends Component {
   constructor(props) {
@@ -21,7 +23,12 @@ class CurrentRentals extends Component {
   async returnCar(ev, id) {
     this.setState({ isDisabled: true });
     await new Promise((res) => setTimeout(res, 1000));
-    await axios.put(`${API_ROOT}/rentals/${id}`);
+    try {
+      await axios.put(`${API_ROOT}/rentals/${id}`);
+    } catch (error) {
+      toastr.error('Car return error', 'Error occurred while returning car!');
+    }
+    toastr.success('Car returned', 'Car was succesfully returned!');
     await this.getCurrentRentals();
   }
 

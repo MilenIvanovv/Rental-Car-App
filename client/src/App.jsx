@@ -7,10 +7,12 @@ import CarsPage from './components/carsPage/CarsPage';
 import CurrentRentals from './components/CurrentRentalsPage';
 import CheckoutPage from './components/checkoutPage/CheckoutPage';
 import combinedReducer from './reducers/index';
+import ReduxToastr from 'react-redux-toastr';
+import NotFoundPage from './components/common/NotFoundPage';
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import NotFoundPage from './components/common/NotFoundPage';
+import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 
 const store = createStore(combinedReducer,
   // eslint-disable-next-line no-underscore-dangle
@@ -39,6 +41,9 @@ export default function App() {
           </Route>
         </Switch>
       </Router>
+      <ReduxToastr
+        getState={(state) => state.toastr} // This is the default
+        closeOnToastrClick />
     </Provider>
   );
 }

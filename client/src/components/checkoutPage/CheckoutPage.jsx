@@ -22,10 +22,11 @@ function CheckoutPage(props) {
           setCarToRent(data.data);
           res()
         })
-        .catch(() => setRedirect('/not-found'));
+        .catch(() => {
+        });
       }, 1000));
-
     }
+
   }, []);
 
   if (redirect) {

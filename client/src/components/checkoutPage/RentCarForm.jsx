@@ -4,6 +4,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { API_ROOT } from '../../constants/constants';
 import * as calculate from '../../utils/calculate-rent';
+import { toastr } from 'react-redux-toastr';
 
 import './checkoutPage.css';
 import CarCard from '../shared/carCard/CarCard';
@@ -137,7 +138,9 @@ export default class RentCarForm extends Component {
         redirect: '/current-rentals',
         isDisabled: false,
       });
+      toastr.success('Car rented', 'You successfully rented a car!');
     } catch (error) {
+      toastr.error('Car renting failed', 'Error occureed while renting a car!');
       console.log(error);
     }
   }
