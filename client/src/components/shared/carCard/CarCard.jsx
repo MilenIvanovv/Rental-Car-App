@@ -9,6 +9,10 @@ export default function CarCard(props) {
 
   const { car, noButton } = props;
 
+  if (!car) {
+    return <h1>Loading car...</h1>
+  }
+
   return (
     <div className="col-4 mb-2">
       <div className="card" style={{ width: '18rem' }}>
@@ -63,16 +67,6 @@ CarCard.propTypes = {
 };
 
 CarCard.defaultProps = {
-  car: {
-    id: 0,
-    model: '',
-    class: {
-      id: 0,
-      name: '',
-      price: 0,
-    },
-    picture: '',
-    status: '',
-  },
+  car: null,
   noButton: false,
 };

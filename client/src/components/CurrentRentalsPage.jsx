@@ -27,7 +27,7 @@ class CurrentRentals extends Component {
 
   async getCurrentRentals() {
     await new Promise((res, rej) => {
-      setTimeout(res, 3000);
+      setTimeout(res, 1000);
     })
     // eslint-disable-next-line no-shadow
     const { setRentals } = this.props;

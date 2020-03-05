@@ -22,6 +22,7 @@ class CarsPage extends Component {
     const { setCars: dispatchSetCars } = this.props;
 
     let cars;
+    await new Promise((res) => setTimeout(res, 1000));
     try {
       cars = await axios.get(`${API_ROOT}/cars`);
     } catch (error) {
