@@ -42,7 +42,14 @@ export default function App() {
         </Switch>
       </Router>
       <ReduxToastr
+        
+        timeOut={15000}
+        newestOnTop={false}
+        preventDuplicates
         getState={(state) => state.toastr} // This is the default
+        transitionIn="fadeIn"
+        transitionOut="fadeOut"
+        progressBar
         closeOnToastrClick />
     </Provider>
   );

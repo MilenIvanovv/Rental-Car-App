@@ -7,3 +7,7 @@ body {
 .red-penalty {
   color: red;
 }
+
+.redux-toastr .top-right {
+  width: 400px !important;
+}
