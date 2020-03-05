@@ -10,17 +10,21 @@ function CheckoutPage(props) {
   const { cars } = props;
   const { carId } = useParams();
   const [redirect, setRedirect] = useState();
-  const [carToRent, setCarToRent] = useState();
+  const [carToRent, setCarToRent] = useState(null);
 
   useEffect(() => {
     setCarToRent(cars.find((car) => +car.id === +carId));
 
     if (!carToRent) {
-      axios.get(`${API_ROOT}/cars/${carId}`)
+      new Promise((res) => setTimeout(() => {
+        axios.get(`${API_ROOT}/cars/${carId}`)
         .then((data) => {
           setCarToRent(data.data);
+          res()
         })
         .catch(() => setRedirect('/not-found'));
+      }, 1000));
+
     }
   }, []);
 

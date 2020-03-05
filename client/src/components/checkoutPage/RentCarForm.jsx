@@ -19,6 +19,7 @@ export default class RentCarForm extends Component {
       returnDate: '',
       errors: {},
       formIsValid: true,
+      isDisabled: false,
       estimations: {},
       redirect: null,
     };
@@ -125,14 +126,19 @@ export default class RentCarForm extends Component {
     };
 
     try {
+      this.setState({ isDisabled: true })
+      await new Promise((res) => setTimeout(res, 1000));
       await axios.post(`${API_ROOT}/rentals`, {
         estimatedDate: new Date(returnDate),
         client,
         carId: car.id,
       });
+      this.setState({ 
+        redirect: '/current-rentals',
+        isDisabled: false,
+      });
     } catch (error) {
       console.log(error);
-      this.setState({ redirect: '/current-rentals' });
     }
   }
 
@@ -145,6 +151,7 @@ export default class RentCarForm extends Component {
       redirect,
       estimations,
       formIsValid,
+      isDisabled,
       errors,
     } = this.state;
 
@@ -245,7 +252,7 @@ export default class RentCarForm extends Component {
                 </p>
               </div>
               <div className="d-flex justify-content-around">
-                <button name="confirm" type="button" className="btn btn-primary" disabled={!formIsValid} onClick={this.confirmHanlder}>
+                <button name="confirm" type="button" className="btn btn-primary" disabled={!formIsValid || isDisabled} onClick={this.confirmHanlder}>
                   Confirm
                 </button>
                 <Link to="/cars">
@@ -277,15 +284,5 @@ RentCarForm.propTypes = {
 };
 
 RentCarForm.defaultProps = {
-  car: {
-    id: 0,
-    model: '',
-    class: {
-      id: 0,
-      name: '',
-      price: 0,
-    },
-    picture: '',
-    status: '',
-  },
+  car: null,
 };

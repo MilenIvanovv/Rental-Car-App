@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -18,17 +18,22 @@ class CurrentRentals extends Component {
     await this.getCurrentRentals();
   }
 
+  async returnCar(ev, id) {
+    this.setState({ isDisabled: true });
+    await new Promise((res) => setTimeout(res, 1000));
+    await axios.put(`${API_ROOT}/rentals/${id}`);
+    await this.getCurrentRentals();
+  }
+
   async getCurrentRentals() {
+    await new Promise((res, rej) => {
+      setTimeout(res, 3000);
+    })
     // eslint-disable-next-line no-shadow
     const { setRentals } = this.props;
     const rentals = await axios.get(`${API_ROOT}/rentals`);
 
     setRentals(rentals.data);
-  }
-
-  async returnCar(ev, id) {
-    await axios.put(`${API_ROOT}/rentals/${id}`);
-    await this.getCurrentRentals();
   }
 
   render() {

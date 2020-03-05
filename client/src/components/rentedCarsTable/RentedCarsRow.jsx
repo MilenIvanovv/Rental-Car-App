@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Moment from 'react-moment';
 import PropTypes from 'prop-types';
 
 export default function RentedCarsRow(props) {
   const { rental } = props;
-
+  const [isDisabled, setIsDisabled] = useState(false);
 
   return (
     <tr>
@@ -26,7 +26,11 @@ export default function RentedCarsRow(props) {
         {rental.curTotalPrice}
         {' $'}
       </td>
-      <td><button type="button" onClick={(ev) => props.returnCar(ev, rental.id)}>Return car</button></td>
+      <td><button type="button" disabled={isDisabled} onClick={(ev) => {
+        setIsDisabled(true);
+        props.returnCar(ev, rental.id)
+          .catch(() => setIsDisabled(false))
+      }}>Return car</button></td>
     </tr>
   );
 }
