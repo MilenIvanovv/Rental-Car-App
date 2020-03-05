@@ -43,7 +43,7 @@ export default function App() {
       </Router>
       <ReduxToastr
         
-        timeOut={15000}
+        timeOut={4000}
         newestOnTop={false}
         preventDuplicates
         getState={(state) => state.toastr} // This is the default
