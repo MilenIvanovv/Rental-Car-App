@@ -5,7 +5,8 @@ const searchModel = (browser, selector, model, noSearch) => {
     browser
       .clearValue('input[type=search]')
       .setValue('input[type=search]', 'Ford')
-      .click('button[type=submit]');
+      .click('button[type=submit]')
+      .pause(500);
   }
 
   return new Promise((resolve, reject) => {
@@ -25,13 +26,16 @@ const searchModel = (browser, selector, model, noSearch) => {
 
 module.exports = {
   HappyPath(browser) {
-    browser
-      .url('http://localhost:3000/current-rentals')
-      .waitForElementVisible('body')
-      .click('[data=cars_link]');
 
     const cardListSelector = '[data=model]';
     const curRentedTaleSelector = '[data=current_rentals_model]';
+
+    browser
+      .url('http://localhost:3000/current-rentals')
+      .waitForElementVisible('body')
+      .click('[data=cars_link]')
+      .waitForElementVisible(cardListSelector);
+
 
     searchModel(browser, cardListSelector, 'Lada')
       .then(() => browser.assert.equal(false, true, 'Lada found'))
@@ -47,14 +51,16 @@ module.exports = {
       .setValue('input[name=lastName]', 'RandomName')
       .setValue('input[name=age]', '25')
       .setValue('input[name=date]', '2020-03-31')
-      .click('button[name=confirm]');
+      .click('button[name=confirm]')
+      .waitForElementVisible(curRentedTaleSelector);
 
     searchModel(browser, curRentedTaleSelector, 'Ford', true)
       .then(() => browser.assert.equal(true, true, 'Contract found'))
       .catch(() => browser.assert.equal(false, true, 'Contract not found'));
 
     browser
-      .click('[data=cars_link]');
+      .click('[data=cars_link]')
+      .waitForElementVisible(cardListSelector);
 
     searchModel(browser, cardListSelector, 'Ford')
       .then(() => browser.assert.equal(false, true, 'Ford found'))

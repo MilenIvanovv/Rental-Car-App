@@ -9,6 +9,7 @@
     "axios": "^0.19.2",
     "babel-eslint": "^10.1.0",
     "bootstrap": "^4.4.1",
+    "chromedriver": "^80.0.1",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "moment": "^2.24.0",
     "nightwatch": "^1.3.4",
@@ -39,6 +40,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "nightwatch:happyPath": "nightwatch src/tests/happy-path.js"
+    "nightwatch:happyPath": "nightwatch -e chrome src/tests/happy-path.js"
   }
 }
