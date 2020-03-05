@@ -19,6 +19,14 @@ class CarsPage extends Component {
   }
 
   async componentDidMount() {
+    const { cars } = this.props;
+
+    if (!cars.length) [
+      await this.getCars()
+    ]
+  }
+
+  async getCars() {
     const { setCars: dispatchSetCars } = this.props;
 
     let cars;

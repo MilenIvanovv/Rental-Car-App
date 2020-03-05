@@ -1,13 +1,13 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import RentedCarsTable from './rentedCarsTable/RentedCarsTable';
 import { API_ROOT } from '../constants/constants';
 import { setRentals } from '../actions/setRentalsAction';
+import { setCars } from '../actions/setCarsAction';
 import * as calucalte from '../utils/calculate-rent';
 import { toastr } from 'react-redux-toastr';
-
 
 class CurrentRentals extends Component {
   constructor(props) {
@@ -17,11 +17,14 @@ class CurrentRentals extends Component {
   }
 
   async componentDidMount() {
-    await this.getCurrentRentals();
+    const { rentals } = this.props;
+
+    if (!rentals.length) {
+      await this.getCurrentRentals();
+    }
   }
 
   async returnCar(ev, id) {
-    this.setState({ isDisabled: true });
     await new Promise((res) => setTimeout(res, 1000));
     try {
       await axios.put(`${API_ROOT}/rentals/${id}`);
@@ -30,6 +33,7 @@ class CurrentRentals extends Component {
     }
     toastr.success('Car returned', 'Car was succesfully returned!');
     await this.getCurrentRentals();
+    await this.getCars();
   }
 
   async getCurrentRentals() {
@@ -38,9 +42,25 @@ class CurrentRentals extends Component {
     })
     // eslint-disable-next-line no-shadow
     const { setRentals } = this.props;
-    const rentals = await axios.get(`${API_ROOT}/rentals`);
+    try {
+      const rentals = await axios.get(`${API_ROOT}/rentals`);
+      setRentals(rentals.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-    setRentals(rentals.data);
+  async getCars() {
+    const { setCars: dispatchSetCars } = this.props;
+
+    let cars;
+    await new Promise((res) => setTimeout(res, 1000));
+    try {
+      cars = await axios.get(`${API_ROOT}/cars`);
+    } catch (error) {
+      console.log(error);
+    }
+    dispatchSetCars(cars.data);
   }
 
   render() {
@@ -91,7 +111,7 @@ const mapStateToProps = (state) => ({
   rentals: state.rentals,
 });
 
-export default connect(mapStateToProps, { setRentals })(CurrentRentals);
+export default connect(mapStateToProps, { setRentals, setCars })(CurrentRentals);
 
 CurrentRentals.propTypes = {
   rentals: PropTypes.arrayOf(PropTypes.shape({

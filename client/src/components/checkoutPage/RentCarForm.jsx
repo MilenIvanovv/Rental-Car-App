@@ -1,15 +1,18 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { API_ROOT } from '../../constants/constants';
 import * as calculate from '../../utils/calculate-rent';
 import { toastr } from 'react-redux-toastr';
+import { setRentals } from '../../actions/setRentalsAction';
+import { setCars } from '../../actions/setCarsAction';
 
 import './checkoutPage.css';
 import CarCard from '../shared/carCard/CarCard';
 
-export default class RentCarForm extends Component {
+class RentCarForm extends Component {
   constructor(props) {
     super(props);
 
@@ -134,6 +137,8 @@ export default class RentCarForm extends Component {
         client,
         carId: car.id,
       });
+      await this.getCurrentRentals();
+      await this.getCars();
       this.setState({ 
         redirect: '/current-rentals',
         isDisabled: false,
@@ -143,6 +148,33 @@ export default class RentCarForm extends Component {
       toastr.error('Car renting failed', 'Error occureed while renting a car!');
       console.log(error);
     }
+  }
+
+  async getCurrentRentals() {
+    await new Promise((res, rej) => {
+      setTimeout(res, 1000);
+    })
+    // eslint-disable-next-line no-shadow
+    const { setRentals } = this.props;
+    try {
+      const rentals = await axios.get(`${API_ROOT}/rentals`);
+      setRentals(rentals.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getCars() {
+    const { setCars: dispatchSetCars } = this.props;
+
+    let cars;
+    await new Promise((res) => setTimeout(res, 1000));
+    try {
+      cars = await axios.get(`${API_ROOT}/cars`);
+    } catch (error) {
+      console.log(error);
+    }
+    dispatchSetCars(cars.data);
   }
 
   render() {
@@ -289,3 +321,9 @@ RentCarForm.propTypes = {
 RentCarForm.defaultProps = {
   car: null,
 };
+
+const mapStateToProps = (state) => ({
+  rentals: state.rentals,
+});
+
+export default connect(mapStateToProps, { setRentals, setCars })(RentCarForm);
