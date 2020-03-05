@@ -40,6 +40,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "nightwatch:happyPath": "nightwatch -e chrome src/tests/happy-path.js"
+    "nightwatch:happyPath": "nightwatch src/tests/happy-path.js"
   }
 }

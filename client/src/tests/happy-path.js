@@ -50,7 +50,7 @@ module.exports = {
       .setValue('input[name=firstName]', 'RandomName')
       .setValue('input[name=lastName]', 'RandomName')
       .setValue('input[name=age]', '25')
-      .setValue('input[name=date]', '2020-03-31')
+      .setValue('input[name=date]', '2020-04-30')
       .click('button[name=confirm]')
       .waitForElementVisible(curRentedTaleSelector);
 
