@@ -1,12 +1,4 @@
 export const days = (from, to) => {
-  if (!(from instanceof Date) || from.toString() === 'Invalid Date') {
-    throw new Error('Invalid date');
-  }
-
-  if (!(to instanceof Date) || to.toString() === 'Invalid Date') {
-    throw new Error('Invalid date');
-  }
-
   const timeInMs = to - from;
   const timeInDays = timeInMs / (1000 * 3600 * 24);
   
@@ -16,14 +8,6 @@ export const days = (from, to) => {
 export const totalPrice = (price, daysRented) => Math.floor(price * daysRented * 100) / 100;
 
 export const applyDaysToPrice = (price, daysRented) => {
-  if (price < 0) {
-    throw new Error('Invalid price');
-  }
-
-  if (daysRented < 0) {
-    throw new Error('Invalid days');
-  }
-
   let newPrice;
 
   if (daysRented < 2) {
@@ -38,14 +22,6 @@ export const applyDaysToPrice = (price, daysRented) => {
 };
 
 export const applyAgeToPrice = (price, age) => {
-  if (price <= 0) {
-    throw new Error('Invalid price');
-  }
-
-  if (age <= 0) {
-    throw new Error('Invalid age');
-  }
-
   let newPrice;
 
   if (age <= 25) {
@@ -58,14 +34,6 @@ export const applyAgeToPrice = (price, age) => {
 };
 
 export const penalty = (price, penaltyDays) => {
-  if (price <= 0) {
-    throw new Error('Invalid price');
-  }
-
-  if (penaltyDays <= 0) {
-    throw new Error('Invalid penalty days');
-  }
-
   let newPrice;
 
   if (penaltyDays <= 2) {

@@ -11,6 +11,7 @@ import { setCars } from '../../actions/setCarsAction';
 
 import './checkoutPage.css';
 import CarCard from '../shared/carCard/CarCard';
+import moment from 'moment';
 
 class RentCarForm extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class RentCarForm extends Component {
       firstName: '',
       lastName: '',
       age: '',
-      returnDate: '',
+      returnDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
       errors: {},
       formIsValid: true,
       isDisabled: false,
@@ -58,18 +59,13 @@ class RentCarForm extends Component {
   }
 
   handleReturnDateChange(ev) {
-    let callback;
-
-    if (ev.target.value.length >= 16) {
-      callback = () => {
-        this.estimatePrices();
-        this.handleValidation();
-      };
-    }
-
+    console.log('ev.target.value: ', ev.target.value);
     this.setState({
       returnDate: ev.target.value
-    }, callback);
+    }, () => {
+      this.estimatePrices();
+      this.handleValidation();
+    });
   }
 
   handleValidation() {
@@ -77,6 +73,7 @@ class RentCarForm extends Component {
       firstName, lastName, age, returnDate,
     } = this.state;
     const errors = {};
+    console.log('returnDate: ', returnDate);
 
     let formIsValid = true;
 
@@ -115,6 +112,7 @@ class RentCarForm extends Component {
     const days = calculate.days(new Date(), new Date(returnDate));
     const pricePerDay = calculate.applyAllToPrice(car.class.price, days, age);
     const totalPrice = calculate.totalPrice(pricePerDay, days);
+    console.log('returnDate: ', returnDate);
 
     this.setState({
       estimations: {
@@ -261,7 +259,7 @@ class RentCarForm extends Component {
               <div>Return date</div>
               <input
                 type="datetime-local"
-                min={new Date().toISOString().split(0, 16)}
+                // min={new Date().toISOString().split(0, 16)}
                 data="date"
                 className={!formIsValid && errors.returnDate ? 'form-control is-invalid' : 'form-control'}
                 value={returnDate}

@@ -1,20 +1,6 @@
 import * as calucalte from './calculate-rent';
 
 describe('calculate days', () => {
-  it('should should throw if 1st day is invalid', () => {
-    const date1 = new Date('test');
-    const date2 = new Date(2020, 1, 13, 10);
-  
-    expect(() => calucalte.days(date1, date2)).toThrow();
-  });
-
-  it('should should throw if 2nd day is invalid', () => {
-    const date1 = new Date(2020, 1, 12, 10);
-    const date2 = new Date('test');
-  
-    expect(() => calucalte.days(date1, date2)).toThrow();
-  });
-
   it('should calculate correct on 1 day diff', () => {
     const date1 = new Date(2020, 1, 12, 10);
     const date2 = new Date(2020, 1, 13, 10);
@@ -44,20 +30,6 @@ describe('calculate days', () => {
 });
 
 describe('calculate applyDaysToPrice', () => {
-  it('should throw if price is negative', () => {
-    const days = 1;
-    const price = -3;
-
-    expect(() => calucalte.applyDaysToPrice(price, days)).toThrow();
-  });
-
-  it('should throw if days is less then 0', () => {
-    const days = -1;
-    const price = 3;
-
-    expect(() => calucalte.applyDaysToPrice(price, days)).toThrow();
-  });
-
   it('should not change the price if days are less then 2', () => {
     const days = 1;
     const price = 3;
@@ -87,20 +59,6 @@ describe('calculate applyDaysToPrice', () => {
 });
 
 describe('calculate applyAgeToPrice', () => {
-  it('should throw if age is nagavite', () => {
-    const age = -3;
-    const price = 100;
-
-    expect(() => calucalte.applyAgeToPrice(price, age)).toThrow();
-  });
-
-  it('should throw if price is nagavite', () => {
-    const age = 3;
-    const price = -100;
-
-    expect(() => calucalte.applyAgeToPrice(price, age)).toThrow();
-  });
-
   it('should increase if age is <=25', () => {
     const age = 22;
     const price = 100;
@@ -121,20 +79,6 @@ describe('calculate applyAgeToPrice', () => {
 });
 
 describe('calculate penalty', () => {
-  it('should throw if penalty days is nagavite', () => {
-    const penaltyDays = -3;
-    const price = 100;
-
-    expect(() => calucalte.penalty(price, penaltyDays)).toThrow();
-  });
-
-  it('should throw if price is nagavite', () => {
-    const penaltyDays = 3;
-    const price = -100;
-
-    expect(() => calucalte.penalty(price, penaltyDays)).toThrow();
-  });
-
   it('should increase if penalty days is 1 or 2 with 20%', () => {
     const penaltyDays = 2;
     const price = 100;

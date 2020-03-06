@@ -1,9 +1,10 @@
+const moment = require('moment');
+
 module.exports = {
   HappyPath(browser) {
 
-    const today = new Date();
-    const afterOneMonth = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate()).toISOString().slice(0, 16);
-    
+    const afterOneMonth = (moment(new Date(), 'YYYY-MM-DDTHH:mm').add(5, 'days')).format('YYYY-MM-DDTHH:mm');
+
     browser.searchModel = function (selector, model) {
       const self = this;
 
