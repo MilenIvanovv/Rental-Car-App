@@ -10,7 +10,7 @@ export default function CarsList(props) {
   }
   
   if (!cars.length) {
-    return <h1>No cars found</h1>
+    return <h1 data="no-cars">No cars found</h1>
   }
 
   const carElements = cars.map((car) => <CarCard key={car.model} car={car} />);
