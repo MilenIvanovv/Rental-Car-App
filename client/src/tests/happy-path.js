@@ -5,7 +5,6 @@ const searchModel = (browser, selector, model, noSearch) => {
     browser
       .clearValue('input[type=search]')
       .setValue('input[type=search]', 'Ford')
-      .click('button[type=submit]')
       .pause(500);
   }
 
@@ -24,11 +23,17 @@ const searchModel = (browser, selector, model, noSearch) => {
   });
 };
 
+
+
 module.exports = {
   HappyPath(browser) {
 
     const cardListSelector = '[data=model]';
     const curRentedTaleSelector = '[data=current_rentals_model]';
+    const today = new Date();
+    const me = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate()).toISOString().slice(0, 16);
+    // const me = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate()).toISOString().split('T')[0];
+    // const me = "asasdkjf;lkasd ;alkdjf lkajsdlfj aldkjsflakdjs fa;ldksjf";
 
     browser
       .url('http://localhost:3000/current-rentals')
@@ -47,11 +52,11 @@ module.exports = {
 
     browser
       .click('css selector', '[data=card_checkout]')
-      .setValue('input[name=firstName]', 'RandomName')
-      .setValue('input[name=lastName]', 'RandomName')
-      .setValue('input[name=age]', '25')
-      .setValue('input[name=date]', '2020-04-30')
-      .click('button[name=confirm]')
+      .setValue('input[data=firstName]', 'RandomName')
+      .setValue('input[data=lastName]', 'RandomName')
+      .setValue('input[data=age]', '25')
+      .setValue('input[data=date]', me)
+      .click('button[data=confirm]')
       .waitForElementVisible(curRentedTaleSelector);
 
     searchModel(browser, curRentedTaleSelector, 'Ford', true)

@@ -9,7 +9,7 @@ export const days = (from, to) => {
 
   const timeInMs = to - from;
   const timeInDays = timeInMs / (1000 * 3600 * 24);
-
+  
   return Math.ceil(timeInDays);
 };
 
