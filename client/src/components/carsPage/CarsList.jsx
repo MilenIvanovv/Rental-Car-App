@@ -32,6 +32,6 @@ CarsList.propTypes = {
     }),
     picture: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
-    loadingCars: PropTypes.bool.isRequired,
   })).isRequired,
+  loadingCars: PropTypes.bool.isRequired,
 };
