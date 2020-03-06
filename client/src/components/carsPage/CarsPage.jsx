@@ -13,6 +13,7 @@ class CarsPage extends Component {
 
     this.state = {
       filter: '',
+      loadingCars: false,
     };
 
     this.searchHandler = this.searchHandler.bind(this);
@@ -30,12 +31,14 @@ class CarsPage extends Component {
     const { setCars: dispatchSetCars } = this.props;
 
     let cars;
+    this.setState({ loadingCars: true })
     await new Promise((res) => setTimeout(res, 1000));
     try {
       cars = await axios.get(`${API_ROOT}/cars`);
     } catch (error) {
       console.log(error);
     }
+    this.setState({ loadingCars: false })
     dispatchSetCars(cars.data);
   }
 
@@ -48,12 +51,12 @@ class CarsPage extends Component {
     const { cars } = this.props;
     const { filter } = this.state;
     const filteredByStatus = cars.filter((car) => car.status === 'listed');
-    const filteredByModel = filteredByStatus.filter((car) => car.model.includes(filter));
+    const filteredByModel = filteredByStatus.filter((car) => car.model.toLowerCase().includes(filter.toLowerCase()));
 
     return (
       <div className="container">
         <SearchBar onSearch={this.searchHandler} />
-        <CarsList cars={filteredByModel} />
+        <CarsList cars={filteredByModel} loadingCars={this.state.loadingCars} />
       </div>
     );
   }
