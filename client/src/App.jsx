@@ -23,6 +23,7 @@ export default function App() {
     <Provider store={store}>
       <Router>
         <Navigation />
+        
         <Switch>
           <Route path="/current-rentals">
             <CurrentRentals />
@@ -35,9 +36,6 @@ export default function App() {
           </Route>
           <Route path="/not-found">
             <NotFoundPage />
-          </Route>
-          <Route path="/">
-            <h1>Home Page</h1>
           </Route>
         </Switch>
       </Router>
