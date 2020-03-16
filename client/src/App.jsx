@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import Navigation from './components/common/Navigation';
@@ -23,8 +23,10 @@ export default function App() {
     <Provider store={store}>
       <Router>
         <Navigation />
-        
         <Switch>
+          <Route exact path="/">
+            <Redirect to="/current-rentals" />
+          </Route>
           <Route path="/current-rentals">
             <CurrentRentals />
           </Route>
