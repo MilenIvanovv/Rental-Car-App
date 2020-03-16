@@ -22,9 +22,9 @@ class CarsPage extends Component {
   async componentDidMount() {
     const { cars } = this.props;
 
-    if (!cars.length) [
+    if (!cars.length) {
       await this.getCars()
-    ]
+    }
   }
 
   async getCars() {

@@ -1,4 +1,4 @@
-import { ClientDTO } from './client.dto';
+import { ClientDTO } from './client-dto';
 import { IsNumber, IsNotEmpty, IsString, IsNotEmptyObject, IsDateString } from 'class-validator';
 import { IsDateOld } from '../../decorators/isDateOld';
 

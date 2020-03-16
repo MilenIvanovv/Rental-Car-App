@@ -19,7 +19,7 @@ export class CarsService {
     if (!car) {
       throw new NotFoundException(`Car with id ${carId} not found`);
     }
-
+    console.log(car)  
     return car;
   }
 }

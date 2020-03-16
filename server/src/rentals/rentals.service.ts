@@ -3,7 +3,7 @@ import { RentedCar } from '../database/entities/rentals.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getManager } from 'typeorm';
 import { Car } from '../database/entities/cars.entity';
-import { ClientDTO } from './models/client.dto';
+import { ClientDTO } from './models/client-dto';
 import { RentalStatus } from '../common/rental-status.enum';
 import { CarStatus } from '../common/car-status.enum';
 
