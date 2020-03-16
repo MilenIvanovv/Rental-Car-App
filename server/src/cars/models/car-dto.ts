@@ -15,7 +15,7 @@ export class CarDTO {
   @Publish()
   status: CarStatus
 
-  @Publish()
+  @Publish(ClassDTO)
   class: ClassDTO;
 }
 

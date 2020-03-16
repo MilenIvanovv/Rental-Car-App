@@ -9,7 +9,7 @@ export class RentalDTO {
   @Publish()
   id: string;
 
-  @Publish()
+  @Publish(CarDTO)
   car: CarDTO;
 
   @Publish()
