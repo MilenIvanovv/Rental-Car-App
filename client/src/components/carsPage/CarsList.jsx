@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 import CarCard from '../shared/carCard/CarCard';
 
 export default function CarsList(props) {
-  const { cars } = props;
+  const { cars, loadingCars } = props;
 
-  if (!cars.length) {
+  if (loadingCars) {
     return <h1>Loading cars</h1>
+  }
+  
+  if (!cars.length) {
+    return <h1 data="no-cars">No cars found</h1>
   }
 
   const carElements = cars.map((car) => <CarCard key={car.model} car={car} />);
@@ -29,4 +33,5 @@ CarsList.propTypes = {
     picture: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
   })).isRequired,
+  loadingCars: PropTypes.bool.isRequired,
 };

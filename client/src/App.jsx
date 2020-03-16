@@ -42,7 +42,6 @@ export default function App() {
         </Switch>
       </Router>
       <ReduxToastr
-        
         timeOut={4000}
         newestOnTop={false}
         preventDuplicates

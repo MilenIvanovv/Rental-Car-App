@@ -26,7 +26,7 @@ export default function RentedCarsRow(props) {
         {rental.curTotalPrice}
         {' $'}
       </td>
-      <td><button type="button" disabled={isDisabled} onClick={(ev) => {
+      <td><button type="button" className="btn btn-primary" disabled={isDisabled} onClick={(ev) => {
         setIsDisabled(true);
         props.returnCar(ev, rental.id)
           .catch(() => setIsDisabled(false))

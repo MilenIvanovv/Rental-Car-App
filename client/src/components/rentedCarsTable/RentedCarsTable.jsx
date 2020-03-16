@@ -7,10 +7,6 @@ import './RentedCarsTable.css';
 export default function RentedCarsTable(props) {
   const { rentals, returnCar } = props;
 
-  if (!rentals.length) {
-    return <h1>Loading...</h1>
-  }
-
   const elements = rentals
     .map((rental) => (
       <RentedCarsRow

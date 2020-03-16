@@ -11,6 +11,7 @@ import { setCars } from '../../actions/setCarsAction';
 
 import './checkoutPage.css';
 import CarCard from '../shared/carCard/CarCard';
+import moment from 'moment';
 
 class RentCarForm extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class RentCarForm extends Component {
       firstName: '',
       lastName: '',
       age: '',
-      returnDate: '',
+      returnDate: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
       errors: {},
       formIsValid: true,
       isDisabled: false,
@@ -58,8 +59,9 @@ class RentCarForm extends Component {
   }
 
   handleReturnDateChange(ev) {
+    console.log('ev.target.value: ', ev.target.value);
     this.setState({
-      returnDate: ev.target.value,
+      returnDate: ev.target.value
     }, () => {
       this.estimatePrices();
       this.handleValidation();
@@ -71,6 +73,7 @@ class RentCarForm extends Component {
       firstName, lastName, age, returnDate,
     } = this.state;
     const errors = {};
+    console.log('returnDate: ', returnDate);
 
     let formIsValid = true;
 
@@ -109,6 +112,7 @@ class RentCarForm extends Component {
     const days = calculate.days(new Date(), new Date(returnDate));
     const pricePerDay = calculate.applyAllToPrice(car.class.price, days, age);
     const totalPrice = calculate.totalPrice(pricePerDay, days);
+    console.log('returnDate: ', returnDate);
 
     this.setState({
       estimations: {
@@ -139,7 +143,7 @@ class RentCarForm extends Component {
       });
       await this.getCurrentRentals();
       await this.getCars();
-      this.setState({ 
+      this.setState({
         redirect: '/current-rentals',
         isDisabled: false,
       });
@@ -210,7 +214,7 @@ class RentCarForm extends Component {
               <div>First name</div>
               <input
                 type="text"
-                name="firstName"
+                data="firstName"
                 className={!formIsValid && errors.firstName ? 'form-control is-invalid' : 'form-control'}
                 value={firstName}
                 onChange={this.handleFirstNameChange}
@@ -228,7 +232,7 @@ class RentCarForm extends Component {
               <div>Last name</div>
               <input
                 type="text"
-                name="lastName"
+                data="lastName"
                 className={!formIsValid && errors.lastName ? 'form-control is-invalid' : 'form-control'}
                 value={lastName}
                 onChange={this.handleLasttNameChange}
@@ -245,7 +249,7 @@ class RentCarForm extends Component {
               <input
                 type="number"
                 min="18"
-                name="age"
+                data="age"
                 className={!formIsValid && errors.age ? 'form-control is-invalid' : 'form-control'}
                 value={age}
                 onChange={this.handleAgeChange}
@@ -254,9 +258,9 @@ class RentCarForm extends Component {
             <div className="form-group">
               <div>Return date</div>
               <input
-                type="date"
-                min={new Date().toISOString().split('T')[0]}
-                name="date"
+                type="datetime-local"
+                // min={new Date().toISOString().split(0, 16)}
+                data="date"
                 className={!formIsValid && errors.returnDate ? 'form-control is-invalid' : 'form-control'}
                 value={returnDate}
                 onChange={this.handleReturnDateChange}
@@ -287,7 +291,7 @@ class RentCarForm extends Component {
                 </p>
               </div>
               <div className="d-flex justify-content-around">
-                <button name="confirm" type="button" className="btn btn-primary" disabled={!formIsValid || isDisabled} onClick={this.confirmHanlder}>
+                <button data="confirm" type="button" className="btn btn-primary" disabled={!formIsValid || isDisabled} onClick={this.confirmHanlder}>
                   Confirm
                 </button>
                 <Link to="/cars">

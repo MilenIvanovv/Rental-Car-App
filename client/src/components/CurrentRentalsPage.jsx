@@ -14,6 +14,10 @@ class CurrentRentals extends Component {
     super(props);
 
     this.returnCar = this.returnCar.bind(this);
+
+    this.state = {
+      loadingRentals: false
+    }
   }
 
   async componentDidMount() {
@@ -37,6 +41,7 @@ class CurrentRentals extends Component {
   }
 
   async getCurrentRentals() {
+    this.setState({ loadingRentals: true });
     await new Promise((res, rej) => {
       setTimeout(res, 1000);
     })
@@ -48,6 +53,7 @@ class CurrentRentals extends Component {
     } catch (error) {
       console.log(error);
     }
+    this.setState({ loadingRentals: false });
   }
 
   async getCars() {
@@ -64,9 +70,17 @@ class CurrentRentals extends Component {
   }
 
   render() {
+    if (this.state.loadingRentals) {
+      return <h1>Loading...</h1>
+    }
+
     const { rentals } = this.props;
 
     const openRentals = rentals.filter((rental) => rental.status === 'open');
+
+    if (!openRentals.length) {
+      return <h1>Contracts not found</h1>
+    }
 
     const transformedRentals = openRentals.map((rental) => {
       const transformed = JSON.parse(JSON.stringify(rental));

@@ -5,10 +5,15 @@ export default function SearchBar(props) {
   const [searchValue, setSearchValue] = useState('');
   const { onSearch } = props;
 
+  const onChangeHandler = (e) => {
+     onSearch(e, e.target.value);
+     setSearchValue(e.target.value);
+  }
+
   return (
     <div className="row justify-content-center">
-      <form className="form-inline my-2" onSubmit={(e) => onSearch(e, searchValue)}>
-        <input className="form-control mr-sm-2" type="search" placeholder="Search" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+      <form className="form-inline my-2">
+        <input className="form-control mr-sm-2" type="search" data="search" placeholder="Search" value={searchValue} onChange={onChangeHandler} />
         <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
     </div>
