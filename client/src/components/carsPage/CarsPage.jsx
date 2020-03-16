@@ -35,7 +35,6 @@ class CarsPage extends Component {
     await new Promise((res) => setTimeout(res, 1000));
     try {
       cars = await axios.get(`${API_ROOT}/cars`);
-      console.log(cars)
     } catch (error) {
       console.log(error);
     }
