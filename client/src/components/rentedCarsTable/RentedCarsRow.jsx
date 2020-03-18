@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Moment from 'react-moment';
+import Moment from 'moment';
 import PropTypes from 'prop-types';
 
 export default function RentedCarsRow(props) {

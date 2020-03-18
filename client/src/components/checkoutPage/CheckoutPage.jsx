@@ -4,7 +4,9 @@ import { useParams, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import RentCarForm from './RentCarForm';
+import CarCard from '../shared/carCard/CarCard';
 import { API_ROOT } from '../../constants/constants';
+import Estimations from './Estimations';
 
 function CheckoutPage(props) {
   const { cars } = props;
@@ -38,7 +40,18 @@ function CheckoutPage(props) {
       <h2 className="p-2">Checkout rental car</h2>
       <div className="container">
         <div className="row">
-          <RentCarForm car={carToRent} />
+        <div className="col-4">
+          <h4>Car</h4>
+          <CarCard car={carToRent} noButton />
+        </div>
+        <div className="col-4">
+          <h4>Booking </h4>
+          <RentCarForm />
+        </div>
+        <div className="col-4">
+          <h4>Estimated Price</h4>
+          <Estimations car={carToRent} />
+        </div>
         </div>
       </div>
     </div>
