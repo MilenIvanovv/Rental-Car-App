@@ -20,6 +20,10 @@ describe('My Connected React-Redux Component', () => {
   let component;
 
   beforeEach(() => {
+
+  });
+
+  it('should render with given state from Redux store', () => {
     store = mockStore({
       form: {
         firstName: {
@@ -50,15 +54,80 @@ describe('My Connected React-Redux Component', () => {
       </Provider>
     );
 
-    console.log(component.root.findAllByType('Estimations'))
-  });
-
-  it('should render with given state from Redux store', () => {
     expect(component.toJSON()).toMatchSnapshot();
   });
 
-  describe('', () => {
-    it('should dispatch an action on button click', () => {
+  it('confirm button should be disabled if form is not valid', () => {
+
+    store = mockStore({
+      form: {
+        firstName: {
+          value: '',
+          error: 'not touched'
+        },
+        lastName: {
+          value: '',
+          error: 'not touched'
+        },
+        age: {
+          value: '',
+          error: 'not touched'
+        },
+        returnDate: {
+          value: '2020-03-18T12:18',
+          error: 'not touched'
+        },
+        isFormValid: false
+      }
     });
-  })
+
+    component = renderer.create(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Estimations />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const btn = component.root.findAllByType('button')
+
+    expect(btn[0].props.disabled).toEqual(true);
+  });
+
+  it('confirm button should be active if form is not valid', () => {
+
+    store = mockStore({
+      form: {
+        firstName: {
+          value: 'test',
+          error: 'not touched'
+        },
+        lastName: {
+          value: 'test',
+          error: 'not touched'
+        },
+        age: {
+          value: 'test',
+          error: 'not touched'
+        },
+        returnDate: {
+          value: '2020-03-18T12:18',
+          error: 'not touched'
+        },
+        isFormValid: true
+      }
+    });
+
+    component = renderer.create(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Estimations />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const btn = component.root.findAllByType('button')
+
+    expect(btn[0].props.disabled).toEqual(false);
+  });
 });
