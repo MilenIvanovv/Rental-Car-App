@@ -8,13 +8,6 @@ import { MemoryRouter } from 'react-router';
 
 const mockStore = configureStore([]);
 
-// describe("Estimations component", () => {
-//   test("Matches the snapshot", () => {
-//     const button = create(<Estimations />);
-//     expect(button.toJSON()).toMatchSnapshot();
-//   });
-// });
-
 describe('My Connected React-Redux Component', () => {
   let store;
   let component;
