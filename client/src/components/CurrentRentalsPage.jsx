@@ -87,7 +87,7 @@ class CurrentRentals extends Component {
       const rentedDate = new Date(rental.dateFrom);
       const estimatedDate = new Date(rental.estimatedDate);
       const today = new Date();
-      const pricePerDay = transformed.car.class.price;
+      const pricePerDay = transformed.car.price;
       const { age } = transformed;
 
       // Client estimation prices
@@ -135,9 +135,11 @@ CurrentRentals.propTypes = {
       model: PropTypes.string.isRequired,
       picture: PropTypes.string.isRequired,
     }).isRequired,
-    firstName: PropTypes.string.isRequired,
-    lastName: PropTypes.string.isRequired,
-    age: PropTypes.number.isRequired,
+    client: PropTypes.shape({
+      firstName: PropTypes.string.isRequired,
+      lastName: PropTypes.string.isRequired,
+      age: PropTypes.number.isRequired,
+    }).isRequired,
     returnDate: PropTypes.string,
     dateFrom: PropTypes.string.isRequired,
     status: PropTypes.oneOf(['open', 'returned']).isRequired,

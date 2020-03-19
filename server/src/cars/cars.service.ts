@@ -10,7 +10,7 @@ export class CarsService {
   ) { }
 
   async getCars(): Promise<Car[]> {
-    return await this.carsRepository.find({ relations: ['class']});;
+    return await this.carsRepository.find({ relations: ['class']});
   }
 
   async getCar(carId: number): Promise<Car> {
@@ -19,7 +19,7 @@ export class CarsService {
     if (!car) {
       throw new NotFoundException(`Car with id ${carId} not found`);
     }
-    console.log(car)  
+
     return car;
   }
 }

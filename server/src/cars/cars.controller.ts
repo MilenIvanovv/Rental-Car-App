@@ -1,19 +1,19 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { Car } from '../database/entities/cars.entity';
-import { CarDTO } from './models/car-dto';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('cars')
 export class CarsController {
   constructor(private readonly carsService: CarsService) {}
-
+  
   @Get()
-  async getCars(): Promise<CarDTO[]>  {
+  async getCars(): Promise<Car[]>  {
     return await this.carsService.getCars();
   }
-
+  
   @Get('/:carId')
-  async getCar(@Param('carId') carId: number): Promise<CarDTO>  {
+  async getCar(@Param('carId') carId: number): Promise<Car>  {
     return await this.carsService.getCar(carId);
   }
 }
