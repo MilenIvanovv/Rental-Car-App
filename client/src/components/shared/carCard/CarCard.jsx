@@ -28,9 +28,9 @@ export default function CarCard(props) {
             </p>
             <p>
               <span><b data="model">{car.model}</b></span>
-              <span>{car.class.name}</span>
+              <span>{car.class}</span>
               <span>
-                {car.class.price}
+                {car.price}
                 {' $'}
               </span>
             </p>
@@ -55,11 +55,8 @@ CarCard.propTypes = {
   car: PropTypes.exact({
     id: PropTypes.number,
     model: PropTypes.string,
-    class: PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-      price: PropTypes.number,
-    }),
+    class: PropTypes.string,
+    price: PropTypes.number,
     picture: PropTypes.string,
     status: PropTypes.string,
   }),

@@ -9,7 +9,7 @@ export default function RentedCarsRow(props) {
   return (
     <tr>
       <td data="current_rentals_model">{rental.car.model}</td>
-      <td>{`${rental.firstName} ${rental.lastName}`}</td>
+      <td>{`${rental.client.firstName} ${rental.client.lastName}`}</td>
       <td><Moment format="YYYY/MM/DD HH:mm">{rental.dateFrom}</Moment></td>
       <td><Moment format="YYYY/MM/DD HH:mm">{rental.estimatedDate}</Moment></td>
       <td>{rental.estimatedDays}</td>
@@ -43,9 +43,11 @@ RentedCarsRow.propTypes = {
       model: PropTypes.string,
       picture: PropTypes.string,
     }),
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    age: PropTypes.number,
+    client: PropTypes.shape({
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+      age: PropTypes.number,
+    }),
     dateFrom: PropTypes.string,
     estimatedDate: PropTypes.string,
 
