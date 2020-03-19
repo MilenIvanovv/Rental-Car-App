@@ -4,6 +4,7 @@ module.exports = {
   HappyPath(browser) {
 
     const afterOneMonth = (moment(new Date(), 'YYYY-MM-DDTHH:mm').add(5, 'days')).format('YYYY-MM-DDTHH:mm');
+    // const afterOneMonth = (moment(new Date(), 'YYYY-MM-DD').add(5, 'days')).format('YYYY-MM-DD');
 
     browser.searchModel = function (selector, model) {
       const self = this;
