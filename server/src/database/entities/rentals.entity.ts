@@ -39,7 +39,7 @@ export class RentedCar extends BaseEntity {
   get client() {
     return {
       firstName: this.firstName,
-      lastname: this.lastName,
+      lastName: this.lastName,
       age: this.age,
     }
   }
