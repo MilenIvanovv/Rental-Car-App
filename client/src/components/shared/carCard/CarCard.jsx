@@ -13,9 +13,15 @@ export default function CarCard(props) {
     return <h1>Loading car...</h1>
   }
 
+  const checkoutBtn = () => !noButton && (
+    <Link to={`${match.url}/${car.id}`} className="btn btn-primary" data="card_checkout">
+      Checkout
+    </Link>
+  )
+
   return (
     <div className="col-4 mb-2">
-      <div className="card" style={{ width: '18rem' }}>
+      <div className="card">
         <Link to={`${match.url}/${car.id}`}>
           <img src={car.picture} className="card-img-top" alt="..." />
         </Link>
@@ -29,22 +35,12 @@ export default function CarCard(props) {
             <p>
               <span><b data="model">{car.model}</b></span>
               <span>{car.class}</span>
-              <span>
-                {car.price}
-                {' $'}
-              </span>
+              <span>{`${car.price} $`}</span>
             </p>
           </div>
           <div className="d-flex justify-content-center">
-            {noButton
-              ? ''
-              : (
-                <Link to={`${match.url}/${car.id}`} className="btn btn-primary" data="card_checkout">
-                  Checkout
-                </Link>
-              )}
+            {checkoutBtn()}
           </div>
-
         </div>
       </div>
     </div>
@@ -67,3 +63,6 @@ CarCard.defaultProps = {
   car: null,
   noButton: false,
 };
+
+
+
