@@ -1,22 +1,23 @@
-import { Publish } from '../../transformer/decorators/publish';
 import { CarStatus } from '../../common/car-status.enum';
-import { ClassDTO } from './class-todo';
+import { ClassDTO } from './class-dto';
+import { Transform, Exclude, Expose } from 'class-transformer';
+import { CarClass } from '../../database/entities/class.entity';
 
 export class CarDTO {
-  @Publish()
   id: string;
 
-  @Publish()
   model: string;
 
-  @Publish()
   picture: string;
 
-  @Publish()
   status: CarStatus
 
-  @Publish(ClassDTO)
+  @Transform((carClass: CarClass) => carClass.name)
   class: ClassDTO;
+
+  @Expose()
+  @Transform((carClass: CarClass, car) => car.class.price)
+  price?: number;
 }
 
 
