@@ -12,7 +12,7 @@ import setRentalCarForm from '../../actions/setRentCarFormActions';
 
 import './checkoutPage.css';
 
-class Estimations extends Component {
+export class Estimations extends Component {
 
   constructor(props) {
     super(props)
@@ -156,11 +156,11 @@ class Estimations extends Component {
           <div className="d-flex justify-content-around">
             <button data="confirm" type="button" className="btn btn-primary" disabled={!isFormValid || isDisabled} onClick={this.confirmHanlder}>
               Confirm
-                </button>
+            </button>
             <Link to="/cars">
               <button type="button" className="btn btn-primary">
                 Cencel
-                  </button>
+              </button>
             </Link>
           </div>
         </div>
@@ -170,6 +170,26 @@ class Estimations extends Component {
 }
 
 Estimations.propTypes = {
+  rentCarForm: PropTypes.shape({
+    firstName: PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      error: PropTypes.string.isRequired,
+    }),
+    lastName: PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      error: PropTypes.string.isRequired,
+    }),
+    age: PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      error: PropTypes.string.isRequired,
+    }),
+    returnDate: PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      error: PropTypes.string.isRequired,
+    }),
+    isFormValid: PropTypes.bool.isRequired,
+  }),
+  isFormValid: PropTypes.bool.isRequired,
 };
 
 Estimations.defaultProps = {
@@ -188,4 +208,3 @@ const mapActionsToProps = {
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(Estimations);
-

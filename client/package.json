@@ -34,7 +34,9 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "geckodriver": "^1.19.1"
+    "geckodriver": "^1.19.1",
+    "react-test-renderer": "^16.13.0",
+    "redux-mock-store": "^1.5.4"
   },
   "scripts": {
     "start": "react-scripts start",

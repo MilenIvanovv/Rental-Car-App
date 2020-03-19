@@ -1,0 +1,61 @@
+exports[`My Connected React-Redux Component should render with given state from Redux store 1`] = `
+<div
+  className="card"
+  style={
+    Object {
+      "width": "18rem",
+    }
+  }>
+  <div
+    className="card-body align-card-text">
+    <div
+      className="card-text">
+      <p
+        className="w-50">
+        <span>
+          Days
+        </span>
+        <span>
+          Price per day
+        </span>
+        <span>
+          Total
+        </span>
+      </p>
+      <p>
+        <span>
+          0
+        </span>
+        <span>
+          0
+           $
+        </span>
+        <span>
+          0
+           $
+        </span>
+      </p>
+    </div>
+    <div
+      className="d-flex justify-content-around">
+      <button
+        className="btn btn-primary"
+        data="confirm"
+        disabled={true}
+        onClick={[Function]}
+        type="button">
+        Confirm
+      </button>
+      <a
+        href="/cars"
+        onClick={[Function]}>
+        <button
+          className="btn btn-primary"
+          type="button">
+          Cencel
+        </button>
+      </a>
+    </div>
+  </div>
+</div>
+`;
