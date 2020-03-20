@@ -20,7 +20,6 @@ export default function CarCard(props) {
   )
 
   return (
-    <div className="col-4 mb-2">
       <div className="card">
         <Link to={`${match.url}/${car.id}`}>
           <img src={car.picture} className="card-img-top" alt="..." />
@@ -43,7 +42,6 @@ export default function CarCard(props) {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

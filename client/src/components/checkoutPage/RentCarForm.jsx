@@ -17,22 +17,10 @@ class RentCarForm extends Component {
   render() {
     return (
       <form>
-        <div className="form-group">
-          <div>First name</div>
-          {this.formInput({ type: 'text', name: 'firstName', data: 'firstName' })}
-        </div>
-        <div className="form-group">
-          <div>Last name</div>
-          {this.formInput({ type: 'text', name: 'lastName', data: 'lastName' })}
-        </div>
-        <div className="form-group">
-          <div>Age</div>
-          {this.formInput({ type: 'number', name: 'age', data: 'age' })}
-        </div>
-        <div className="form-group">
-          <div>Return date</div>
-          {this.formInput({ type: 'datetime-local', name: 'returnDate', data: 'date' })}
-        </div>
+        {this.formInput({ title: 'First Name', type: 'text', name: 'firstName', data: 'firstName' })}
+        {this.formInput({ title: 'Last name', type: 'text', name: 'lastName', data: 'lastName' })}
+        {this.formInput({ title: 'Age', type: 'number', name: 'age', data: 'age' })}
+        {this.formInput({ title: 'Return date', type: 'datetime-local', name: 'returnDate', data: 'date' })}
       </form>
     );
   }
@@ -57,7 +45,7 @@ class RentCarForm extends Component {
     return tempForm;
   }
 
-  formInput({ type, name, data }) {
+  formInput({ title, type, name, data }) {
     const input = this.props.rentCarForm[name];
     const isFormValid = this.props.rentCarForm.isFormValid;
     const error = !(input.error === '' || input.error === 'not touched') ? input.error : null;
@@ -66,7 +54,8 @@ class RentCarForm extends Component {
     </small>);
 
     return (
-      <Fragment>
+      <div className="form-group">
+        <div>{title}</div>
         <input
           type={type}
           name={name} // user by handleChange
@@ -76,7 +65,7 @@ class RentCarForm extends Component {
           onChange={this.handleChange}
         />
         {error && errorMsg}
-      </Fragment>
+      </div>
     )
   }
 }

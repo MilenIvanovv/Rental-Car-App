@@ -6,6 +6,7 @@ import CarsList from './CarsList';
 import SearchBar from './SearchBar';
 import { setCars } from '../../actions/setCarsAction';
 import { API_ROOT } from '../../constants/constants';
+import { Container } from 'react-bootstrap';
 
 class CarsPage extends Component {
   constructor(props) {
@@ -54,10 +55,10 @@ class CarsPage extends Component {
     const filteredByModel = filteredByStatus.filter((car) => car.model.toLowerCase().includes(filter.toLowerCase()));
 
     return (
-      <div className="container">
+      <Container>
         <SearchBar onSearch={this.searchHandler} />
         <CarsList cars={filteredByModel} loadingCars={this.state.loadingCars} />
-      </div>
+      </Container>
     );
   }
 }

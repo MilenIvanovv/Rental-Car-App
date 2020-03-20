@@ -143,14 +143,8 @@ export class Estimations extends Component {
             </p>
             <p>
               <span>{estimations.days || 0}</span>
-              <span>
-                {estimations.pricePerDay || 0}
-                {' $'}
-              </span>
-              <span>
-                {estimations.totalPrice || 0}
-                {' $'}
-              </span>
+              <span>{`${estimations.pricePerDay || 0} $`}</span>
+              <span>{`${estimations.totalPrice || 0} $`}</span>
             </p>
           </div>
           <div className="d-flex justify-content-around">

@@ -7,6 +7,7 @@ import RentCarForm from './RentCarForm';
 import CarCard from '../shared/carCard/CarCard';
 import { API_ROOT } from '../../constants/constants';
 import Estimations from './Estimations';
+import { Container, Row, Col } from 'react-bootstrap';
 
 function CheckoutPage(props) {
   const { cars } = props;
@@ -20,12 +21,12 @@ function CheckoutPage(props) {
     if (!carToRent) {
       new Promise((res) => setTimeout(() => {
         axios.get(`${API_ROOT}/cars/${carId}`)
-        .then((data) => {
-          setCarToRent(data.data);
-          res()
-        })
-        .catch(() => {
-        });
+          .then((data) => {
+            setCarToRent(data.data);
+            res()
+          })
+          .catch(() => {
+          });
       }, 1000));
     }
 
@@ -38,22 +39,22 @@ function CheckoutPage(props) {
   return (
     <div>
       <h2 className="p-2">Checkout rental car</h2>
-      <div className="container">
-        <div className="row">
-        <div className="col-4">
-          <h4>Car</h4>
-          <CarCard car={carToRent} noButton />
-        </div>
-        <div className="col-4">
-          <h4>Booking </h4>
-          <RentCarForm />
-        </div>
-        <div className="col-4">
-          <h4>Estimated Price</h4>
-          <Estimations car={carToRent} />
-        </div>
-        </div>
-      </div>
+      <Container>
+        <Row>
+          <Col>
+            <h4>Car</h4>
+            <CarCard car={carToRent} noButton />
+          </Col>
+          <Col>
+            <h4>Booking </h4>
+            <RentCarForm />
+          </Col>
+          <Col>
+            <h4>Estimated Price</h4>
+            <Estimations car={carToRent} />
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 }

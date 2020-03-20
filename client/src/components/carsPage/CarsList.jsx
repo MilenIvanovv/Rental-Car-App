@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CarCard from '../shared/carCard/CarCard';
+import { Row, Col } from 'react-bootstrap';
 
 export default function CarsList(props) {
   const { cars, loadingCars } = props;
@@ -8,16 +9,17 @@ export default function CarsList(props) {
   if (loadingCars) {
     return <h1>Loading cars</h1>
   }
-  
+
   if (!cars.length) {
     return <h1 data="no-cars">No cars found</h1>
   }
 
-  const carElements = cars.map((car) => <CarCard key={car.model} car={car} />);
+  const carElements = cars.map((car) => <Col className="mb-3" key={car.model} ><CarCard  car={car} /></Col>);
+
   return (
-    <div className="row" id="car-list">
+    <Row>
       {carElements}
-    </div>
+    </Row>
   );
 }
 
