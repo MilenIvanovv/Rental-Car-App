@@ -2,10 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import RentedCarsRow from './RentedCarsRow';
 import './RentedCarsTable.css';
+import RentedCarsTableHeader from './RentedCarsTableHeader';
 
 
 export default function RentedCarsTable(props) {
   const { rentals, returnCar } = props;
+
+  const colums = [
+    "Car",
+    "Customer",
+    "From",
+    "Estimated Return date",
+    "Estimated days rented",
+    "Estimated price per day",
+    "Current days rented",
+    "Current price per day",
+    "Current total price",
+    "Actions",
+  ];
 
   const elements = rentals
     .map((rental) => (
@@ -19,18 +33,7 @@ export default function RentedCarsTable(props) {
   return (
     <table className="table">
       <thead>
-        <tr>
-          <th>Car</th>
-          <th>Customer</th>
-          <th>From</th>
-          <th>Estimated Return date</th>
-          <th>Estimated days rented</th>
-          <th>Estimated price per day</th>
-          <th>Current days rented</th>
-          <th>Current price per day</th>
-          <th>Current total price</th>
-          <th>Actions</th>
-        </tr>
+        <RentedCarsTableHeader colums={colums} />
       </thead>
       <tbody>
         {elements}
