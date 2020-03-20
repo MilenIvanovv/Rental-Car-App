@@ -57,6 +57,25 @@ else
   echo "Postgress imgage found"
 fi
 
+echo "Docker container will run with
+container name: $CONTAINER_NAME
+database username: $DB_USERNAME
+database password: $DB_PASSWORD
+database name: $DB_NAME
+ports $DB_PORT:5432"
+
+x=1
+while [ $x == 1 ]
+do
+  read -p 'Do you want to continue [y/n]: ' answer
+  if [ "$answer" == "y" ]; then
+    x=0
+    docker pull postgres:latest
+  elif [ "$answer" == "n" ]; then
+    exit
+  fi
+done
+
   NL=$'\n\r'
   CONTENT="DB_TYPE=postgres$NL
   DB_HOST=localhost$NL
@@ -91,13 +110,7 @@ fi
   echo $template > "$DIR/server/ormconfig.json"
   echo "Created ormconfig.json file in /server"
 
-  echo "Runing docker container with
-  container name: $CONTAINER_NAME
-  database username: $DB_USERNAME
-  database password: $DB_PASSWORD
-  database name: $DB_NAME
-  ports $DB_PORT:5432
-  "
+  echo "Runing docker container"
   docker run --name "$CONTAINER_NAME" -e POSTGRES_PASSWORD=$DB_PASSWORD -e POSTGRES_USER=$DB_USERNAME -e POSTGRES_DB=$DB_NAME -d -p "$DB_PORT":"5432" postgres
   gnome-terminal --working-directory="$DIR/client" -e 'sh -c "npm start; exec bash"'
   gnome-terminal --working-directory="$DIR/server" -e 'sh -c "npm run typeorm -- migration:run; npm run seed; npm run start:dev; exec bash"'
