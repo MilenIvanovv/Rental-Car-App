@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Default values of arguments
-DB_PASSWORD=""
-DB_USERNAME=""
-DB_NAME=""
+DB_PASSWORD="159"
+DB_USERNAME=postgres
+DB_NAME=postgres
 DB_PORT=5432
-CONTAINER_NAME=postgres
+CONTAINER_NAME=postgres500
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Loop through arguments and process them
@@ -57,17 +57,6 @@ else
   echo "Postgress imgage found"
 fi
 
-if [ "$DB_PASSWORD" == "" ]; then
-  echo "Add --password or -p arguemnt with the passward you want for the db"
-  exit
-elif [ "$DB_USERNAME" == "" ]; then
-  echo "Add --username or -u arguemnt with the username you want for the db"
-  exit
-elif [ "$DB_NAME" == "" ]; then
-  echo "Add --db-name or -n with the database name you want for the db"
-  exit
-else  
-
   NL=$'\n\r'
   CONTENT="DB_TYPE=postgres$NL
   DB_HOST=localhost$NL
@@ -102,8 +91,13 @@ else
   echo $template > "$DIR/server/ormconfig.json"
   echo "Created ormconfig.json file in /server"
 
-  echo "Runing docker container"
+  echo "Runing docker container with
+  container name: $CONTAINER_NAME
+  database username: $DB_USERNAME
+  database password: $DB_PASSWORD
+  database name: $DB_NAME
+  ports $DB_PORT:5432
+  "
   docker run --name "$CONTAINER_NAME" -e POSTGRES_PASSWORD=$DB_PASSWORD -e POSTGRES_USER=$DB_USERNAME -e POSTGRES_DB=$DB_NAME -d -p "$DB_PORT":"5432" postgres
-  gnome-terminal --working-directory="$DIR/client" -e 'sh -c "npm install; npm start; exec bash"'
-  gnome-terminal --working-directory="$DIR/server" -e 'sh -c "npm install; npm run typeorm -- migration:run; npm run seed; npm run start:dev; exec bash"'
-fi
+  gnome-terminal --working-directory="$DIR/client" -e 'sh -c "npm start; exec bash"'
+  gnome-terminal --working-directory="$DIR/server" -e 'sh -c "npm run typeorm -- migration:run; npm run seed; npm run start:dev; exec bash"'
