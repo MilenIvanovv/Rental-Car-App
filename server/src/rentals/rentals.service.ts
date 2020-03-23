@@ -6,6 +6,8 @@ import { Car } from '../database/entities/cars.entity';
 import { ClientDTO } from './models/client-dto';
 import { RentalStatus } from '../common/rental-status.enum';
 import { CarStatus } from '../common/car-status.enum';
+import { plainToClass } from 'class-transformer';
+import { RentalDTO } from './models/rental-dto';
 
 
 
@@ -19,7 +21,9 @@ export class RentalsService {
   ) { }
 
   async getRenals() {
-    return await this.rentalsRepository.find({ relations: ['car', 'car.class'] });
+    const rentals = await this.rentalsRepository.find({ relations: ['car', 'car.class'] });
+
+    return plainToClass(RentalDTO, rentals);
   }
 
   async rentCar(carId: number, estimatedDate: Date, client: ClientDTO,
@@ -36,15 +40,17 @@ export class RentalsService {
 
     carToRent.status = CarStatus.borrowed;
 
-    return await getManager().transaction(async transactionalEntityManager => {
+    const rental = await getManager().transaction(async transactionalEntityManager => {
       await transactionalEntityManager.getRepository(Car).save(carToRent);
       return await transactionalEntityManager.getRepository(RentedCar).save({ car: carToRent, estimatedDate, dateFrom: new Date(), status: RentalStatus.open, ...client });
     });
+
+    return plainToClass(RentalDTO, rental);
   }
 
   async returnCar(rentalId: string,
   ) {
-    const rental = await this.rentalsRepository.findOne({ where: { id: rentalId }, relations: ['car', 'car.class'] });
+    let rental = await this.rentalsRepository.findOne({ where: { id: rentalId }, relations: ['car', 'car.class'] });
 
     if (!rental) {
       throw new NotFoundException(`Contract with id ${rentalId} not found`);
@@ -58,9 +64,11 @@ export class RentalsService {
     rental.car.status = CarStatus.listed;
     rental.returnDate = new Date();
 
-    return await getManager().transaction(async transactionalEntityManager => {
+    rental = await getManager().transaction(async transactionalEntityManager => {
       await transactionalEntityManager.getRepository(Car).save(rental.car);
       return await transactionalEntityManager.getRepository(RentedCar).save(rental);
     });
+
+    return plainToClass(RentalDTO, rental);
   }
 }

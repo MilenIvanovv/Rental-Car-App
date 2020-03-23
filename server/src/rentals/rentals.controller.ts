@@ -1,9 +1,8 @@
-import { Controller, Get, Post, Body, ValidationPipe, Param, Put, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
+import { Controller, Get, Post, Body, ValidationPipe, Param, Put } from '@nestjs/common';
 import { RentalsService } from './rentals.service';
 import { RentCarDTO } from './models/rentCar-dto';
-import { RentedCar } from '../database/entities/rentals.entity';
+import { RentalDTO } from './models/rental-dto';
 
-@UseInterceptors(ClassSerializerInterceptor)
 @Controller('rentals')
 export class RentalsController {
 
@@ -12,18 +11,18 @@ export class RentalsController {
   ) { }
 
   @Get()
-  async getRentals(): Promise<RentedCar[]>  {
+  async getRentals(): Promise<RentalDTO[]>  {
     return await this.rentalsService.getRenals();
   }
 
   @Post()
-  async rentCar(@Body(new ValidationPipe({ transform: true, whitelist: true })) body: RentCarDTO ): Promise<RentedCar>  {
+  async rentCar(@Body(new ValidationPipe({ transform: true, whitelist: true })) body: RentCarDTO ): Promise<RentalDTO>  {
     const { carId, estimatedDate, client } = body;
     return await this.rentalsService.rentCar(carId, estimatedDate, client);
   }
 
   @Put('/:rentalId')
-  async returnCar(@Param('rentalId') rentalId: string): Promise<RentedCar>  {
+  async returnCar(@Param('rentalId') rentalId: string): Promise<RentalDTO>  {
     return await this.rentalsService.returnCar(rentalId);
   }
 }
