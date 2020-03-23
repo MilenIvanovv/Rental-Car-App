@@ -3,8 +3,7 @@ const moment = require('moment');
 module.exports = {
   HappyPath(browser) {
 
-    const afterOneMonth = (moment(new Date(), 'YYYY-MM-DDTHH:mm').add(5, 'days')).format('YYYY-MM-DDTHH:mm');
-    // const afterOneMonth = (moment(new Date(), 'YYYY-MM-DD').add(5, 'days')).format('YYYY-MM-DD');
+    const afterOneMonth = (moment(new Date(), 'YYYY-MM-DD').add(5, 'days')).format('YYYY-MM-DD');
 
     browser.searchModel = function (selector, model) {
       const self = this;
@@ -29,7 +28,7 @@ module.exports = {
       .setValue('input[data=firstName]', 'RandomName')
       .setValue('input[data=lastName]', 'RandomName')
       .setValue('input[data=age]', '25')
-      .setValue('input[data=date]', afterOneMonth)
+      .click(`[data-date='${afterOneMonth}']`)
       .click('button[data=confirm]')
       .waitForElementVisible('[data=current_rentals_model]')
       .assert.containsText('[data=current_rentals_model]', 'Ford')
