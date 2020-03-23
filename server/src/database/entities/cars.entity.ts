@@ -9,7 +9,6 @@ export class Car extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Transform((carClass: CarClass) => carClass.name)
   @ManyToOne(type => CarClass, carClass => carClass.car)
   @JoinColumn()
   class: CarClass;
@@ -26,8 +25,4 @@ export class Car extends BaseEntity {
   @OneToMany(type => RentedCar, rentedCar => rentedCar.car)
   @JoinColumn()
   rentals: RentedCar[];
-
-  @Expose()
-  @Transform((carClass: CarClass, car) => car.class.price)
-  price?: number;
 }
