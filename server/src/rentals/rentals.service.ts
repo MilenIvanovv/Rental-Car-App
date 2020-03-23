@@ -8,6 +8,7 @@ import { RentalStatus } from '../common/rental-status.enum';
 import { CarStatus } from '../common/car-status.enum';
 import { plainToClass } from 'class-transformer';
 import { RentalDTO } from './models/rental-dto';
+import { CalculateRentService } from './calculate-rent.service';
 
 
 
@@ -18,6 +19,7 @@ export class RentalsService {
   constructor(
     @InjectRepository(RentedCar) private readonly rentalsRepository: Repository<RentedCar>,
     @InjectRepository(Car) private readonly carRepository: Repository<Car>,
+    private readonly calculate: CalculateRentService,
   ) { }
 
   async getRenals() {
@@ -26,9 +28,8 @@ export class RentalsService {
     return plainToClass(RentalDTO, rentals);
   }
 
-  async rentCar(carId: number, estimatedDate: Date, client: ClientDTO,
-  ) {
-    const carToRent = await this.carRepository.findOne(carId);
+  async rentCar(carId: number, estimatedDate: Date, client: ClientDTO, ) {
+    const carToRent = await this.carRepository.findOne({ where: { id: carId }, relations: ['class'] });
 
     if (!carToRent) {
       throw new NotFoundException(`Car with ${carId} was not found`);
@@ -38,14 +39,26 @@ export class RentalsService {
       throw new BadRequestException(`Car with ${carId} is borrowed`);
     }
 
+    const days = this.calculate.days(new Date(), new Date(estimatedDate));
+    const pricePerDay = this.calculate.applyAllToPrice(carToRent.class.price, days, client.age);
+
     carToRent.status = CarStatus.borrowed;
 
-    const rental = await getManager().transaction(async transactionalEntityManager => {
+    const rental = {
+      car: carToRent,
+      estimatedDate,
+      dateFrom: new Date(),
+      status: RentalStatus.open,
+      pricePerDay,
+      ...client
+    }
+
+    const newRental = await getManager().transaction(async transactionalEntityManager => {
       await transactionalEntityManager.getRepository(Car).save(carToRent);
-      return await transactionalEntityManager.getRepository(RentedCar).save({ car: carToRent, estimatedDate, dateFrom: new Date(), status: RentalStatus.open, ...client });
+      return await transactionalEntityManager.getRepository(RentedCar).save(rental);
     });
 
-    return plainToClass(RentalDTO, rental);
+    return plainToClass(RentalDTO, newRental);
   }
 
   async returnCar(rentalId: string,
