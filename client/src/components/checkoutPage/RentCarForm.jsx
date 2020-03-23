@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { setRentals } from '../../actions/setRentalsAction';
 import { setCars } from '../../actions/setCarsAction';
 import setRentalCarForm from '../../actions/setRentCarFormActions';
+import InfiniteCalendar from 'react-infinite-calendar';
 
 import './checkoutPage.css';
 
@@ -20,7 +21,12 @@ class RentCarForm extends Component {
         {this.formInput({ title: 'First Name', type: 'text', name: 'firstName', data: 'firstName' })}
         {this.formInput({ title: 'Last name', type: 'text', name: 'lastName', data: 'lastName' })}
         {this.formInput({ title: 'Age', type: 'number', name: 'age', data: 'age' })}
-        {this.formInput({ title: 'Return date', type: 'datetime-local', name: 'returnDate', data: 'date' })}
+        <InfiniteCalendar
+          width={400}
+          height={300}
+          selected={this.props.rentCarForm.returnDate.value}
+          onSelect={(val) => this.handleChange({ target: { value: val, name: 'returnDate' }})}
+        />,
       </form>
     );
   }

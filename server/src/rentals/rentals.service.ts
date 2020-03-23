@@ -44,7 +44,7 @@ export class RentalsService {
 
   async returnCar(rentalId: string,
   ) {
-    const rental = await this.rentalsRepository.findOne({ where: { id: rentalId }, relations: ['car'] });
+    const rental = await this.rentalsRepository.findOne({ where: { id: rentalId }, relations: ['car', 'car.class'] });
 
     if (!rental) {
       throw new NotFoundException(`Contract with id ${rentalId} not found`);
