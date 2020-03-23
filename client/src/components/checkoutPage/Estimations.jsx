@@ -29,6 +29,7 @@ export class Estimations extends Component {
 
   componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps.rentCarForm) !== JSON.stringify(this.props.rentCarForm)) {
+      console.log('asdf')
       this.estimatePrices();
     }
   }
@@ -44,7 +45,7 @@ export class Estimations extends Component {
     const { car } = this.props;
 
     const days = calculate.days(new Date(), new Date(returnDate));
-    const pricePerDay = calculate.applyAllToPrice(car.class.price, days, age);
+    const pricePerDay = calculate.applyAllToPrice(car.price, days, age);
     const totalPrice = calculate.totalPrice(pricePerDay, days);
 
     this.setState({
@@ -64,14 +65,16 @@ export class Estimations extends Component {
     } = this.props.rentCarForm;
 
     const client = {
-      firstName, lastName, age,
+      firstName: firstName.value,
+      lastName: lastName.value,
+      age: age.value,
     };
 
     try {
       this.setState({ isDisabled: true })
       await new Promise((res) => setTimeout(res, 1000));
       await axios.post(`${API_ROOT}/rentals`, {
-        estimatedDate: new Date(returnDate),
+        estimatedDate: new Date(returnDate.value),
         client,
         carId: car.id,
       });
