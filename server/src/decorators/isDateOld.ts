@@ -1,7 +1,7 @@
-import {registerDecorator, ValidationOptions, ValidationArguments} from "class-validator";
+import { registerDecorator, ValidationOptions, ValidationArguments } from "class-validator";
 
 export function IsDateOld(property?: string, validationOptions?: ValidationOptions) {
-   return function (object: Object, propertyName: string) {
+    return function (object: Object, propertyName: string) {
         registerDecorator({
             name: "IsDateOld",
             target: object.constructor,
@@ -9,11 +9,11 @@ export function IsDateOld(property?: string, validationOptions?: ValidationOptio
             options: validationOptions,
             validator: {
                 validate(value: any, args: ValidationArguments) {
-                  const date = new Date(value);
-                  const now  = new Date();
-                    return !!(date.getTime() - now.getTime())
+                    const date = new Date(value);
+                    const now = new Date();
+                    return date.getTime() - now.getTime() <= 0 ? false : true;
                 }
             }
         });
-   };
+    };
 }
