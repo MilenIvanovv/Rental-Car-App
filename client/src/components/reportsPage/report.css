@@ -1,0 +1,8 @@
+.align-card-text {
+  display: flex;
+}
+
+.align-card-text .section {
+  display: flex;
+  flex-direction: column;
+}

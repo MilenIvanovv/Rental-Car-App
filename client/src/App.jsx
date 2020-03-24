@@ -9,6 +9,7 @@ import CheckoutPage from './components/checkoutPage/CheckoutPage';
 import combinedReducer from './reducers/index';
 import ReduxToastr from 'react-redux-toastr';
 import NotFoundPage from './components/common/NotFoundPage';
+import ReportsPage from './components/reportsPage/ReportsPage';
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -36,6 +37,9 @@ export default function App() {
           </Route>
           <Route path="/cars">
             <CarsPage />
+          </Route>
+          <Route path="/reports">
+            <ReportsPage />
           </Route>
           <Route path="/not-found">
             <NotFoundPage />
