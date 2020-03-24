@@ -1,8 +1,12 @@
-.align-card-text {
+.report-card {
+  width: 18rem;
+}
+
+.report-card .align-card-text {
   display: flex;
 }
 
-.align-card-text .section {
+.report-card .align-card-text .section {
   display: flex;
   flex-direction: column;
 }

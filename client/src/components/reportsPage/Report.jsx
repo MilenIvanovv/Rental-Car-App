@@ -9,8 +9,8 @@ export default function Report(props) {
 
 
   return (
-    <Card
-      style={{ width: '18rem' }}
+    <Card className="report-card"
+      
     >
       <Card.Header>Average days per class</Card.Header>
       <Card.Body>
