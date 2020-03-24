@@ -29,7 +29,6 @@ export class Estimations extends Component {
 
   componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps.rentCarForm) !== JSON.stringify(this.props.rentCarForm)) {
-      console.log('asdf')
       this.estimatePrices();
     }
   }
