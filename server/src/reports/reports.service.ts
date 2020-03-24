@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { Car } from 'src/database/entities/cars.entity';
 import { RentalStatus } from 'src/common/rental-status.enum';
 import { CarClass } from 'src/database/entities/class.entity';
-import { CalculateRentService } from 'src/rentals/calculate-rent.service';
+import { CalculateRentService } from 'src/core/calculate-rent.service';
 import { AverageDaysByClass } from './models/averageDaysByClass';
 
 @Injectable()
@@ -29,14 +29,14 @@ export class ReportsService {
   private getAverageDaysByClass(carClass: CarClass, rentals: RentedCar[]): AverageDaysByClass {
     const result = rentals.reduce((acc, rental) => {
       
-      console.log("ReportsService -> getAverageDaysByClass -> carClass.name", carClass.name)
-      console.log("ReportsService -> getAverageDaysByClass -> rental.car.class.name", rental.car.class.name)
       if (rental.car.class.name !== carClass.name) {
         return acc;
       }
 
       acc.days = this.calculate.days(new Date(rental.dateFrom), new Date(rental.returnDate));
       acc.count++;
+
+      return acc;
     }, { days: 0, count: 0 })
 
     return { class: carClass.name, averageDays: Math.floor(result.days / result.count) };

@@ -8,7 +8,7 @@ import { RentalStatus } from '../common/rental-status.enum';
 import { CarStatus } from '../common/car-status.enum';
 import { plainToClass } from 'class-transformer';
 import { RentalDTO } from './models/rental-dto';
-import { CalculateRentService } from './calculate-rent.service';
+import { CalculateRentService } from '../core/calculate-rent.service';
 
 
 
