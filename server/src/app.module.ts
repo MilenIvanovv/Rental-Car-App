@@ -5,9 +5,10 @@ import { ConfigModule } from './config/config.module';
 import { DatabaseModule } from './database/database.module';
 import { CarsModule } from './cars/cars.module';
 import { RentalsModule } from './rentals/rentals.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
-  imports: [ConfigModule, DatabaseModule, CarsModule, RentalsModule],
+  imports: [ConfigModule, DatabaseModule, CarsModule, RentalsModule, ReportsModule],
   controllers: [AppController],
   providers: [AppService],
 })
