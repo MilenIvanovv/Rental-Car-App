@@ -7,6 +7,7 @@ export default [{
   estimatedDate: 'Mon Feb 24 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
   returnDate: 'Mon Feb 25 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
   dateFrom: 'Mon Feb 23 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
+  pricePerDay: 50,
 },
 {
   car: 2,
@@ -17,6 +18,7 @@ export default [{
   estimatedDate: 'Mon Feb 24 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
   returnDate: 'Mon Feb 25 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
   dateFrom: 'Mon Feb 23 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
+  pricePerDay: 50,
 },
 {
   car: 3,
@@ -27,4 +29,5 @@ export default [{
   estimatedDate: 'Mon Feb 24 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
   returnDate: 'Mon Feb 25 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
   dateFrom: 'Mon Feb 23 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
+  pricePerDay: 50,
 }];

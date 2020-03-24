@@ -26,6 +26,9 @@ export class RentalDTO {
 
   dateFrom: Date;
 
+  @Exclude()
+  pricePerDay: number;
+
   @Expose()
   @Transform((value, rental: RentalDTO) => ({
     firstName: rental.firstName,

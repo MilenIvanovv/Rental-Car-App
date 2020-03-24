@@ -5,7 +5,7 @@ export default [{
   picture: 'https://bg.autodata24.com/i/audi/a3/a3-8p/medium/bac5aad7209a0d274208a8c982bdc020.jpg',
   class: 5,
   status: CarStatus.borrowed,
-  insureFeePerYear: 100,
+  insuranceFeePerYear: 100,
   monthlyExpences: 10,
 },
 {
@@ -13,7 +13,7 @@ export default [{
   picture: 'https://bg.autodata24.com/i/audi/a3/a3-8p/medium/bac5aad7209a0d274208a8c982bdc020.jpg',
   class: 4,
   status: CarStatus.borrowed,
-  insureFeePerYear: 200,
+  insuranceFeePerYear: 200,
   monthlyExpences: 20,
 },
 {
@@ -21,7 +21,7 @@ export default [{
   picture: 'https://bg.autodata24.com/i/audi/a3/a3-8p/medium/bac5aad7209a0d274208a8c982bdc020.jpg',
   class: 3,
   status: CarStatus.borrowed,
-  insureFeePerYear: 300,
+  insuranceFeePerYear: 300,
   monthlyExpences: 30,
 },
 {
@@ -29,7 +29,7 @@ export default [{
   picture: 'https://bg.autodata24.com/i/audi/a3/a3-8p/medium/bac5aad7209a0d274208a8c982bdc020.jpg',
   class: 2,
   status: CarStatus.listed,
-  insureFeePerYear: 100,
+  insuranceFeePerYear: 100,
   monthlyExpences: 10,
 },
 {
@@ -37,7 +37,7 @@ export default [{
   picture: 'https://bg.autodata24.com/i/audi/a3/a3-8p/medium/bac5aad7209a0d274208a8c982bdc020.jpg',
   class: 2,
   status: CarStatus.listed,
-  insureFeePerYear: 200,
+  insuranceFeePerYear: 200,
   monthlyExpences: 20,
 },
 {
@@ -45,7 +45,7 @@ export default [{
   picture: 'https://bg.autodata24.com/i/audi/a3/a3-8p/medium/bac5aad7209a0d274208a8c982bdc020.jpg',
   class: 1,
   status: CarStatus.listed,
-  insureFeePerYear: 300,
+  insuranceFeePerYear: 300,
   monthlyExpences: 30,
 },
 {
@@ -53,7 +53,7 @@ export default [{
   picture: 'https://bg.autodata24.com/i/audi/a3/a3-8p/medium/bac5aad7209a0d274208a8c982bdc020.jpg',
   class: 1,
   status: CarStatus.listed,
-  insureFeePerYear: 200,
+  insuranceFeePerYear: 200,
   monthlyExpences: 20,
 },
 ];
