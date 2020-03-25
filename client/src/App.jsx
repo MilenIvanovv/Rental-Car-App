@@ -13,7 +13,6 @@ import NotFoundPage from './components/common/NotFoundPage';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
-import 'react-infinite-calendar/styles.css';
 
 const store = createStore(combinedReducer,
   // eslint-disable-next-line no-underscore-dangle
