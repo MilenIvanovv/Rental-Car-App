@@ -83,7 +83,7 @@ class RentCarForm extends Component {
           data="date"
           className="form-control"
           selected={new Date(this.props.rentCarForm.returnDate.value)}
-          onChange={(val) => this.handleChange({ target: { value: val, name: 'returnDate' } })}
+          onChange={(val) => this.handleChange({ target: { value: val || new Date(), name: 'returnDate' } })}
           showTimeSelect
           minDate={new Date()}
           timeFormat="HH:mm"
