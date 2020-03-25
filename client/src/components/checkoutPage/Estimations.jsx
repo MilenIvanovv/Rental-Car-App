@@ -29,7 +29,6 @@ export class Estimations extends Component {
 
   componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps.rentCarForm) !== JSON.stringify(this.props.rentCarForm)) {
-      console.log('asdf')
       this.estimatePrices();
     }
   }
@@ -37,12 +36,12 @@ export class Estimations extends Component {
   estimatePrices() {
     const age = this.props.rentCarForm.age.value;
     const returnDate = this.props.rentCarForm.returnDate.value;
+    const { car } = this.props;
 
-    if (age.value === '' || returnDate === '') {
+    if (car && (age.value === '' || returnDate === '')) {
       return;
     }
 
-    const { car } = this.props;
 
     const days = calculate.days(new Date(), new Date(returnDate));
     const pricePerDay = calculate.applyAllToPrice(car.price, days, age);
@@ -81,15 +80,13 @@ export class Estimations extends Component {
       await this.getCurrentRentals();
       await this.getCars();
       this.props.resetForm();
-      this.setState({
-        redirect: '/current-rentals',
-        isDisabled: false,
-      });
+      this.setState({ redirect: '/current-rentals' });
       toastr.success('Car rented', 'You successfully rented a car!');
     } catch (error) {
       toastr.error('Car renting failed', 'Error occureed while renting a car!');
       console.log(error);
     }
+    this.setState({ isDisabled: false })
   }
 
   async getCurrentRentals() {

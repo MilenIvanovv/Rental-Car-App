@@ -32,6 +32,6 @@ export class RentedCar extends BaseEntity {
   @Column({ type: 'timestamp', nullable: false })
   dateFrom: Date;
 
-  @Column({ type: 'integer', nullable: false })
+  @Column({ type: 'real', nullable: false })
   pricePerDay: number;
 }

@@ -44,7 +44,9 @@ export const penalty = (price, penaltyDays) => {
     newPrice = (price * 100) / 100;
   }
 
-  return (Math.floor(newPrice * 100) / 100) * penaltyDays;
+  newPrice = (Math.floor(newPrice * 100) / 100);
+
+  return { pricePerDayPenalty: newPrice, totalPenalty: newPrice * penaltyDays };
 };
 
 export const applyAllToPrice = (price, daysRented, age) => {

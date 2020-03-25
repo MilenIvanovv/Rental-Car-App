@@ -18,7 +18,7 @@ export default function RentedCarsRow(props) {
         {' $'}
       </td>
       <td>{rental.curDaysRented}</td>
-      <td>
+      <td className={rental.hasPenalty ? 'red-penalty' : ''}>
         {rental.curPricePerDay}
         {' $'}
       </td>

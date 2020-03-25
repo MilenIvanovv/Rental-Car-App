@@ -22,10 +22,10 @@ export class Car extends BaseEntity {
   @Column({ type: 'enum', enum: ['borrowed', 'listed'], nullable: true})
   status: CarStatus;
 
-  @Column({ type: 'integer', nullable: false })
+  @Column({ type: 'real', nullable: false })
   insuranceFeePerYear: number;
 
-  @Column({ type: 'integer', nullable: false })
+  @Column({ type: 'real', nullable: false })
   monthlyExpences: number;
   
   @OneToMany(type => RentedCar, rentedCar => rentedCar.car)

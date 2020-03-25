@@ -51,7 +51,9 @@ export class CalculateRentService {
       newPrice = (price * 100) / 100;
     }
 
-    return (Math.floor(newPrice * 100) / 100) * penaltyDays;
+    newPrice = (Math.floor(newPrice * 100) / 100);
+
+    return { pricePerDayPenalty: newPrice, totalPenalty: newPrice * penaltyDays };
   };
 
   applyAllToPrice(price: number, daysRented: number, age: number) {
