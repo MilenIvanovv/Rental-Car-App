@@ -33,7 +33,6 @@ class RentCarForm extends Component {
   }
 
   handleChange(ev) {
-    console.log(ev.target.name)
     const name = ev.target.name;
     const value = ev.target.value;
     const form = this.props.rentCarForm;
