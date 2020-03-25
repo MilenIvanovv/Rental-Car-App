@@ -5,7 +5,6 @@ import { setRentals } from '../../actions/setRentalsAction';
 import { setCars } from '../../actions/setCarsAction';
 import setRentalCarForm from '../../actions/setRentCarFormActions';
 import DatePicker from 'react-datepicker';
-import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css"
 import './rentCarForm.css';
 
@@ -86,7 +85,7 @@ class RentCarForm extends Component {
           selected={new Date(this.props.rentCarForm.returnDate.value)}
           onChange={(val) => this.handleChange({ target: { value: val, name: 'returnDate' } })}
           showTimeSelect
-          minDate={new Date(moment().add(-2, 'days'))}
+          minDate={new Date()}
           timeFormat="HH:mm"
           timeIntervals={60}
           timeCaption="time"
