@@ -101,7 +101,8 @@ describe('CalculateRentService', () => {
   
       const result = calucalate.penalty(price, penaltyDays);
   
-      expect(result).toEqual(40);
+      
+      expect(result).toEqual({ pricePerDayPenalty: 20, totalPenalty: 40 });
     });
   
     it('should increase if penalty days is between 2 and 6 with 50%', () => {
@@ -110,7 +111,7 @@ describe('CalculateRentService', () => {
   
       const result = calucalate.penalty(price, penaltyDays);
   
-      expect(result).toEqual(150);
+      expect(result).toEqual({ pricePerDayPenalty: 50, totalPenalty: 150 });
     });
   
     it('should increase if penalty days is >= 6 with 100%', () => {
@@ -119,7 +120,7 @@ describe('CalculateRentService', () => {
   
       const result = calucalate.penalty(price, penaltyDays);
   
-      expect(result).toEqual(700);
+      expect(result).toEqual({ pricePerDayPenalty: 100, totalPenalty: 700 });
     });
   });
 });

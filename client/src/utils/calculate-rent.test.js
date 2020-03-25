@@ -1,11 +1,11 @@
-import * as calucalte from './calculate-rent';
+import * as calucalate from './calculate-rent';
 
 describe('calculate days', () => {
   it('should calculate correct on 1 day diff', () => {
     const date1 = new Date(2020, 1, 12, 10);
     const date2 = new Date(2020, 1, 13, 10);
   
-    const result = calucalte.days(date1, date2);
+    const result = calucalate.days(date1, date2);
   
     expect(result).toEqual(1);
   });
@@ -14,7 +14,7 @@ describe('calculate days', () => {
     const date1 = new Date(2020, 1, 12, 10);
     const date2 = new Date(2020, 1, 13, 10, 1);
   
-    const result = calucalte.days(date1, date2);
+    const result = calucalate.days(date1, date2);
   
     expect(result).toEqual(2);
   });
@@ -23,7 +23,7 @@ describe('calculate days', () => {
     const date1 = new Date(2020, 1, 12, 10);
     const date2 = new Date(2020, 1, 13, 9);
   
-    const result = calucalte.days(date1, date2);
+    const result = calucalate.days(date1, date2);
   
     expect(result).toEqual(1);
   });
@@ -34,7 +34,7 @@ describe('calculate applyDaysToPrice', () => {
     const days = 1;
     const price = 3;
 
-    const result = calucalte.applyDaysToPrice(price, days);
+    const result = calucalate.applyDaysToPrice(price, days);
 
     expect(result).toEqual(price);
   });
@@ -43,7 +43,7 @@ describe('calculate applyDaysToPrice', () => {
     const days = 3;
     const price = 100;
 
-    const result = calucalte.applyDaysToPrice(price, days);
+    const result = calucalate.applyDaysToPrice(price, days);
 
     expect(result).toEqual(85);
   });
@@ -52,7 +52,7 @@ describe('calculate applyDaysToPrice', () => {
     const days = 9;
     const price = 100;
 
-    const result = calucalte.applyDaysToPrice(price, days);
+    const result = calucalate.applyDaysToPrice(price, days);
 
     expect(result).toEqual(75);
   });
@@ -63,7 +63,7 @@ describe('calculate applyAgeToPrice', () => {
     const age = 22;
     const price = 100;
 
-    const result = calucalte.applyAgeToPrice(price, age);
+    const result = calucalate.applyAgeToPrice(price, age);
 
     expect(result).toEqual(125);
   });
@@ -72,7 +72,7 @@ describe('calculate applyAgeToPrice', () => {
     const age = 26;
     const price = 100;
 
-    const result = calucalte.applyAgeToPrice(price, age);
+    const result = calucalate.applyAgeToPrice(price, age);
 
     expect(result).toEqual(price);
   });
@@ -83,27 +83,28 @@ describe('calculate penalty', () => {
     const penaltyDays = 2;
     const price = 100;
 
-    const result = calucalte.penalty(price, penaltyDays);
+    const result = calucalate.penalty(price, penaltyDays);
 
-    expect(result).toEqual(40);
+    
+    expect(result).toEqual({ pricePerDayPenalty: 20, totalPenalty: 40 });
   });
 
   it('should increase if penalty days is between 2 and 6 with 50%', () => {
     const penaltyDays = 3;
     const price = 100;
 
-    const result = calucalte.penalty(price, penaltyDays);
+    const result = calucalate.penalty(price, penaltyDays);
 
-    expect(result).toEqual(150);
+    expect(result).toEqual({ pricePerDayPenalty: 50, totalPenalty: 150 });
   });
 
   it('should increase if penalty days is >= 6 with 100%', () => {
     const penaltyDays = 7;
     const price = 100;
 
-    const result = calucalte.penalty(price, penaltyDays);
+    const result = calucalate.penalty(price, penaltyDays);
 
-    expect(result).toEqual(700);
+    expect(result).toEqual({ pricePerDayPenalty: 100, totalPenalty: 700 });
   });
 });
 
