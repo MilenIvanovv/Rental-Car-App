@@ -44,7 +44,7 @@ class RentCarForm extends Component {
   validateInput(form, name) {
     const tempForm = JSON.parse(JSON.stringify(form));
 
-    tempForm[name].error = tempForm[name].value === '' ? 'Cannot be empty' : '';
+    tempForm[name].error = tempForm[name].value === '' ? 'cannot be empty!' : '';
     tempForm.isFormValid = !Object.values(tempForm)
       .some((x) => x.error && (x.error !== 'not touched' || x.error !== ''));
 
@@ -55,8 +55,8 @@ class RentCarForm extends Component {
     const input = this.props.rentCarForm[name];
     const isFormValid = this.props.rentCarForm.isFormValid;
     const error = !(input.error === '' || input.error === 'not touched') ? input.error : null;
-    const errorMsg = (<small id="emailHelp" className="form-text text-muted">
-      {`First name ${error}`}
+    const errorMsg = (<small className="form-text not-valid">
+      {`${title} ${error}`}
     </small>);
 
     return (
