@@ -23,7 +23,7 @@ export default class ReportsPage extends Component {
 
   async getReportAverageDaysPerClass() {
     let report;
-    this.setState({ loadingCars: true })
+    this.setState({ loadingReports: true })
     await new Promise((res) => setTimeout(res, 1000));
     try {
       report = await axios.get(`${API_ROOT}/reports/class/averageDays`);
@@ -31,7 +31,7 @@ export default class ReportsPage extends Component {
     } catch (error) {
       console.log(error);
     }
-    this.setState({ loadingCars: false })
+    this.setState({ loadingReports: false })
   }
 
   render() {
@@ -39,7 +39,7 @@ export default class ReportsPage extends Component {
       <Container>
         <Row className="mb-3">
           <Col>
-            <Report report={this.state.averageDaysPerClass}/>
+            <Report report={this.state.averageDaysPerClass} loading={this.state.loadingReports}/>
           </Col>
         </Row>
       </Container>
