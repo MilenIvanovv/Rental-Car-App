@@ -7,9 +7,6 @@ import setRentalCarForm from '../../actions/setRentCarFormActions';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css"
-
-import "react-datepicker/dist/react-datepicker.css";
-import 'bootstrap/dist/css/bootstrap.css';
 import './rentCarForm.css';
 
 
