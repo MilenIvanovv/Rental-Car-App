@@ -1,57 +1,65 @@
-export const days = (from, to) => {
-  const timeInMs = to - from;
-  const timeInDays = timeInMs / (1000 * 3600 * 24);
-  
-  return Math.ceil(timeInDays);
-};
+import { Injectable } from '@nestjs/common';
 
-export const totalPrice = (price, daysRented) => Math.floor(price * daysRented * 100) / 100;
+@Injectable()
+export class CalculateRentService {
 
-export const applyDaysToPrice = (price, daysRented) => {
-  let newPrice;
+  days(from: Date, to: Date) {
+    const timeInMs = to as any - (from as any);
+    const timeInDays = timeInMs / (1000 * 3600 * 24);
 
-  if (daysRented < 2) {
-    newPrice = price;
-  } else if (daysRented >= 2 && daysRented < 7) {
-    newPrice = (price - ((price * 15) / 100));
-  } else {
-    newPrice = (price - ((price * 25) / 100));
+    return Math.ceil(timeInDays);
+  };
+
+  totalPrice(price: number, daysRented: number) {
+    return Math.floor(price * daysRented * 100) / 100;
   }
 
-  return Math.floor(newPrice * 100) / 100;
-};
+  applyDaysToPrice(price: number, daysRented: number) {
+    let newPrice: number;
 
-export const applyAgeToPrice = (price, age) => {
-  let newPrice;
+    if (daysRented < 2) {
+      newPrice = price;
+    } else if (daysRented >= 2 && daysRented < 7) {
+      newPrice = (price - ((price * 15) / 100));
+    } else {
+      newPrice = (price - ((price * 25) / 100));
+    }
 
-  if (age <= 25) {
-    newPrice = (price + ((price * 25) / 100));
-  } else {
-    newPrice = price;
-  }
+    return Math.floor(newPrice * 100) / 100;
+  };
 
-  return Math.floor(newPrice * 100) / 100;
-};
+  applyAgeToPrice(price: number, age: number) {
+    let newPrice: number;
 
-export const penalty = (price, penaltyDays) => {
-  let newPrice;
+    if (age <= 25) {
+      newPrice = (price + ((price * 25) / 100));
+    } else {
+      newPrice = price;
+    }
 
-  if (penaltyDays <= 2) {
-    newPrice = (price * 20) / 100;
-  } else if (penaltyDays < 6) {
-    newPrice = (price * 50) / 100;
-  } else if (penaltyDays >= 6) {
-    newPrice = (price * 100) / 100;
-  }
+    return Math.floor(newPrice * 100) / 100;
+  };
 
-  newPrice = (Math.floor(newPrice * 100) / 100);
+  penalty(price: number, penaltyDays: number) {
+    let newPrice: number;
 
-  return { pricePerDayPenalty: newPrice, totalPenalty: newPrice * penaltyDays };
-};
+    if (penaltyDays <= 2) {
+      newPrice = (price * 20) / 100;
+    } else if (penaltyDays < 6) {
+      newPrice = (price * 50) / 100;
+    } else if (penaltyDays >= 6) {
+      newPrice = (price * 100) / 100;
+    }
 
-export const applyAllToPrice = (price, daysRented, age) => {
-  const changeFromDays = applyDaysToPrice(price, daysRented) - price;
-  const changeFromAge = applyAgeToPrice(price, age) - price;
+    newPrice = (Math.floor(newPrice * 100) / 100);
 
-  return (price + changeFromDays + changeFromAge);
-};
+    return { pricePerDayPenalty: newPrice, totalPenalty: newPrice * penaltyDays };
+  };
+
+  applyAllToPrice(price: number, daysRented: number, age: number) {
+    const changeFromDays = this.applyDaysToPrice(price, daysRented) - price;
+    const changeFromAge = this.applyAgeToPrice(price, age) - price;
+
+    return (price + changeFromDays + changeFromAge);
+  };
+}

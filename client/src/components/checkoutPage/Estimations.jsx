@@ -80,15 +80,13 @@ export class Estimations extends Component {
       await this.getCurrentRentals();
       await this.getCars();
       this.props.resetForm();
-      this.setState({
-        redirect: '/current-rentals',
-        isDisabled: false,
-      });
+      this.setState({ redirect: '/current-rentals' });
       toastr.success('Car rented', 'You successfully rented a car!');
     } catch (error) {
       toastr.error('Car renting failed', 'Error occureed while renting a car!');
       console.log(error);
     }
+    this.setState({ isDisabled: false })
   }
 
   async getCurrentRentals() {
