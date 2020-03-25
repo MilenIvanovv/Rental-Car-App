@@ -36,12 +36,12 @@ export class Estimations extends Component {
   estimatePrices() {
     const age = this.props.rentCarForm.age.value;
     const returnDate = this.props.rentCarForm.returnDate.value;
+    const { car } = this.props;
 
-    if (age.value === '' || returnDate === '') {
+    if (car && (age.value === '' || returnDate === '')) {
       return;
     }
 
-    const { car } = this.props;
 
     const days = calculate.days(new Date(), new Date(returnDate));
     const pricePerDay = calculate.applyAllToPrice(car.price, days, age);
