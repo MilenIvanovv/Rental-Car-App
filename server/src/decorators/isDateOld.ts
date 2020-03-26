@@ -1,7 +1,7 @@
 import { registerDecorator, ValidationOptions, ValidationArguments } from "class-validator";
 
 export function IsDateOld(property?: string, validationOptions?: ValidationOptions) {
-    return function (object: Object, propertyName: string) {
+    return function (object: any, propertyName: string) {
         registerDecorator({
             name: "IsDateOld",
             target: object.constructor,
