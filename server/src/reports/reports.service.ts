@@ -7,6 +7,8 @@ import { RentalStatus } from 'src/common/rental-status.enum';
 import { CarClass } from 'src/database/entities/class.entity';
 import { CalculateRentService } from 'src/core/calculate-rent.service';
 import { AverageDaysByClass } from './models/averageDaysByClass';
+import { CarStatus } from 'src/common/car-status.enum';
+import { CurRentedByClass } from './models/currentlyRentedCarsByClass';
 
 @Injectable()
 export class ReportsService {
@@ -24,6 +26,35 @@ export class ReportsService {
 
     return classes.reduce((acc, carClass) =>
       (acc.push(this.getAverageDaysByClass(carClass, rentals)), acc), [])
+  }
+
+  async getCurrentlyRentedCars(): Promise<CurRentedByClass[]> {
+    const classes = await this.classRepository.find();
+    const cars = await this.carRepository.find({ where: { status: CarStatus.borrowed }, relations: ['class'] });
+
+    return classes.reduce((acc, carClass) => {
+      const result = cars.reduce((innerAcc, car) => {
+        if (car.class.name !== carClass.name) {
+          return innerAcc;
+        }
+
+        if (car.status === CarStatus.borrowed) {
+          innerAcc.rented ++;
+        }
+        innerAcc.total++;
+
+        return innerAcc;
+      }, { rented: 0, total: 0 });
+
+      const report = { 
+        class: carClass.name, 
+        curRented: Math.floor((100 * result.total) / result.rented) || 0,
+      }
+
+      acc.push(report);
+
+      return acc;
+    }, [])
   }
 
   private getAverageDaysByClass(carClass: CarClass, rentals: RentedCar[]): AverageDaysByClass {
