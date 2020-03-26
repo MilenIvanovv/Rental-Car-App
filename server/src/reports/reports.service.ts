@@ -6,9 +6,8 @@ import { Car } from 'src/database/entities/cars.entity';
 import { RentalStatus } from 'src/common/rental-status.enum';
 import { CarClass } from 'src/database/entities/class.entity';
 import { CalculateRentService } from 'src/core/calculate-rent.service';
-import { AverageDaysByClass } from './models/averageDaysByClass';
 import { CarStatus } from 'src/common/car-status.enum';
-import { CurRentedByClass } from './models/currentlyRentedCarsByClass';
+import { ReportPerClass } from './models/reportPerClass';
 
 @Injectable()
 export class ReportsService {
@@ -20,15 +19,15 @@ export class ReportsService {
     private readonly calculate: CalculateRentService,
   ) { }
 
-  async getAverageDaysPerClass(): Promise<AverageDaysByClass[]> {
+  async getAverageDaysPerClass(): Promise<ReportPerClass<number>[]> {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned }, relations: ['car', 'car.class'] });
 
     return classes.reduce((acc, carClass) =>
-      (acc.push(this.getAverageDaysByClass(carClass, rentals)), acc), [])
+      (acc.push(this.getAverageDaysByClass(carClass, rentals)), acc), []);
   }
 
-  async getCurrentlyRentedCars(): Promise<CurRentedByClass[]> {
+  async getCurrentlyRentedCars(): Promise<ReportPerClass<number>[]> {
     const classes = await this.classRepository.find();
     const cars = await this.carRepository.find({ where: { status: CarStatus.borrowed }, relations: ['class'] });
 
@@ -48,7 +47,7 @@ export class ReportsService {
 
       const report = { 
         class: carClass.name, 
-        curRented: Math.floor((100 * result.total) / result.rented) || 0,
+        result: Math.floor((100 * result.total) / result.rented) || 0,
       }
 
       acc.push(report);
@@ -57,7 +56,7 @@ export class ReportsService {
     }, [])
   }
 
-  private getAverageDaysByClass(carClass: CarClass, rentals: RentedCar[]): AverageDaysByClass {
+  private getAverageDaysByClass(carClass: CarClass, rentals: RentedCar[]): ReportPerClass<number> {
     const result = rentals.reduce((acc, rental) => {
       
       if (rental.car.class.name !== carClass.name) {
@@ -70,6 +69,6 @@ export class ReportsService {
       return acc;
     }, { days: 0, count: 0 })
 
-    return { class: carClass.name, averageDays: Math.floor(result.days / result.count) };
+    return { class: carClass.name, result: Math.floor(result.days / result.count) };
   }
 }
