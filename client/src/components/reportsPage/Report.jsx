@@ -7,38 +7,47 @@ export default function Report(props) {
 
   const {
     report,
-    loading
+    title
   } = props;
 
-  const cardText = (
-    <Card.Text className="align-card-text">
-      <span className="section w-50">
-        {report.map((x) => <span key={x.class}>Class: {x.class}</span>)}
+  const cardText = report.data && report.data.map((x) => {
+    const resultWithProps = React.Children
+      .map(props.children, child => React.cloneElement(child, { result: x.result }));
+
+    return (
+      <span key={x.class} className="align-card-text">
+        <span className="section">
+          <span >Class: {x.class}</span>
+        </span>
+        {resultWithProps}
       </span>
-      <span className="section">
-        {report.map((x) => <span key={x.class}>days: {x.averageDays || 0}</span>)}
-      </span>
-    </Card.Text>
-  )
+    );
+  })
 
   return (
     <Card className="report-card">
-      <Card.Header>Average days per class</Card.Header>
+      <Card.Header>{title}</Card.Header>
       <Card.Body>
-        {loading ? <h4>Loading...</h4> : cardText}
+        {report.loading
+          ? <h4>Loading...</h4>
+          : <Card.Text>
+            {cardText}
+          </Card.Text>}
       </Card.Body>
     </Card>
   )
 }
 
-
 Report.propTypes = {
-  report: PropTypes.arrayOf(PropTypes.shape({
-    class: PropTypes.string.isRequired,
-    averageDays: PropTypes.number,
-  })),
+  report: PropTypes.shape({
+    data: PropTypes.arrayOf(PropTypes.shape({
+      class: PropTypes.string.isRequired,
+      result: PropTypes.number,
+    })),
+    loading: PropTypes.bool.isRequired,
+  })
 };
 
 Report.defaultProps = {
-  averageDays: null,
+  result: null,
 };
