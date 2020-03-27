@@ -1,7 +1,8 @@
 import React from 'react'
 import { Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import './report.css'
+import DatePicker from 'react-datepicker';
+import './report.css';
 
 export default function Report(props) {
 
@@ -10,10 +11,15 @@ export default function Report(props) {
     title
   } = props;
 
-  const cardText = report.data && report.data.map((x) => {
-    const resultWithProps = React.Children
-      .map(props.children, child => React.cloneElement(child, { result: x.result }));
+  let resultComp = props.children;
+  let calendar;
+  if (Array.isArray(resultComp)) {
+    resultComp = props.children[0];
+    calendar = props.children[1];
+  }
 
+  const cardText = report.data && report.data.map((x) => {
+    const resultWithProps = React.cloneElement(resultComp, { result: x.result });
     return (
       <span key={x.class} className="align-card-text">
         <span className="section">
@@ -28,6 +34,7 @@ export default function Report(props) {
     <Card className="report-card">
       <Card.Header>{title}</Card.Header>
       <Card.Body>
+        {calendar}
         {report.loading
           ? <h4>Loading...</h4>
           : <Card.Text>

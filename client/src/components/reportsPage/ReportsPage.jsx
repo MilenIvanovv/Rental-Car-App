@@ -6,6 +6,7 @@ import { API_ROOT } from '../../constants/constants';
 import AvgDays from './reportResults/AvgDays';
 import AvgIncomePerMonth from './reportResults/AvgIncomePerMonth';
 import CurrentRentals from './reportResults/CurrentRentals';
+import DatePicker from 'react-datepicker';
 
 
 
@@ -27,6 +28,7 @@ export default class ReportsPage extends Component {
         data: [],
         loading: false,
       },
+      date: new Date(),
     };
   }
 
@@ -50,6 +52,12 @@ export default class ReportsPage extends Component {
           <Col xs={4}>
             <Report title="Average income per class per month" report={averageIncomePerClass}>
               <AvgIncomePerMonth />
+              <DatePicker
+                selected={this.state.date}
+                onChange={this.calendarHandler.bind(this)}
+                showMonthYearPicker
+                inline
+              />
             </Report>
           </Col>
         </Row>
@@ -58,9 +66,18 @@ export default class ReportsPage extends Component {
   }
 
   componentDidMount() {
+    const today = new Date();
+
     this.getReportAverageDaysPerClass();
     this.getReportCurrentlyRentedCarsPerClass();
-    this.getReportAverageIncomePerClass();
+    this.getReportAverageIncomePerClass(today.getFullYear(), today.getMonth());
+  }
+
+  calendarHandler(val) {
+    const date = new Date(val);
+
+    this.setState({ date: date });
+    this.getReportAverageIncomePerClass(date.getFullYear(), date.getMonth());
   }
 
   async getReportAverageDaysPerClass() {
@@ -89,12 +106,12 @@ export default class ReportsPage extends Component {
     this.setState((prevState) => ({ currentlyRentedCarsPerClass: { ...prevState.currentlyRentedCarsPerClass, loading: false } }))
   }
 
-  async getReportAverageIncomePerClass() {
+  async getReportAverageIncomePerClass(year, month) {
     let report;
     this.setState((prevState) => ({ averageIncomePerClass: { ...prevState.averageIncomePerClass, loading: true } }))
     await new Promise((res) => setTimeout(res, 1000));
     try {
-      report = await axios.get(`${API_ROOT}/reports/class/avgMonthlyIncome?year=2020&month=3`, { year: 2020, month: 3});
+      report = await axios.get(`${API_ROOT}/reports/class/avgMonthlyIncome?year=${year}&month=${month}`, { year: 2020, month: 3 });
       this.setState((prevState) => ({ averageIncomePerClass: { ...prevState.averageIncomePerClass, data: report.data } }))
     } catch (error) {
       console.log(error);
