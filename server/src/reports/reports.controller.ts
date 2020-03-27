@@ -1,7 +1,6 @@
-import { Controller, Get, Body, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Body, ValidationPipe, Query } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { ReportPerClass } from './models/reportPerClass';
-import { SelectedMonth } from './models/selectedMonth-dto';
 
 @Controller('reports')
 export class ReportsController {
@@ -19,7 +18,7 @@ export class ReportsController {
   }
 
   @Get('/class/avgMonthlyIncome')
-  async getAverageMonthlyIncome(@Body(new ValidationPipe({ transform: true, whitelist: true })) body: SelectedMonth): Promise<ReportPerClass<number>[]> {
-    return await this.repotsService.getAverageMonthlyIncome(body);
+  async getAverageMonthlyIncome(@Query('year') year: number, @Query('month') month: number ): Promise<ReportPerClass<number>[]> {
+    return await this.repotsService.getAverageMonthlyIncome(+year, +month);
   }
 }

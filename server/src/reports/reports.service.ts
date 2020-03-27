@@ -58,7 +58,7 @@ export class ReportsService {
     return Between(firstDay, lastDay);
   }
 
-  async getAverageMonthlyIncome({ year, month }): Promise<any[]> {
+  async getAverageMonthlyIncome( year: number, month:number ): Promise<any[]> {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInMonth(year, month) }, relations: ['car', 'car.class'] });
     console.log(rentals);
