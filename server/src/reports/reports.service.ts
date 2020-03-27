@@ -51,7 +51,7 @@ export class ReportsService {
     }, []);
   }
 
-  private isInMonth(year, month) {
+  private isInMonth(year: number, month: number) {
     const firstDay = new Date(year, month - 1, 2);
     const lastDay = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0);
 

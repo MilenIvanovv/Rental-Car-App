@@ -1,4 +1,4 @@
-import { Controller, Get, Body } from '@nestjs/common';
+import { Controller, Get, Body, ValidationPipe } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { ReportPerClass } from './models/reportPerClass';
 import { SelectedMonth } from './models/selectedMonth-dto';
@@ -19,7 +19,7 @@ export class ReportsController {
   }
 
   @Get('/class/avgMonthlyIncome')
-  async getAverageMonthlyIncome(@Body() body: SelectedMonth): Promise<ReportPerClass<number>[]> {
+  async getAverageMonthlyIncome(@Body(new ValidationPipe({ transform: true, whitelist: true })) body: SelectedMonth): Promise<ReportPerClass<number>[]> {
     return await this.repotsService.getAverageMonthlyIncome(body);
   }
 }
