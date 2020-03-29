@@ -24,7 +24,6 @@ export default class ReportsPage extends Component {
   async getReportAverageDaysPerClass() {
     let report;
     this.setState({ loadingReports: true })
-    await new Promise((res) => setTimeout(res, 1000));
     try {
       report = await axios.get(`${API_ROOT}/reports/class/averageDays`);
       this.setState({ averageDaysPerClass: report.data })

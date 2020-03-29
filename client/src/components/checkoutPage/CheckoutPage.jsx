@@ -19,15 +19,8 @@ function CheckoutPage(props) {
     setCarToRent(cars.find((car) => +car.id === +carId));
 
     if (!carToRent) {
-      new Promise((res) => setTimeout(() => {
         axios.get(`${API_ROOT}/cars/${carId}`)
-          .then((data) => {
-            setCarToRent(data.data);
-            res()
-          })
-          .catch(() => {
-          });
-      }, 1000));
+          .then((data) => setCarToRent(data.data))
     }
 
   }, []);

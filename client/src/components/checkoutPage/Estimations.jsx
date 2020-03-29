@@ -71,7 +71,6 @@ export class Estimations extends Component {
 
     try {
       this.setState({ isDisabled: true })
-      await new Promise((res) => setTimeout(res, 1000));
       await axios.post(`${API_ROOT}/rentals`, {
         estimatedDate: new Date(returnDate.value),
         client,
@@ -90,9 +89,6 @@ export class Estimations extends Component {
   }
 
   async getCurrentRentals() {
-    await new Promise((res, rej) => {
-      setTimeout(res, 1000);
-    })
     // eslint-disable-next-line no-shadow
     const { setRentals } = this.props;
     try {
@@ -107,7 +103,6 @@ export class Estimations extends Component {
     const { setCars: dispatchSetCars } = this.props;
 
     let cars;
-    await new Promise((res) => setTimeout(res, 1000));
     try {
       cars = await axios.get(`${API_ROOT}/cars`);
     } catch (error) {

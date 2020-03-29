@@ -29,7 +29,6 @@ class CurrentRentals extends Component {
   }
 
   async returnCar(ev, id) {
-    await new Promise((res) => setTimeout(res, 1000));
     try {
       await axios.put(`${API_ROOT}/rentals/${id}`);
     } catch (error) {
@@ -42,9 +41,6 @@ class CurrentRentals extends Component {
 
   async getCurrentRentals() {
     this.setState({ loadingRentals: true });
-    await new Promise((res, rej) => {
-      setTimeout(res, 1000);
-    })
     // eslint-disable-next-line no-shadow
     const { setRentals } = this.props;
     try {
@@ -60,7 +56,6 @@ class CurrentRentals extends Component {
     const { setCars: dispatchSetCars } = this.props;
 
     let cars;
-    await new Promise((res) => setTimeout(res, 1000));
     try {
       cars = await axios.get(`${API_ROOT}/cars`);
     } catch (error) {
