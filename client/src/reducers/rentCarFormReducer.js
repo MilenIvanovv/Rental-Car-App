@@ -17,7 +17,8 @@ const initialState = {
     error: 'not touched'
   },
   returnDate: {
-    value: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
+    // value: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
+    value: null,
     error: 'not touched'
   },
   isFormValid: false,

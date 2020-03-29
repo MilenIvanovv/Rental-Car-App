@@ -3,7 +3,9 @@ const moment = require('moment');
 module.exports = {
   HappyPath(browser) {
 
-    const afterThreeDays = (moment(new Date()).add(3, 'days')).format('dddd, MMMM Do, YYYY');
+    // const afterThreeDays = (moment(new Date()).add(3, 'days')).format('dddd, MMMM Do, YYYY');
+    const afterThreeDays = (moment(new Date()).add(3, 'days')).format('MMMM d, YYYY h:mm');
+
     console.log(afterThreeDays)
     browser.searchModel = function (selector, model) {
       const self = this;
@@ -28,9 +30,9 @@ module.exports = {
       .setValue('input[data=firstName]', 'Petko')
       .setValue('input[data=lastName]', 'Petkov')
       .setValue('input[data=age]', '25')
-      .setValue('.react-datepicker-wrapper .react-datepicker__input-container input[type=text]', '')
-      .pause(1000)
-      .click(`div[aria-label="Choose ${afterThreeDays}"]`)
+      .setValue('.react-datepicker-wrapper .react-datepicker__input-container input[type=text]', afterThreeDays)
+      .pause(5000)
+      // .click(`div[aria-label="Choose ${afterThreeDays}"]`)
       .click('button[data=confirm]')
       .waitForElementVisible('[data=current_rentals_model]')
       .assert.containsText('[data=current_rentals_model]', 'Ford')

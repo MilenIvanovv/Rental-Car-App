@@ -34,6 +34,7 @@ class RentCarForm extends Component {
   handleChange(ev) {
     const name = ev.target.name;
     const value = ev.target.value;
+    console.log("RentCarForm -> handleChange -> ev.target.value", ev.target.value)
     const form = this.props.rentCarForm;
     let tempForm = JSON.parse(JSON.stringify(form));
     tempForm[name].value = value;
@@ -82,14 +83,17 @@ class RentCarForm extends Component {
   }
 
   datePicker() {
+    const date = this.props.rentCarForm.returnDate.value;
+
     return (
       <div className="form-group">
         <div>Date</div>
         <DatePicker
+          isClearable
           data="date"
           className="form-control"
-          selected={new Date(this.props.rentCarForm.returnDate.value)}
-          onChange={(val) => this.handleChange({ target: { value: val || new Date(), name: 'returnDate' } })}
+          selected={date ? new Date(date) : null}
+          onChange={(val) => this.handleChange({ target: { value: val, name: 'returnDate' } })}
           showTimeSelect
           minDate={new Date()}
           timeFormat="HH:mm"
