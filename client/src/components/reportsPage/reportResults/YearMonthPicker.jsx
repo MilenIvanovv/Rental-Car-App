@@ -12,23 +12,29 @@ class YearMonthPicker extends Component {
     const date = this.props.report.date;
 
     return (
-      <DatePicker 
-      selected={date ? new Date(date) : new Date()} 
-      showMonthYearPicker
-      onChange={this.getReportAverageIncomePerClass.bind(this)} 
-      inline
-  />
+      <DatePicker
+        selected={date ? new Date(date) : new Date()}
+        showMonthYearPicker
+        onChange={this.getReportAverageIncomePerClass.bind(this)}
+        inline
+      />
     )
   }
 
   async getReportAverageIncomePerClass(value) {
     const date = new Date(value);
-    const report = reports.averageIncomePerClass;
-    const id = reports.averageIncomePerClass.reportId;
+    const report = reports.find((x) => x.reportId === this.props.report.reportId);
+    const id = report.reportId;
+
+    // Change query params
+    let url = report.urlRequest.split('?');
+    url[1] = `year=${date.getFullYear()}&month=${date.getMonth()}`;
+    url = url.join('?');
+
     this.props.modifyReport({ reportId: id, loading: true, date});
     await new Promise((res) => setTimeout(res, 1000));
     try {
-      const response = await axios.get(`${API_ROOT}/${report.urlRequest}?year=${date.getFullYear()}&month=${date.getMonth()}`);
+      const response = await axios.get(`${API_ROOT}/${url}`);
       this.props.modifyReport({ reportId: id, data: response.data});
     } catch (error) {
       console.log(error);
@@ -41,8 +47,6 @@ const mapActionsToProps = {
   modifyReport,
 }
 
-const mapStateToProps = (state) => ({
-  report: state.reports.find((x) => x.reportId === reports.averageIncomePerClass.reportId),
-})
+const mapStateToProps = (state) => ({})
 
 export default connect(mapStateToProps, mapActionsToProps)(YearMonthPicker)
