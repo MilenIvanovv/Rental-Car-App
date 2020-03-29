@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString, Min, IsNumber } from 'class-validator';
 
 export class ClientDTO {
   @IsString()
@@ -11,5 +11,6 @@ export class ClientDTO {
 
   @IsNumber()
   @IsNotEmpty()
+  @Min(18)
   age: number;
 }

@@ -66,7 +66,7 @@ export class Estimations extends Component {
     const client = {
       firstName: firstName.value,
       lastName: lastName.value,
-      age: age.value,
+      age: +age.value,
     };
 
     try {

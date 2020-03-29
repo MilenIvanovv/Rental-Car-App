@@ -45,6 +45,11 @@ class RentCarForm extends Component {
     const tempForm = JSON.parse(JSON.stringify(form));
 
     tempForm[name].error = tempForm[name].value === '' ? 'cannot be empty!' : '';
+
+    if (name === 'age') {
+      tempForm[name].error = +tempForm[name].value < 18 ? 'cannot be under 18!' : '';
+    }
+
     tempForm.isFormValid = !Object.values(tempForm)
       .some((x) => x.error && (x.error !== 'not touched' || x.error !== ''));
 
@@ -66,6 +71,7 @@ class RentCarForm extends Component {
           type={type}
           name={name} // user by handleChange
           data={data} // used for nightwatch
+          min={name === 'age' ? 18 : false}
           className={!isFormValid && error ? 'form-control is-invalid' : 'form-control'}
           value={input.value}
           onChange={this.handleChange}
