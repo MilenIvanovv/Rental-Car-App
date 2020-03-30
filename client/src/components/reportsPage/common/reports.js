@@ -3,6 +3,7 @@ import AvgDays from '../reportResults/AvgDays';
 import AvgIncomePerMonth from '../reportResults/AvgIncomePerMonth';
 import CurrentRentals from '../reportResults/CurrentRentals';
 import YearMonthPicker from '../reportResults/YearMonthPicker';
+import TotalIncomePerMonth from '../reportResults/TotalIncomePerMonth';
 
 const today = new Date();
 
@@ -23,4 +24,10 @@ export default [{
   title: 'Average income per class per month',
   urlRequest: `reports/class/avgMonthlyIncome/?year=${today.getFullYear()}&month=${today.getMonth()}`,
   children: [<AvgIncomePerMonth />, <YearMonthPicker />],
+},
+{
+  reportId: 4,
+  title: 'Total income per class per month',
+  urlRequest: `reports/class/totalMonthly/?year=${today.getFullYear()}&month=${today.getMonth()}`,
+  children: [<TotalIncomePerMonth />, <YearMonthPicker />],
 }];

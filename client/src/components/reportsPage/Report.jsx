@@ -22,7 +22,7 @@ export default function Report(props) {
   const cardText = report.data && report.data.map((x) => {
     const resultWithProps = React.cloneElement(resultComp, { result: x.result });
     return (
-      <span key={x.class} className="align-card-text">
+      <span key={x.class} className="align-card-text mb-1">
         <span className="section">
           <span >Class: {x.class}</span>
         </span>
@@ -32,7 +32,7 @@ export default function Report(props) {
   })
 
   return (
-    <Card className="report-card">
+    <Card className="report-card mb-3">
       <Card.Header>{title}</Card.Header>
       <Card.Body>
         {otherComp}
@@ -50,7 +50,7 @@ Report.propTypes = {
   report: PropTypes.shape({
     data: PropTypes.arrayOf(PropTypes.shape({
       class: PropTypes.string.isRequired,
-      result: PropTypes.number,
+      result: PropTypes.any,
     })),
     loading: PropTypes.bool.isRequired,
   })
