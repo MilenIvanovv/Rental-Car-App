@@ -21,4 +21,9 @@ export class ReportsController {
   async getAverageMonthlyIncome(@Query('year') year: number, @Query('month') month: number ): Promise<ReportPerClass<number>[]> {
     return await this.repotsService.getAverageMonthlyIncome(+year, +month);
   }
+
+  @Get('/class/totalMonthly')
+  async getTotalMonthly(@Query('year') year: number, @Query('month') month: number ): Promise<ReportPerClass<{ income: number, expenses: number, revenue: number }>[]> {
+    return await this.repotsService.getTotalMonthly(+year, +month);
+  }
 }

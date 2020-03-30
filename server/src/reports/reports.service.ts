@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RentedCar } from 'src/database/entities/rentals.entity';
 import { Repository, Between } from 'typeorm';
@@ -8,6 +8,7 @@ import { CarClass } from 'src/database/entities/class.entity';
 import { CalculateRentService } from 'src/core/calculate-rent.service';
 import { CarStatus } from 'src/common/car-status.enum';
 import { ReportPerClass } from './models/reportPerClass';
+import { isNumber } from 'util';
 
 @Injectable()
 export class ReportsService {
@@ -52,23 +53,43 @@ export class ReportsService {
   }
 
   private isInMonth(year: number, month: number) {
+    if (!isNumber(year) || isNaN(year) || year < 1970 || 
+    !isNumber(month) || isNaN(month) || month < 1 || month > 12) {
+      throw new BadRequestException('Invalid month');
+    }
+
     const firstDay = new Date(year, month - 1, 2);
     const lastDay = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0);
 
     return Between(firstDay, lastDay);
   }
 
-  async getAverageMonthlyIncome( year: number, month:number ): Promise<any[]> {
+  async getAverageMonthlyIncome(year: number, month: number): Promise<any[]> {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInMonth(year, month) }, relations: ['car', 'car.class'] });
-    console.log(rentals);
+    
     return classes.reduce((acc, carClass) => {
       const result = rentals
         .filter((rental) => rental.car.class.name === carClass.name)
-        .reduce(this.calculateIncome.bind(this), { result: 0 })
+        .reduce(this.calculateAverageIncome.bind(this), { result: 0 })
         .result;
 
       acc.push({ class: carClass.name, result });
+
+      return acc;
+    }, []);
+  }
+
+  async getTotalMonthly(year: number, month: number): Promise<ReportPerClass<{ income: number, expenses: number, revenue: number }>[]> {
+    const classes = await this.classRepository.find();
+    const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInMonth(year, month) }, relations: ['car', 'car.class'] });
+
+    return classes.reduce((acc, carClass) => {
+      const rentalsByClass = rentals.filter((rental) => rental.car.class.name === carClass.name);
+      const income = rentalsByClass.reduce(this.calculateAverageIncome.bind(this), { sum: 0 }).sum;
+      const expenses = rentalsByClass.reduce(this.calculateAverageExpenses, { sum: 0 }).sum;
+
+      acc.push({ class: carClass.name, result: { income, expenses, revenue: +(income - expenses).toFixed(2)} });
 
       return acc;
     }, []);
@@ -100,7 +121,7 @@ export class ReportsService {
     return acc;
   }
 
-  private calculateIncome(acc: any, rental: RentedCar): number {
+  private calculateAverageIncome(acc: any, rental: RentedCar): { sum: number, count: number, result: number} {
     acc.sum || (acc.sum = 0);
     acc.count || (acc.count = 0);
 
@@ -110,7 +131,6 @@ export class ReportsService {
       pricePerDay,
       estimatedDate,
       age,
-      car,
     } = rental;
 
     const days = this.calculate.days(new Date(dateFrom), new Date(returnDate));
@@ -118,7 +138,7 @@ export class ReportsService {
 
     // Add penalty
     const penaltyDays = this.calculate.days(new Date(estimatedDate), new Date(returnDate));
-      
+
     let penalty = 0;
     if (penaltyDays > 0) {
       const penaltyResult = this.calculate.penalty(pricePerDay, penaltyDays);
@@ -127,13 +147,26 @@ export class ReportsService {
       penalty = penaltyResult.totalPenalty;
     }
 
-    // Income
     acc.sum += this.calculate.totalPrice(newPricePerDay, days) + penalty;
-    // Expences
-    acc.sum -= (car.monthlyExpences + car.insuranceFeePerYear / 12);
     acc.count++;
 
-    acc.result = Math.floor(acc.sum / acc.count) || 0;
+    acc.result = +(acc.sum / acc.count).toFixed(2) || 0;
+
+    return acc;
+  }
+
+  private calculateAverageExpenses(acc: any, rental: RentedCar): { sum: number, count: number, result: number } {
+    acc.sum || (acc.sum = 0);
+    acc.count || (acc.count = 0);
+
+    const { car } = rental;
+
+    acc.sum += (car.monthlyExpences + car.insuranceFeePerYear / 12) || 0;
+    acc.sum = +acc.sum.toFixed(2);
+
+    acc.count++;
+
+    acc.result = +(acc.sum / acc.count).toFixed(2) || 0;
 
     return acc;
   }
