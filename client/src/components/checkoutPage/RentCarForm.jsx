@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setRentals } from '../../actions/setRentalsAction';
@@ -7,7 +7,6 @@ import setRentalCarForm from '../../actions/setRentCarFormActions';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css"
 import './rentCarForm.css';
-
 
 class RentCarForm extends Component {
   constructor(props) {
@@ -71,7 +70,7 @@ class RentCarForm extends Component {
           name={name} // user by handleChange
           data={data} // used for nightwatch
           min={name === 'age' ? 18 : false}
-          className={!isFormValid && error ? 'form-control is-invalid' : 'form-control'}
+          className={`form-control ${!isFormValid && error ? 'is-invalid' : '' }`}
           value={input.value}
           onChange={this.handleChange}
         />
@@ -81,7 +80,12 @@ class RentCarForm extends Component {
   }
 
   datePicker() {
-    const date = this.props.rentCarForm.returnDate.value;
+    const date = this.props.rentCarForm.returnDate;
+    const isFormValid = this.props.rentCarForm.isFormValid;
+    const error = !(date.error === '' || date.error === 'not touched') ? date.error : null;
+    const errorMsg = (<small className="form-text not-valid">
+      {`Return date ${error}`}
+    </small>);
 
     return (
       <div className="form-group">
@@ -89,8 +93,8 @@ class RentCarForm extends Component {
         <DatePicker
           isClearable
           data="date"
-          className="form-control"
-          selected={date ? new Date(date) : null}
+          className={`form-control ${!isFormValid && error ? 'is-invalid' : '' }`}
+          selected={date.value ? new Date(date.value) : null}
           onChange={(val) => this.handleChange({ target: { value: val, name: 'returnDate' } })}
           showTimeSelect
           minDate={new Date()}
@@ -99,6 +103,7 @@ class RentCarForm extends Component {
           timeCaption="time"
           dateFormat="MMMM d, yyyy h:mm aa"
         />
+        {error && errorMsg}
       </div>)
   }
 }

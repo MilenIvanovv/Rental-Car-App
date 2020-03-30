@@ -22,12 +22,10 @@ export class Estimations extends Component {
       errors: {},
       isDisabled: false,
       redirect: null,
-      show: false,
     }
 
 
     this.confirmHanlder = this.confirmHanlder.bind(this);
-    this.showOverlay = this.showOverlay.bind(this);
   }
 
   render() {
@@ -36,10 +34,6 @@ export class Estimations extends Component {
       isDisabled,
       redirect
     } = this.state;
-
-    const {
-      isFormValid
-    } = this.props;
 
     if (redirect) {
       return <Redirect to={redirect} />;
@@ -61,12 +55,9 @@ export class Estimations extends Component {
             </p>
           </div>
           <div className="buttons-container">
-            <span onMouseEnter={!isFormValid || isDisabled ? this.showOverlay : undefined}>
-              <button data="confirm" type="button" className="btn btn-primary" disabled={!isFormValid || isDisabled} onClick={this.confirmHanlder}>
-                Confirm
+            <button data="confirm" type="button" className="btn btn-primary" disabled={isDisabled} onClick={this.confirmHanlder}>
+              Confirm
               </button>
-            </span>
-            {this.state.show && <small className="form-text not-valid position-overlay">Fill form first!</small>}
             <Link to="/cars">
               <button type="button" className="btn btn-primary">
                 Cencel
@@ -82,14 +73,9 @@ export class Estimations extends Component {
     const form = this.props.rentCarForm;
 
     if (JSON.stringify(prevProps.rentCarForm) !== JSON.stringify(form) &&
-    ( form.age.value !== '' && form.returnDate.value !== null)) {
+      (form.age.value !== '' && form.returnDate.value !== null)) {
       this.estimatePrices();
-    } 
-  }
-
-  showOverlay() {
-    this.setState({ show: true })
-    setTimeout(() => this.setState({ show: false }), 2000);
+    }
   }
 
   estimatePrices() {
@@ -115,6 +101,10 @@ export class Estimations extends Component {
   }
 
   async confirmHanlder() {
+    if (!this.validateForm()) {
+      return;
+    }
+
     const { car } = this.props;
 
     const {
@@ -144,6 +134,21 @@ export class Estimations extends Component {
       console.log(error);
     }
     this.setState({ isDisabled: false })
+  }
+
+  validateForm() {
+    const tempForm = JSON.parse(JSON.stringify(this.props.rentCarForm));
+    let isValid = true;
+    Object.values(tempForm).forEach((field) => {
+      if (field.error === 'not touched') {
+        field.error = 'cannot be empty!';
+        isValid = false;
+      }
+    });
+
+    tempForm.isFormValid = isValid;
+    this.props.modifyForm(tempForm);
+    return isValid;
   }
 
   async getCurrentRentals() {
@@ -205,7 +210,8 @@ const mapStateToProps = (state) => ({
 const mapActionsToProps = {
   setRentals,
   setCars,
-  resetForm: setRentalCarForm.resetForm
+  resetForm: setRentalCarForm.resetForm,
+  modifyForm: setRentalCarForm.modifyForm,
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(Estimations);
