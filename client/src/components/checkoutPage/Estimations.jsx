@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
@@ -79,7 +79,10 @@ export class Estimations extends Component {
   }
 
   componentDidUpdate(prevProps, ) {
-    if (JSON.stringify(prevProps.rentCarForm) !== JSON.stringify(this.props.rentCarForm)) {
+    const form = this.props.rentCarForm;
+
+    if (JSON.stringify(prevProps.rentCarForm) !== JSON.stringify(form) &&
+    ( form.age.value !== '' && form.returnDate.value !== null)) {
       this.estimatePrices();
     } 
   }
@@ -97,7 +100,6 @@ export class Estimations extends Component {
     if (car && (age.value === '' || returnDate === '')) {
       return;
     }
-
 
     const days = calculate.days(new Date(), new Date(returnDate));
     const pricePerDay = calculate.applyAllToPrice(car.price, days, age);

@@ -43,7 +43,6 @@ class RentCarForm extends Component {
 
   validateInput(form, name) {
     const tempForm = JSON.parse(JSON.stringify(form));
-    console.log('validating')
     tempForm[name].error = tempForm[name].value === '' ? 'cannot be empty!' : '';
 
     if (name === 'age') {
