@@ -22,12 +22,12 @@ export default [{
 {
   reportId: 3,
   title: 'Average income per class per month',
-  urlRequest: `reports/class/avgMonthlyIncome/?year=${today.getFullYear()}&month=${today.getMonth()}`,
+  urlRequest: `reports/class/avgMonthlyIncome/?year=${today.getFullYear()}&month=${today.getMonth() + 1}`,
   children: [<AvgIncomePerMonth />, <YearMonthPicker />],
 },
 {
   reportId: 4,
   title: 'Total income per class per month',
-  urlRequest: `reports/class/totalMonthly/?year=${today.getFullYear()}&month=${today.getMonth()}`,
+  urlRequest: `reports/class/totalMonthly/?year=${today.getFullYear()}&month=${today.getMonth() + 1}`,
   children: [<TotalIncomePerMonth />, <YearMonthPicker />],
 }];

@@ -28,7 +28,7 @@ class YearMonthPicker extends Component {
 
     // Change query params
     let url = report.urlRequest.split('?');
-    url[1] = `year=${date.getFullYear()}&month=${date.getMonth()}`;
+    url[1] = `year=${date.getFullYear()}&month=${date.getMonth() + 1}`;
     url = url.join('?');
 
     this.props.modifyReport({ reportId: id, loading: true, date});
