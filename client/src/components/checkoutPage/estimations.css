@@ -1,0 +1,11 @@
+.buttons-container {
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+}
+
+.position-overlay {
+  position: absolute;
+  top: 34px;
+  left: 28px;
+}

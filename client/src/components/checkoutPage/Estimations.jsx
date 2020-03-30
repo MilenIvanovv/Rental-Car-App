@@ -9,7 +9,7 @@ import { toastr } from 'react-redux-toastr';
 import { setRentals } from '../../actions/setRentalsAction';
 import { setCars } from '../../actions/setCarsAction';
 import setRentalCarForm from '../../actions/setRentCarFormActions';
-
+import './estimations.css';
 import './checkoutPage.css';
 
 export class Estimations extends Component {
@@ -22,15 +22,71 @@ export class Estimations extends Component {
       errors: {},
       isDisabled: false,
       redirect: null,
+      show: false,
     }
+
 
     this.confirmHanlder = this.confirmHanlder.bind(this);
+    this.showOverlay = this.showOverlay.bind(this);
   }
 
-  componentDidUpdate(prevProps) {
+  render() {
+    const {
+      estimations,
+      isDisabled,
+      redirect
+    } = this.state;
+
+    const {
+      isFormValid
+    } = this.props;
+
+    if (redirect) {
+      return <Redirect to={redirect} />;
+    }
+
+    return (
+      <div className="card" style={{ width: '18rem' }}>
+        <div className="card-body align-card-text">
+          <div className="card-text">
+            <p className="w-50">
+              <span>Days</span>
+              <span>Price per day</span>
+              <span>Total</span>
+            </p>
+            <p>
+              <span>{estimations.days || 0}</span>
+              <span>{`${estimations.pricePerDay || 0} $`}</span>
+              <span>{`${estimations.totalPrice || 0} $`}</span>
+            </p>
+          </div>
+          <div className="buttons-container">
+            <span onMouseEnter={!isFormValid || isDisabled ? this.showOverlay : undefined}>
+              <button data="confirm" type="button" className="btn btn-primary" disabled={!isFormValid || isDisabled} onClick={this.confirmHanlder}>
+                Confirm
+              </button>
+            </span>
+            {this.state.show && <small className="form-text not-valid position-overlay">Fill form first!</small>}
+            <Link to="/cars">
+              <button type="button" className="btn btn-primary">
+                Cencel
+              </button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  componentDidUpdate(prevProps, ) {
     if (JSON.stringify(prevProps.rentCarForm) !== JSON.stringify(this.props.rentCarForm)) {
       this.estimatePrices();
-    }
+    } 
+  }
+
+  showOverlay() {
+    this.setState({ show: true })
+    setTimeout(() => this.setState({ show: false }), 2000);
   }
 
   estimatePrices() {
@@ -109,52 +165,6 @@ export class Estimations extends Component {
       console.log(error);
     }
     dispatchSetCars(cars.data);
-  }
-
-  render() {
-
-    const {
-      estimations,
-      isDisabled,
-      redirect
-    } = this.state;
-
-    const {
-      isFormValid
-    } = this.props;
-
-    if (redirect) {
-      return <Redirect to={redirect} />;
-    }
-
-    return (
-      <div className="card" style={{ width: '18rem' }}>
-        <div className="card-body align-card-text">
-          <div className="card-text">
-            <p className="w-50">
-              <span>Days</span>
-              <span>Price per day</span>
-              <span>Total</span>
-            </p>
-            <p>
-              <span>{estimations.days || 0}</span>
-              <span>{`${estimations.pricePerDay || 0} $`}</span>
-              <span>{`${estimations.totalPrice || 0} $`}</span>
-            </p>
-          </div>
-          <div className="d-flex justify-content-around">
-            <button data="confirm" type="button" className="btn btn-primary" disabled={!isFormValid || isDisabled} onClick={this.confirmHanlder}>
-              Confirm
-            </button>
-            <Link to="/cars">
-              <button type="button" className="btn btn-primary">
-                Cencel
-              </button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
   }
 }
 

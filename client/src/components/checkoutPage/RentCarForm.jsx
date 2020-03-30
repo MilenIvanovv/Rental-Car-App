@@ -34,7 +34,6 @@ class RentCarForm extends Component {
   handleChange(ev) {
     const name = ev.target.name;
     const value = ev.target.value;
-    console.log("RentCarForm -> handleChange -> ev.target.value", ev.target.value)
     const form = this.props.rentCarForm;
     let tempForm = JSON.parse(JSON.stringify(form));
     tempForm[name].value = value;
@@ -44,7 +43,7 @@ class RentCarForm extends Component {
 
   validateInput(form, name) {
     const tempForm = JSON.parse(JSON.stringify(form));
-
+    console.log('validating')
     tempForm[name].error = tempForm[name].value === '' ? 'cannot be empty!' : '';
 
     if (name === 'age') {
