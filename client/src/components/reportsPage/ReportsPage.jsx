@@ -1,79 +1,57 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import Report from './Report'
 import { Container, Row, Col } from 'react-bootstrap'
 import axios from 'axios';
 import { API_ROOT } from '../../constants/constants';
-import AvgDays from './reportResults/AvgDays';
-import CurrentRentals from './reportResults/CurrentRentals';
+import { modifyReport } from '../../actions/modifyReportAction';
+import reports from './common/reports';
 
-
-
-export default class ReportsPage extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      averageDaysPerClass: {
-        data: [],
-        loading: false,
-      },
-      currentlyRentedCarsPerClass: {
-        data: [],
-        loading: false,
-      },
-    };
-  }
+class ReportsPage extends Component {
 
   render() {
-
-    const { averageDaysPerClass, currentlyRentedCarsPerClass } = this.state;
+      const transformedReports = this.props.reports.map((report) => {
+      const reportData = reports.find(x => x.reportId === report.reportId);
+      return (
+        <Col key={reportData.reportId} xs={4}>
+          <Report key={report.reportId } title={reportData.title} report={report}>
+            {reportData.children}
+          </Report>
+        </Col>
+      )
+    })
 
     return (
       <Container>
         <Row className="mb-3">
-          <Col xs={4}>
-            <Report title="Average days per class" report={averageDaysPerClass}>
-              <AvgDays/>
-            </Report>
-          </Col>
-          <Col xs={4}>
-            <Report title="Current rented cars per class" report={currentlyRentedCarsPerClass}>
-              <CurrentRentals/>
-            </Report>
-          </Col>
+          {transformedReports}
         </Row>
       </Container>
     )
   }
 
   componentDidMount() {
-    this.getReportAverageDaysPerClass();
-    this.getReportCurrentlyRentedCarsPerClass();
+    reports.forEach(this.getReport.bind(this));
   }
 
-  async getReportAverageDaysPerClass() {
-    let report;
-    this.setState((prevState) => ({ averageDaysPerClass: { ...prevState.averageDaysPerClass, loading: true  } }))
+  async getReport(report) {
+    this.props.modifyReport({ reportId: report.reportId, loading: true})
     try {
-      report = await axios.get(`${API_ROOT}/reports/class/averageDays`);
-    this.setState((prevState) => ({ averageDaysPerClass: { ...prevState.averageDaysPerClass, data: report.data  } }))
+      const response = await axios.get(`${API_ROOT}/${report.urlRequest}`);
+      this.props.modifyReport({ reportId: report.reportId, data: response.data});
     } catch (error) {
       console.log(error);
     }
-    this.setState((prevState) => ({ averageDaysPerClass: { ...prevState.averageDaysPerClass, loading: false  } }))
-  }
-
-  async getReportCurrentlyRentedCarsPerClass() {
-    let report;
-    this.setState((prevState) => ({ currentlyRentedCarsPerClass: { ...prevState.currentlyRentedCarsPerClass, loading: true  } }))
-    await new Promise((res) => setTimeout(res, 1000));
-    try {
-      report = await axios.get(`${API_ROOT}/reports/class/currentRentedCars`);
-      this.setState((prevState) => ({ currentlyRentedCarsPerClass: { ...prevState.currentlyRentedCarsPerClass, data: report.data } }))
-    } catch (error) {
-      console.log(error);
-    }
-    this.setState((prevState) => ({ currentlyRentedCarsPerClass: { ...prevState.currentlyRentedCarsPerClass, loading: false } }))
+    this.props.modifyReport({ reportId: report.reportId, loading: false });
   }
 }
+
+const mapStateToProps = (state) => ({
+  reports: state.reports,
+});
+
+const mapActionsToProps = {
+  modifyReport,
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(ReportsPage);

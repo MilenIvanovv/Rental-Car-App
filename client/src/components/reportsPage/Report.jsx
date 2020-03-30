@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import './report.css'
+import './report.css';
 
 export default function Report(props) {
 
@@ -10,10 +10,17 @@ export default function Report(props) {
     title
   } = props;
 
+  let resultComp = props.children;
+  let otherComp;
+  if (Array.isArray(resultComp)) {
+    resultComp = props.children[0];
+    otherComp = React.Children.map(props.children.slice(1), child =>
+      React.cloneElement(child, { report: props.report })
+    );
+  }
+ 
   const cardText = report.data && report.data.map((x) => {
-    const resultWithProps = React.Children
-      .map(props.children, child => React.cloneElement(child, { result: x.result }));
-
+    const resultWithProps = React.cloneElement(resultComp, { result: x.result });
     return (
       <span key={x.class} className="align-card-text">
         <span className="section">
@@ -28,6 +35,7 @@ export default function Report(props) {
     <Card className="report-card">
       <Card.Header>{title}</Card.Header>
       <Card.Body>
+        {otherComp}
         {report.loading
           ? <h4>Loading...</h4>
           : <Card.Text>

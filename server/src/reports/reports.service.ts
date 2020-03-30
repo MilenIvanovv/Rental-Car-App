@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RentedCar } from 'src/database/entities/rentals.entity';
-import { Repository } from 'typeorm';
+import { Repository, Between } from 'typeorm';
 import { Car } from 'src/database/entities/cars.entity';
 import { RentalStatus } from 'src/common/rental-status.enum';
 import { CarClass } from 'src/database/entities/class.entity';
@@ -51,6 +51,29 @@ export class ReportsService {
     }, []);
   }
 
+  private isInMonth(year: number, month: number) {
+    const firstDay = new Date(year, month - 1, 2);
+    const lastDay = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0);
+
+    return Between(firstDay, lastDay);
+  }
+
+  async getAverageMonthlyIncome( year: number, month:number ): Promise<any[]> {
+    const classes = await this.classRepository.find();
+    const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInMonth(year, month) }, relations: ['car', 'car.class'] });
+    console.log(rentals);
+    return classes.reduce((acc, carClass) => {
+      const result = rentals
+        .filter((rental) => rental.car.class.name === carClass.name)
+        .reduce(this.calculateIncome.bind(this), { result: 0 })
+        .result;
+
+      acc.push({ class: carClass.name, result });
+
+      return acc;
+    }, []);
+  }
+
   private calculateAverageDays(acc: any, rental: RentedCar): number {
     acc.days || (acc.days = 0);
     acc.count || (acc.count = 0);
@@ -76,4 +99,44 @@ export class ReportsService {
 
     return acc;
   }
+
+  private calculateIncome(acc: any, rental: RentedCar): number {
+    acc.sum || (acc.sum = 0);
+    acc.count || (acc.count = 0);
+
+    const {
+      dateFrom,
+      returnDate,
+      pricePerDay,
+      estimatedDate,
+      age,
+      car,
+    } = rental;
+
+    const days = this.calculate.days(new Date(dateFrom), new Date(returnDate));
+    const newPricePerDay = this.calculate.applyAllToPrice(pricePerDay, days, age);
+
+    // Add penalty
+    const penaltyDays = this.calculate.days(new Date(estimatedDate), new Date(returnDate));
+      
+    let penalty = 0;
+    if (penaltyDays > 0) {
+      const penaltyResult = this.calculate.penalty(pricePerDay, penaltyDays);
+
+      // if penalty days is 7 and price per day is 100 => total penalty = 7 * pricePerDayPenalty(100); 
+      penalty = penaltyResult.totalPenalty;
+    }
+
+    // Income
+    acc.sum += this.calculate.totalPrice(newPricePerDay, days) + penalty;
+    // Expences
+    acc.sum -= (car.monthlyExpences + car.insuranceFeePerYear / 12);
+    acc.count++;
+
+    acc.result = Math.floor(acc.sum / acc.count) || 0;
+
+    return acc;
+  }
 }
+
+
