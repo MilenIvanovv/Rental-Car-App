@@ -190,7 +190,7 @@ Estimations.propTypes = {
       error: PropTypes.string.isRequired,
     }),
     returnDate: PropTypes.shape({
-      value: PropTypes.string.isRequired,
+      value: PropTypes.string,
       error: PropTypes.string.isRequired,
     }),
     isFormValid: PropTypes.bool.isRequired,

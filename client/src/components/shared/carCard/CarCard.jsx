@@ -53,6 +53,8 @@ CarCard.propTypes = {
     price: PropTypes.number,
     picture: PropTypes.string,
     status: PropTypes.string,
+    insuranceFeePerYear: PropTypes.number,
+    monthlyExpences: PropTypes.number,
   }),
   noButton: PropTypes.bool,
 };

@@ -69,7 +69,7 @@ class RentCarForm extends Component {
           type={type}
           name={name} // user by handleChange
           data={data} // used for nightwatch
-          min={name === 'age' ? 18 : false}
+          min={name === 'age' ? 18 : undefined}
           className={`form-control ${!isFormValid && error ? 'is-invalid' : '' }`}
           value={input.value}
           onChange={this.handleChange}
@@ -131,7 +131,7 @@ RentCarForm.propTypes = {
       error: PropTypes.string.isRequired,
     }),
     returnDate: PropTypes.shape({
-      value: PropTypes.string.isRequired,
+      value: PropTypes.string,
       error: PropTypes.string.isRequired,
     }),
     isFormValid: PropTypes.bool.isRequired,
