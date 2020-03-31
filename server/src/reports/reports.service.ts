@@ -1,12 +1,12 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RentedCar } from 'src/database/entities/rentals.entity';
+import { RentedCar } from '../database/entities/rentals.entity';
 import { Repository, Between } from 'typeorm';
-import { Car } from 'src/database/entities/cars.entity';
-import { RentalStatus } from 'src/common/rental-status.enum';
-import { CarClass } from 'src/database/entities/class.entity';
-import { CalculateRentService } from 'src/core/calculate-rent.service';
-import { CarStatus } from 'src/common/car-status.enum';
+import { Car } from '../database/entities/cars.entity';
+import { RentalStatus } from '../common/rental-status.enum';
+import { CarClass } from '../database/entities/class.entity';
+import { CalculateRentService } from '../core/calculate-rent.service';
+import { CarStatus } from '../common/car-status.enum';
 import { ReportPerClass } from './models/reportPerClass';
 import { isNumber } from 'util';
 
@@ -52,18 +52,6 @@ export class ReportsService {
     }, []);
   }
 
-  private isInMonth(year: number, month: number) {
-    if (!isNumber(year) || isNaN(year) || year < 1970 || 
-    !isNumber(month) || isNaN(month) || month < 1 || month > 12) {
-      throw new BadRequestException('Invalid month');
-    }
-
-    const firstDay = new Date(year, month - 1, 2);
-    const lastDay = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0);
-
-    return Between(firstDay, lastDay);
-  }
-
   async getAverageMonthlyIncome(year: number, month: number): Promise<any[]> {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInMonth(year, month) }, relations: ['car', 'car.class'] });
@@ -95,6 +83,18 @@ export class ReportsService {
     }, []);
   }
 
+  private isInMonth(year: number, month: number) {
+    if (!isNumber(year) || isNaN(year) || year < 1970 || 
+    !isNumber(month) || isNaN(month) || month < 1 || month > 12) {
+      throw new BadRequestException('Invalid month');
+    }
+
+    const firstDay = new Date(year, month - 1, 2);
+    const lastDay = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0);
+
+    return Between(firstDay, lastDay);
+  }
+
   private calculateAverageDays(acc: any, rental: RentedCar): number {
     acc.days || (acc.days = 0);
     acc.count || (acc.count = 0);
@@ -107,16 +107,16 @@ export class ReportsService {
     return acc;
   }
 
-  private calculateCurrentRentedCars(acc: any, car: Car): number {
+  private calculateCurrentRentedCars(acc: any, car: Car): { result: number } {
     acc.rented || (acc.rented = 0);
-    acc.total || (acc.total = 0);
+    acc.sum || (acc.sum = 0);
 
     if (car.status === CarStatus.borrowed) {
       acc.rented++;
     }
 
-    acc.total++;
-    acc.result = Math.floor((100 * acc.total) / acc.rented) || 0;
+    acc.sum++;
+    acc.result = Math.floor(acc.rented / acc.sum * 100) || 0;
 
     return acc;
   }
