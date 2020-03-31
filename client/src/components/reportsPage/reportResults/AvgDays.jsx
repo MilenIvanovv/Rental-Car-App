@@ -1,12 +1,21 @@
-import React from 'react'
+
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function AvgDays(props) {
-
   const { result } = props;
 
   return (
-  <span className="section">
-      <span>days: {result || 0}</span>
-  </span>
-  )
+    <span className="section">
+      <span>days: {result}</span>
+    </span>
+  );
 }
+
+AvgDays.propTypes = {
+  result: PropTypes.number,
+};
+
+AvgDays.defaultProps = {
+  result: 0,
+};

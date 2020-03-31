@@ -9,16 +9,16 @@ export default function RentedCarsTable(props) {
   const { rentals, returnCar } = props;
 
   const colums = [
-    "Car",
-    "Customer",
-    "From",
-    "Estimated Return date",
-    "Estimated days rented",
-    "Estimated price per day",
-    "Current days rented",
-    "Current price per day",
-    "Current total price",
-    "Actions",
+    'Car',
+    'Customer',
+    'From',
+    'Estimated Return date',
+    'Estimated days rented',
+    'Estimated price per day',
+    'Current days rented',
+    'Current price per day',
+    'Current total price',
+    'Actions',
   ];
 
   const elements = rentals

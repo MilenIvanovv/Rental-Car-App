@@ -1,25 +1,28 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Report from './Report'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import Report from './Report';
 import { API_ROOT } from '../../constants/constants';
 import { modifyReport } from '../../actions/modifyReportAction';
 import reports from './common/reports';
 
-class ReportsPage extends Component {
 
+class ReportsPage extends Component {
+  // eslint-disable-next-line react/sort-comp
   render() {
-      const transformedReports = this.props.reports.map((report) => {
-      const reportData = reports.find(x => x.reportId === report.reportId);
+    // eslint-disable-next-line react/destructuring-assignment
+    const transformedReports = this.props.reports.map((report) => {
+      const reportData = reports.find((x) => x.reportId === report.reportId);
       return (
         <Col key={reportData.reportId} xs={4}>
-          <Report key={report.reportId } title={reportData.title} report={report}>
+          <Report key={report.reportId} title={reportData.title} report={report}>
             {reportData.children}
           </Report>
         </Col>
-      )
-    })
+      );
+    });
 
     return (
       <Container>
@@ -27,7 +30,7 @@ class ReportsPage extends Component {
           {transformedReports}
         </Row>
       </Container>
-    )
+    );
   }
 
   componentDidMount() {
@@ -35,16 +38,27 @@ class ReportsPage extends Component {
   }
 
   async getReport(report) {
-    this.props.modifyReport({ reportId: report.reportId, loading: true})
+    // eslint-disable-next-line no-shadow
+    const { modifyReport } = this.props;
+    modifyReport({ reportId: report.reportId, loading: true });
     try {
       const response = await axios.get(`${API_ROOT}/${report.urlRequest}`);
-      this.props.modifyReport({ reportId: report.reportId, data: response.data});
+      modifyReport({ reportId: report.reportId, data: response.data });
     } catch (error) {
       console.log(error);
     }
-    this.props.modifyReport({ reportId: report.reportId, loading: false });
+    modifyReport({ reportId: report.reportId, loading: false });
   }
 }
+
+ReportsPage.propTypes = {
+  modifyReport: PropTypes.func.isRequired,
+  reports: PropTypes.arrayOf(PropTypes.shape({
+    reportId: PropTypes.number.isRequired,
+    data: PropTypes.any.isRequired,
+    loading: PropTypes.bool.isRequired,
+  })).isRequired,
+};
 
 const mapStateToProps = (state) => ({
   reports: state.reports,
@@ -52,6 +66,6 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = {
   modifyReport,
-}
+};
 
 export default connect(mapStateToProps, mapActionsToProps)(ReportsPage);

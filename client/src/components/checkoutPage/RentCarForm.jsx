@@ -1,45 +1,47 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setRentals } from '../../actions/setRentalsAction';
-import { setCars } from '../../actions/setCarsAction';
-import setRentalCarForm from '../../actions/setRentCarFormActions';
 import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css"
+import setRentalCarForm from '../../actions/setRentCarFormActions';
+import 'react-datepicker/dist/react-datepicker.css';
 import './rentCarForm.css';
 
 class RentCarForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      dateValue: this.props.rentCarForm.returnDate.value
-    }
-
     this.handleChange = this.handleChange.bind(this);
   }
 
+  // eslint-disable-next-line react/sort-comp
   render() {
     return (
       <form>
-        {this.formInput({ title: 'First Name', type: 'text', name: 'firstName', data: 'firstName' })}
-        {this.formInput({ title: 'Last name', type: 'text', name: 'lastName', data: 'lastName' })}
-        {this.formInput({ title: 'Age', type: 'number', name: 'age', data: 'age' })}
+        {this.formInput({
+          title: 'First Name', type: 'text', name: 'firstName', data: 'firstName',
+        })}
+        {this.formInput({
+          title: 'Last name', type: 'text', name: 'lastName', data: 'lastName',
+        })}
+        {this.formInput({
+          title: 'Age', type: 'number', name: 'age', data: 'age',
+        })}
         {this.datePicker()}
       </form>
     );
   }
 
   handleChange(ev) {
-    const name = ev.target.name;
-    const value = ev.target.value;
-    const form = this.props.rentCarForm;
-    let tempForm = JSON.parse(JSON.stringify(form));
+    const { rentCarForm, modifyForm } = this.props;
+    const { name } = ev.target;
+    const { value } = ev.target;
+    let tempForm = JSON.parse(JSON.stringify(rentCarForm));
     tempForm[name].value = value;
     tempForm = this.validateInput(tempForm, name);
-    this.props.modifyForm(tempForm);
+    modifyForm(tempForm);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   validateInput(form, name) {
     const tempForm = JSON.parse(JSON.stringify(form));
     tempForm[name].error = tempForm[name].value === '' ? 'cannot be empty!' : '';
@@ -54,13 +56,18 @@ class RentCarForm extends Component {
     return tempForm;
   }
 
-  formInput({ title, type, name, data }) {
-    const input = this.props.rentCarForm[name];
-    const isFormValid = this.props.rentCarForm.isFormValid;
+  formInput({
+    title, type, name, data,
+  }) {
+    const { rentCarForm } = this.props;
+    const input = rentCarForm[name];
+    const { isFormValid } = rentCarForm;
     const error = !(input.error === '' || input.error === 'not touched') ? input.error : null;
-    const errorMsg = (<small className="form-text not-valid">
-      {`${title} ${error}`}
-    </small>);
+    const errorMsg = (
+      <small className="form-text not-valid">
+        {`${title} ${error}`}
+      </small>
+    );
 
     return (
       <div className="form-group">
@@ -70,22 +77,25 @@ class RentCarForm extends Component {
           name={name} // user by handleChange
           data={data} // used for nightwatch
           min={name === 'age' ? 18 : undefined}
-          className={`form-control ${!isFormValid && error ? 'is-invalid' : '' }`}
+          className={`form-control ${!isFormValid && error ? 'is-invalid' : ''}`}
           value={input.value}
           onChange={this.handleChange}
         />
         {error && errorMsg}
       </div>
-    )
+    );
   }
 
   datePicker() {
-    const date = this.props.rentCarForm.returnDate;
-    const isFormValid = this.props.rentCarForm.isFormValid;
+    const { rentCarForm } = this.props;
+    const date = rentCarForm.returnDate;
+    const { isFormValid } = rentCarForm;
     const error = !(date.error === '' || date.error === 'not touched') ? date.error : null;
-    const errorMsg = (<small className="form-text not-valid">
-      {`Return date ${error}`}
-    </small>);
+    const errorMsg = (
+      <small className="form-text not-valid">
+        {`Return date ${error}`}
+      </small>
+    );
 
     return (
       <div className="form-group">
@@ -93,7 +103,7 @@ class RentCarForm extends Component {
         <DatePicker
           isClearable
           data="date"
-          className={`form-control ${!isFormValid && error ? 'is-invalid' : '' }`}
+          className={`form-control ${!isFormValid && error ? 'is-invalid' : ''}`}
           selected={date.value ? new Date(date.value) : null}
           onChange={(val) => this.handleChange({ target: { value: val, name: 'returnDate' } })}
           showTimeSelect
@@ -104,7 +114,8 @@ class RentCarForm extends Component {
           dateFormat="MMMM d, yyyy h:mm aa"
         />
         {error && errorMsg}
-      </div>)
+      </div>
+    );
   }
 }
 
@@ -135,7 +146,8 @@ RentCarForm.propTypes = {
       error: PropTypes.string.isRequired,
     }),
     isFormValid: PropTypes.bool.isRequired,
-  }),
+  }).isRequired,
+  modifyForm: PropTypes.func.isRequired,
 };
 
 RentCarForm.defaultProps = {
@@ -148,10 +160,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionsToProps = {
-  setRentals,
-  setCars,
   modifyForm: setRentalCarForm.modifyForm,
-  setIsFormValid: setRentalCarForm.isFormValid,
-}
+};
 
 export default connect(mapStateToProps, mapActionsToProps)(RentCarForm);

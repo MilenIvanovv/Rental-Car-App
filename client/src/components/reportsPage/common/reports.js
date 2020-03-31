@@ -2,6 +2,7 @@ import React from 'react';
 import AvgDays from '../reportResults/AvgDays';
 import AvgIncomePerMonth from '../reportResults/AvgIncomePerMonth';
 import CurrentRentals from '../reportResults/CurrentRentals';
+// eslint-disable-next-line import/no-cycle
 import YearMonthPicker from '../reportResults/YearMonthPicker';
 import TotalIncomePerMonth from '../reportResults/TotalIncomePerMonth';
 
@@ -11,6 +12,7 @@ export default [{
   reportId: 1,
   title: 'Average days per class',
   urlRequest: 'reports/class/averageDays',
+  // eslint-disable-next-line react/jsx-filename-extension
   children: [<AvgDays key={1} />],
 },
 {
@@ -23,7 +25,7 @@ export default [{
   reportId: 3,
   title: 'Average income per class per month',
   urlRequest: `reports/class/avgMonthlyIncome/?year=${today.getFullYear()}&month=${today.getMonth() + 1}`,
-  children: [<AvgIncomePerMonth key={1}/>, <YearMonthPicker key={2} />],
+  children: [<AvgIncomePerMonth key={1} />, <YearMonthPicker key={2} />],
 },
 {
   reportId: 4,

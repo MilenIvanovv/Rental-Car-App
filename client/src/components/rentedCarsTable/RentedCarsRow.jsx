@@ -14,23 +14,28 @@ export default function RentedCarsRow(props) {
       <td><Moment format="YYYY/MM/DD HH:mm">{rental.estimatedDate}</Moment></td>
       <td>{rental.estimatedDays}</td>
       <td>
-        {rental.estimatedPricePerDay}
-        {' $'}
+        {rental.estimatedPricePerDay} $
       </td>
       <td>{rental.curDaysRented}</td>
       <td className={rental.hasPenalty ? 'red-penalty' : ''}>
-        {rental.curPricePerDay}
-        {' $'}
+        {rental.curPricePerDay} $
       </td>
       <td className={rental.hasPenalty ? 'red-penalty' : ''}>
-        {rental.curTotalPrice}
-        {' $'}
+        {rental.curTotalPrice} $
       </td>
-      <td><button type="button" className="btn btn-primary" disabled={isDisabled} onClick={(ev) => {
-        setIsDisabled(true);
-        props.returnCar(ev, rental.id)
-          .catch(() => setIsDisabled(false))
-      }}>Return car</button></td>
+      <td>
+        <button
+          type="button"
+          className="btn btn-primary"
+          disabled={isDisabled}
+          onClick={(ev) => {
+            setIsDisabled(true);
+            props.returnCar(ev, rental.id)
+              .catch(() => setIsDisabled(false));
+          }}
+        >Return car
+        </button>
+      </td>
     </tr>
   );
 }

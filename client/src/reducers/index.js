@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
+import { reducer as toastrReducer } from 'react-redux-toastr';
 import carsReducer from './carsReducer';
 import rentalsReducer from './rentalsReducer';
-import { reducer as toastrReducer } from 'react-redux-toastr';
 import rentCarForm from './rentCarFormReducer';
 import reportReducer from './reportsReducer';
 

@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Container } from 'react-bootstrap';
 import CarsList from './CarsList';
 import SearchBar from './SearchBar';
 import { setCars } from '../../actions/setCarsAction';
 import { API_ROOT } from '../../constants/constants';
-import { Container } from 'react-bootstrap';
 
 class CarsPage extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class CarsPage extends Component {
     const { cars } = this.props;
 
     if (!cars.length) {
-      await this.getCars()
+      await this.getCars();
     }
   }
 
@@ -32,13 +32,13 @@ class CarsPage extends Component {
     const { setCars: dispatchSetCars } = this.props;
 
     let cars;
-    this.setState({ loadingCars: true })
+    this.setState({ loadingCars: true });
     try {
       cars = await axios.get(`${API_ROOT}/cars`);
     } catch (error) {
       console.log(error);
     }
-    this.setState({ loadingCars: false })
+    this.setState({ loadingCars: false });
     dispatchSetCars(cars.data);
   }
 
@@ -49,14 +49,15 @@ class CarsPage extends Component {
 
   render() {
     const { cars } = this.props;
-    const { filter } = this.state;
+    const { filter, loadingCars } = this.state;
     const filteredByStatus = cars.filter((car) => car.status === 'listed');
-    const filteredByModel = filteredByStatus.filter((car) => car.model.toLowerCase().includes(filter.toLowerCase()));
+    const filteredByModel = filteredByStatus
+      .filter((car) => car.model.toLowerCase().includes(filter.toLowerCase()));
 
     return (
       <Container>
         <SearchBar onSearch={this.searchHandler} />
-        <CarsList cars={filteredByModel} loadingCars={this.state.loadingCars} />
+        <CarsList cars={filteredByModel} loadingCars={loadingCars} />
       </Container>
     );
   }
