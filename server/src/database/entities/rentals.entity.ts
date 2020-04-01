@@ -1,7 +1,6 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Car } from './cars.entity';
 import { RentalStatus } from '../../common/rental-status.enum';
-import { Expose, Exclude } from 'class-transformer';
 
 @Entity('rentals')
 export class RentedCar extends BaseEntity {

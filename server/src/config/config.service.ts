@@ -16,6 +16,7 @@ export class ConfigService {
     this.envConfig = this.validateInput(config);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private validateInput(envConfig: EnvConfig): EnvConfig {
     const envVarsSchema: Joi.ObjectSchema = Joi.object({
       NODE_ENV: Joi.string()

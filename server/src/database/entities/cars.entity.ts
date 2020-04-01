@@ -2,7 +2,6 @@ import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, JoinColumn, OneToMa
 import { CarClass } from './class.entity';
 import { RentedCar } from './rentals.entity';
 import { CarStatus } from '../../common/car-status.enum';
-import { Exclude, Expose, Transform } from 'class-transformer';
 
 @Entity('cars')
 export class Car extends BaseEntity {

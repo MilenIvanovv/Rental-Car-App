@@ -1,4 +1,4 @@
-import { getRepository, createConnection } from 'typeorm';
+import { createConnection } from 'typeorm';
 import ClassesSeed from './classes-seed';
 import CarsSeed from './cars-seed';
 import RentalsSeed from './rentals-seed';

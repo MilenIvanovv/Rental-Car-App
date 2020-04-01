@@ -1,6 +1,6 @@
-import { RentalStatus } from '../../common/rental-status.enum';
 import { Expose, Exclude, Transform, Type } from 'class-transformer';
-import { CarDTO } from 'src/cars/models/cars-dto';
+import { RentalStatus } from '../../common/rental-status.enum';
+import { CarDTO } from '../../cars/models/cars-dto';
 import { ClientDTO } from './client-dto';
 
 export class RentalDTO {

@@ -1,7 +1,7 @@
-import { ClientDTO } from './client-dto';
 import { IsNumber, IsNotEmpty, IsString, IsNotEmptyObject, IsDateString, ValidateNested } from 'class-validator';
-import { IsDateOld } from '../../decorators/isDateOld';
 import { Type } from 'class-transformer';
+import { ClientDTO } from './client-dto';
+import { IsDateOld } from '../../decorators/isDateOld';
 
 export class RentCarDTO {
   @IsNumber()

@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { RentedCar } from '../database/entities/rentals.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getManager } from 'typeorm';
+import { plainToClass } from 'class-transformer';
+import { RentedCar } from '../database/entities/rentals.entity';
 import { Car } from '../database/entities/cars.entity';
 import { ClientDTO } from './models/client-dto';
 import { RentalStatus } from '../common/rental-status.enum';
 import { CarStatus } from '../common/car-status.enum';
-import { plainToClass } from 'class-transformer';
 import { RentalDTO } from './models/rental-dto';
 import { CalculateRentService } from '../core/calculate-rent.service';
 
@@ -22,13 +22,13 @@ export class RentalsService {
     private readonly calculate: CalculateRentService,
   ) { }
 
-  async getRenals() {
+  async getRenals(): Promise<RentalDTO[]> {
     const rentals = await this.rentalsRepository.find({ relations: ['car', 'car.class'] });
 
     return plainToClass(RentalDTO, rentals);
   }
 
-  async rentCar(carId: number, estimatedDate: Date, client: ClientDTO, ) {
+  async rentCar(carId: number, estimatedDate: Date, client: ClientDTO): Promise<RentalDTO>  {
     const carToRent = await this.carRepository.findOne({ where: { id: carId }, relations: ['class'] });
 
     if (!carToRent) {
@@ -61,8 +61,7 @@ export class RentalsService {
     return plainToClass(RentalDTO, newRental);
   }
 
-  async returnCar(rentalId: string,
-  ) {
+  async returnCar(rentalId: string): Promise<RentalDTO>  {
     let rental = await this.rentalsRepository.findOne({ where: { id: rentalId }, relations: ['car', 'car.class'] });
 
     if (!rental) {

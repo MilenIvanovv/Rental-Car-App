@@ -3,18 +3,18 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class CalculateRentService {
 
-  days(from: Date, to: Date) {
+  days(from: Date, to: Date): number {
     const timeInMs = to as any - (from as any);
     const timeInDays = timeInMs / (1000 * 3600 * 24);
 
     return Math.ceil(timeInDays);
   };
 
-  totalPrice(price: number, daysRented: number) {
+  totalPrice(price: number, daysRented: number): number {
     return Math.floor(price * daysRented * 100) / 100;
   }
 
-  applyDaysToPrice(price: number, daysRented: number) {
+  applyDaysToPrice(price: number, daysRented: number): number {
     let newPrice: number;
 
     if (daysRented < 2) {
@@ -28,7 +28,7 @@ export class CalculateRentService {
     return Math.floor(newPrice * 100) / 100;
   };
 
-  applyAgeToPrice(price: number, age: number) {
+  applyAgeToPrice(price: number, age: number): number {
     let newPrice: number;
 
     if (age <= 25) {
@@ -40,7 +40,7 @@ export class CalculateRentService {
     return Math.floor(newPrice * 100) / 100;
   };
 
-  penalty(price: number, penaltyDays: number) {
+  penalty(price: number, penaltyDays: number): { pricePerDayPenalty: number, totalPenalty: number } {
     let newPrice: number;
 
     if (penaltyDays <= 2) {
@@ -56,7 +56,7 @@ export class CalculateRentService {
     return { pricePerDayPenalty: newPrice, totalPenalty: newPrice * penaltyDays };
   };
 
-  applyAllToPrice(price: number, daysRented: number, age: number) {
+  applyAllToPrice(price: number, daysRented: number, age: number): number {
     const changeFromDays = this.applyDaysToPrice(price, daysRented) - price;
     const changeFromAge = this.applyAgeToPrice(price, age) - price;
 

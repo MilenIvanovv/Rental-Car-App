@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { RentalsService } from './rentals.service';
 import { RentalsController } from './rentals.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { RentedCar } from '../database/entities/rentals.entity';
 import { Car } from '../database/entities/cars.entity';
 import { CalculateRentService } from '../core/calculate-rent.service';

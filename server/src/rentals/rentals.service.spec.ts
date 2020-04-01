@@ -1,6 +1,7 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Test, TestingModule } from '@nestjs/testing';
-import { RentalsService } from './rentals.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { RentalsService } from './rentals.service';
 import { RentedCar } from '../database/entities/rentals.entity';
 import { Car } from '../database/entities/cars.entity';
 
