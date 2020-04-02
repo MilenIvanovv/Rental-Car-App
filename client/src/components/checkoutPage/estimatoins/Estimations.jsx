@@ -4,11 +4,11 @@ import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { toastr } from 'react-redux-toastr';
-import { API_ROOT } from '../../constants/constants';
-import * as calculate from '../../utils/calculate-rent';
-import { setRentals } from '../../actions/setRentalsAction';
-import { setCars } from '../../actions/setCarsAction';
-import setRentalCarForm from '../../actions/setRentCarFormActions';
+import { API_ROOT } from '../../../constants/constants';
+import * as calculate from '../../../utils/calculate-rent';
+import { setRentals } from '../../../actions/setRentalsAction';
+import { setCars } from '../../../actions/setCarsAction';
+import setRentalCarForm from '../../../actions/setRentCarFormActions';
 import './estimations.css';
 import './checkoutPage.css';
 

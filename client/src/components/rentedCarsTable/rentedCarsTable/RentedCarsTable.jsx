@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RentedCarsRow from './RentedCarsRow';
+import RentedCarsRow from '../RentedCarsRow';
 import './RentedCarsTable.css';
-import RentedCarsTableHeader from './RentedCarsTableHeader';
+import RentedCarsTableHeader from '../RentedCarsTableHeader';
 
 
 export default function RentedCarsTable(props) {

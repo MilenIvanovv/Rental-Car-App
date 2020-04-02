@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
-import setRentalCarForm from '../../actions/setRentCarFormActions';
+import setRentalCarForm from '../../../actions/setRentCarFormActions';
 import 'react-datepicker/dist/react-datepicker.css';
 import './rentCarForm.css';
 

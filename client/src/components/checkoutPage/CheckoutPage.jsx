@@ -4,11 +4,11 @@ import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Container, Row, Col } from 'react-bootstrap';
-import RentCarForm from './RentCarForm';
+import RentCarForm from './rentCarForm/RentCarForm';
 import CarCard from '../shared/carCard/CarCard';
 import { API_ROOT } from '../../constants/constants';
 // eslint-disable-next-line import/no-named-as-default
-import Estimations from './Estimations';
+import Estimations from './estimatoins/Estimations';
 
 function CheckoutPage(props) {
   const { cars } = props;
