@@ -1,7 +1,7 @@
-import { CarClass } from "src/database/entities/class.entity";
-import { CarStatus } from "src/common/car-status.enum";
-import { RentedCar } from "src/database/entities/rentals.entity";
 import { Transform, Expose, Exclude } from "class-transformer";
+import { CarStatus } from "../../common/car-status.enum";
+import { RentedCar } from "../../database/entities/rentals.entity";
+import { CarClass } from "../../database/entities/class.entity";
 
 export class CarDTO {
   id: string;
