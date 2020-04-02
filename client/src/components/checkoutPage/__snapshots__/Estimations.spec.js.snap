@@ -27,21 +27,19 @@ exports[`My Connected React-Redux Component should render with given state from 
           0
         </span>
         <span>
-          0
-           $
+          0 $
         </span>
         <span>
-          0
-           $
+          0 $
         </span>
       </p>
     </div>
     <div
-      className="d-flex justify-content-around">
+      className="buttons-container">
       <button
         className="btn btn-primary"
         data="confirm"
-        disabled={true}
+        disabled={false}
         onClick={[Function]}
         type="button">
         Confirm

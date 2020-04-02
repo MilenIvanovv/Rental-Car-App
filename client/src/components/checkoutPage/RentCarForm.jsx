@@ -33,8 +33,7 @@ class RentCarForm extends Component {
 
   handleChange(ev) {
     const { rentCarForm, modifyForm } = this.props;
-    const { name } = ev.target;
-    const { value } = ev.target;
+    const { name, value } = ev.target;
     let tempForm = JSON.parse(JSON.stringify(rentCarForm));
     tempForm[name].value = value;
     tempForm = this.validateInput(tempForm, name);
@@ -76,6 +75,7 @@ class RentCarForm extends Component {
           type={type}
           name={name} // user by handleChange
           data={data} // used for nightwatch
+          data-milen="test"
           min={name === 'age' ? 18 : undefined}
           className={`form-control ${!isFormValid && error ? 'is-invalid' : ''}`}
           value={input.value}
