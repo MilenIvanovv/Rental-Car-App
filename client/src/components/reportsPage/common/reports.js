@@ -3,7 +3,7 @@ import AvgDays from '../reportResults/AvgDays';
 import AvgIncomePerMonth from '../reportResults/AvgIncomePerMonth';
 import CurrentRentals from '../reportResults/CurrentRentals';
 // eslint-disable-next-line import/no-cycle
-import YearMonthPicker from '../reportResults/YearMonthPicker';
+import YearMonthPicker from '../reportResults/yearMonthPicker/YearMonthPicker';
 import TotalIncomePerMonth from '../reportResults/TotalIncomePerMonth';
 
 const today = new Date();

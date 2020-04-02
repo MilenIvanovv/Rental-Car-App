@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import reports from '../common/reports';
-import { modifyReport } from '../../../actions/modifyReportAction';
-import { API_ROOT } from '../../../constants/constants';
-
+import reports from '../../common/reports';
+import { modifyReport } from '../../../../actions/modifyReportAction';
+import { API_ROOT } from '../../../../constants/constants';
+import './yearMonthPicker.css';
 
 class YearMonthPicker extends Component {
   // eslint-disable-next-line react/sort-comp
@@ -14,13 +14,15 @@ class YearMonthPicker extends Component {
     const { report } = this.props;
 
     return (
-      <DatePicker
-        selected={report.date ? new Date(report.date) : new Date()}
-        showMonthYearPicker
-        // eslint-disable-next-line react/jsx-no-bind
-        onChange={this.getReportAverageIncomePerClass.bind(this)}
-        inline
-      />
+      <div className="calendar-container">
+        <DatePicker
+          selected={report.date ? new Date(report.date) : new Date()}
+          showMonthYearPicker
+          // eslint-disable-next-line react/jsx-no-bind
+          onChange={this.getReportAverageIncomePerClass.bind(this)}
+          inline
+        />
+      </div>
     );
   }
 

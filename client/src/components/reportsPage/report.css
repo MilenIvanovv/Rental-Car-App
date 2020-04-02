@@ -1,9 +1,21 @@
 .report-card {
-  width: 18rem;
+  /* width: 18rem; */
+  width: 100%;
+}
+
+.report-card .card-body {
+  display: flex;
+}
+
+.report-card .card-text {
+  display: flex;
+  padding: 5px 26px;
 }
 
 .report-card .align-card-text {
   display: flex;
+  flex-direction: column;
+  min-width: 175px;
 }
 
 .report-card .align-card-text .section {
@@ -12,5 +24,6 @@
 }
 
 .report-card .align-card-text .section:first-child {
-  width: 40%;
+  /* width: 40%; */
+  margin-bottom: 15px;
 }

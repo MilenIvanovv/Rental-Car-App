@@ -16,7 +16,7 @@ class ReportsPage extends Component {
     const transformedReports = this.props.reports.map((report) => {
       const reportData = reports.find((x) => x.reportId === report.reportId);
       return (
-        <Col key={reportData.reportId} xs={4}>
+        <Col key={reportData.reportId} xs={12}>
           <Report key={report.reportId} title={reportData.title} report={report}>
             {reportData.children}
           </Report>
