@@ -17,7 +17,7 @@ export default function CarsList(props) {
   const carElements = cars.map((car) => <Col className="mb-3" xs={4} key={car.model}><CarCard car={car} /></Col>);
 
   return (
-    <Row>
+    <Row className="center-in-colums">
       {carElements}
     </Row>
   );

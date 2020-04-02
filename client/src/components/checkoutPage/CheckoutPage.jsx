@@ -28,18 +28,24 @@ function CheckoutPage(props) {
     <div>
       <h2 className="p-2">Checkout rental car</h2>
       <Container>
-        <Row>
+        <Row className="center-in-colums">
           <Col>
-            <h4>Car</h4>
-            <CarCard car={carToRent} noButton />
+            <div>
+              <h4>Car</h4>
+              <CarCard car={carToRent} noButton />
+            </div>
           </Col>
           <Col>
-            <h4>Booking </h4>
-            <RentCarForm />
+            <div>
+              <h4>Booking </h4>
+              <RentCarForm />
+            </div>
           </Col>
           <Col>
-            <h4>Estimated Price</h4>
-            <Estimations car={carToRent} />
+            <div>
+              <h4>Estimated Price</h4>
+              <Estimations car={carToRent} />
+            </div>
           </Col>
         </Row>
       </Container>

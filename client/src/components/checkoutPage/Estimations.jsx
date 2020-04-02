@@ -144,7 +144,7 @@ export class Estimations extends Component {
     }
 
     return (
-      <div className="card" style={{ width: '18rem' }}>
+      <div className="card">
         <div className="card-body align-card-text">
           <div className="card-text">
             <p className="w-50">

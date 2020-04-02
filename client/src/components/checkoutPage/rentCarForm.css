@@ -5,3 +5,7 @@
 .react-datepicker-wrapper {
   width: 100%
 }
+
+.form-min-width {
+  min-width: 300px  ;
+}
