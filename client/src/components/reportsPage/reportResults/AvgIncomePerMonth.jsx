@@ -7,7 +7,7 @@ export default function AvgIncomePerMonth(props) {
 
   return (
     <span className="section">
-      <span> income: {result} $</span>
+      <span> income: ${result}</span>
     </span>
   );
 }

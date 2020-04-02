@@ -17,31 +17,31 @@ export default function CarCard(props) {
     <Link to={`${match.url}/${car.id}`} className="btn btn-primary" data="card_checkout">
       Checkout
     </Link>
-  )
+  );
 
   return (
-      <div className="card">
-        <Link to={`${match.url}/${car.id}`}>
-          <img src={car.picture} className="card-img-top" alt="..." />
-        </Link>
-        <div className="card-body align-card-text">
-          <div className="card-text">
-            <p className="w-50">
-              <span>Model</span>
-              <span>Class</span>
-              <span>Price per day</span>
-            </p>
-            <p>
-              <span><b data="model">{car.model}</b></span>
-              <span>{car.class}</span>
-              <span>{`${car.price} $`}</span>
-            </p>
-          </div>
-          <div className="d-flex justify-content-center">
-            {checkoutBtn()}
-          </div>
+    <div className="card">
+      <Link to={`${match.url}/${car.id}`}>
+        <img src={car.picture} className="card-img-top" alt="..." />
+      </Link>
+      <div className="card-body align-card-text">
+        <div className="card-text">
+          <p className="w-50">
+            <span>Model</span>
+            <span>Class</span>
+            <span>Price per day</span>
+          </p>
+          <p>
+            <span><b data="model">{car.model}</b></span>
+            <span>{car.class}</span>
+            <span>{`$${car.price}`}</span>
+          </p>
+        </div>
+        <div className="d-flex justify-content-center">
+          {checkoutBtn()}
         </div>
       </div>
+    </div>
   );
 }
 

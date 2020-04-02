@@ -10,7 +10,7 @@ import { setRentals } from '../../../actions/setRentalsAction';
 import { setCars } from '../../../actions/setCarsAction';
 import setRentalCarForm from '../../../actions/setRentCarFormActions';
 import './estimations.css';
-import './checkoutPage.css';
+import '../checkoutPage.css';
 
 export class Estimations extends Component {
   constructor(props) {

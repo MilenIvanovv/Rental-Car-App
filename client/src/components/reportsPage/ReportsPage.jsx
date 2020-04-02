@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import Report from './Report';
+import Report from './report/Report';
 import { API_ROOT } from '../../constants/constants';
 import { modifyReport } from '../../actions/modifyReportAction';
 import reports from './common/reports';

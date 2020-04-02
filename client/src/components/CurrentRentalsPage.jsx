@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import RentedCarsTable from './rentedCarsTable/RentedCarsTable';
+import { toastr } from 'react-redux-toastr';
+import RentedCarsTable from './rentedCarsTable/rentedCarsTable/RentedCarsTable';
 import { API_ROOT } from '../constants/constants';
 import { setRentals } from '../actions/setRentalsAction';
 import { setCars } from '../actions/setCarsAction';
 import * as calucalte from '../utils/calculate-rent';
-import { toastr } from 'react-redux-toastr';
 
 class CurrentRentals extends Component {
   constructor(props) {
@@ -16,8 +16,8 @@ class CurrentRentals extends Component {
     this.returnCar = this.returnCar.bind(this);
 
     this.state = {
-      loadingRentals: false
-    }
+      loadingRentals: false,
+    };
   }
 
   async componentDidMount() {
@@ -26,17 +26,6 @@ class CurrentRentals extends Component {
     if (!rentals.length) {
       await this.getCurrentRentals();
     }
-  }
-
-  async returnCar(ev, id) {
-    try {
-      await axios.put(`${API_ROOT}/rentals/${id}`);
-    } catch (error) {
-      toastr.error('Car return error', 'Error occurred while returning car!');
-    }
-    toastr.success('Car returned', 'Car was succesfully returned!');
-    await this.getCurrentRentals();
-    await this.getCars();
   }
 
   async getCurrentRentals() {
@@ -53,6 +42,7 @@ class CurrentRentals extends Component {
   }
 
   async getCars() {
+    // eslint-disable-next-line react/prop-types
     const { setCars: dispatchSetCars } = this.props;
 
     let cars;
@@ -64,9 +54,21 @@ class CurrentRentals extends Component {
     dispatchSetCars(cars.data);
   }
 
+  async returnCar(ev, id) {
+    try {
+      await axios.put(`${API_ROOT}/rentals/${id}`);
+    } catch (error) {
+      toastr.error('Car return error', 'Error occurred while returning car!');
+    }
+    toastr.success('Car returned', 'Car was succesfully returned!');
+    await this.getCurrentRentals();
+    await this.getCars();
+  }
+
   render() {
+    // eslint-disable-next-line react/destructuring-assignment
     if (this.state.loadingRentals) {
-      return <h1>Loading...</h1>
+      return <h1>Loading...</h1>;
     }
 
     const { rentals } = this.props;
