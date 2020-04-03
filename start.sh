@@ -2,8 +2,8 @@
 
 # Default values of arguments
 DB_PASSWORD="159"
-DB_USERNAME=postgres
-DB_NAME=postgres
+DB_USERNAME=milen.ivanov
+DB_NAME=milen.ivanov
 DB_PORT=5432
 CONTAINER_NAME=postgres500
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
