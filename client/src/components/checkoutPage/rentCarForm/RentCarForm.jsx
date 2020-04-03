@@ -16,7 +16,7 @@ class RentCarForm extends Component {
   // eslint-disable-next-line react/sort-comp
   render() {
     return (
-      <form className="form-min-width">
+      <form className="form-min-width card p-3">
         {this.formInput({
           title: 'First Name', type: 'text', name: 'firstName', data: 'firstName',
         })}
@@ -75,7 +75,6 @@ class RentCarForm extends Component {
           type={type}
           name={name} // user by handleChange
           data={data} // used for nightwatch
-          placeholder={title}
           min={name === 'age' ? 18 : undefined}
           className={`form-control ${!isFormValid && error ? 'is-invalid' : ''}`}
           value={input.value}
@@ -112,7 +111,6 @@ class RentCarForm extends Component {
           timeIntervals={60}
           timeCaption="time"
           dateFormat="MMMM d, yyyy h:mm aa"
-          placeholderText="Return date"
         />
         {error && errorMsg}
       </div>

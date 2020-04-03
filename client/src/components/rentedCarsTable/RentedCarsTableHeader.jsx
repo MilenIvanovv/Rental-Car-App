@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import './rentedCarsTable.css';
 
 export default function RentedCarsTableHeader(props) {
   // eslint-disable-next-line react/destructuring-assignment

@@ -7,21 +7,23 @@ export default function RentedCarsRow(props) {
   const [isDisabled, setIsDisabled] = useState(false);
 
   return (
-    <tr>
+    <tr className={rental.hasPenalty ? 'table-danger' : ''}>
       <td data="current_rentals_model">{rental.car.model}</td>
       <td>{`${rental.client.firstName} ${rental.client.lastName}`}</td>
       <td><Moment format="YYYY/MM/DD HH:mm">{rental.dateFrom}</Moment></td>
       <td><Moment format="YYYY/MM/DD HH:mm">{rental.estimatedDate}</Moment></td>
       <td>{rental.estimatedDays}</td>
       <td>
-        {rental.estimatedPricePerDay} $
+        ${rental.estimatedPricePerDay}
       </td>
-      <td>{rental.curDaysRented}</td>
-      <td className={rental.hasPenalty ? 'red-penalty' : ''}>
-        {rental.curPricePerDay} $
+      <td>
+        {rental.curDaysRented}
       </td>
-      <td className={rental.hasPenalty ? 'red-penalty' : ''}>
-        {rental.curTotalPrice} $
+      <td>
+        ${rental.curPricePerDay}
+      </td>
+      <td>
+        ${rental.curTotalPrice}
       </td>
       <td>
         <button

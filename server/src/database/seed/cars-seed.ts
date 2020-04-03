@@ -2,7 +2,7 @@ import { CarStatus } from '../../common/car-status.enum';
 
 export default [{
   model: 'BMW 520d',
-  picture: 'https://bg.autodata24.com/i/audi/a3/a3-8p/medium/bac5aad7209a0d274208a8c982bdc020.jpg',
+  picture: 'https://www.sofauto.bg/uploads/import/Pic_XL/Img559408.jpg',
   class: 5,
   status: CarStatus.borrowed,
   insuranceFeePerYear: 100,
@@ -10,7 +10,7 @@ export default [{
 },
 {
   model: 'Volvo V40',
-  picture: 'https://bg.autodata24.com/i/audi/a3/a3-8p/medium/bac5aad7209a0d274208a8c982bdc020.jpg',
+  picture: 'https://maxtondesign.com/eng_pl_FRONT-SPLITTER-Volvo-V40-R-design-8661_4.jpg',
   class: 4,
   status: CarStatus.borrowed,
   insuranceFeePerYear: 200,
@@ -18,7 +18,7 @@ export default [{
 },
 {
   model: 'VW Golf',
-  picture: 'https://bg.autodata24.com/i/audi/a3/a3-8p/medium/bac5aad7209a0d274208a8c982bdc020.jpg',
+  picture: 'https://lh3.googleusercontent.com/proxy/7OP_y-WScuYTDtv6nYqNVVJf2MLP_sMYtbRHN3JRs-oIpu8kjoTdmea4Jsmx-YIe_RKOwt8FCwpX1fqiKVOJEfT4HLQtmLP3AhshTucER8PyQf8NE_2F3b4y31eu24x_XxC4t_fEoQv455AEfyaYzVdMcv2g',
   class: 3,
   status: CarStatus.borrowed,
   insuranceFeePerYear: 300,
@@ -26,7 +26,7 @@ export default [{
 },
 {
   model: 'Opel Astra',
-  picture: 'https://bg.autodata24.com/i/audi/a3/a3-8p/medium/bac5aad7209a0d274208a8c982bdc020.jpg',
+  picture: 'https://bg-media.opel.com/sites/default/files/styles/cropping_image/public/field/image/98/Opel-Astra-503773.jpg?itok=PJpZ9hki',
   class: 2,
   status: CarStatus.listed,
   insuranceFeePerYear: 100,
@@ -34,7 +34,7 @@ export default [{
 },
 {
   model: 'Toyota Yaris',
-  picture: 'https://bg.autodata24.com/i/audi/a3/a3-8p/medium/bac5aad7209a0d274208a8c982bdc020.jpg',
+  picture: 'https://i.dir-i.net/CMS/2019/01/29/c/5f_cxmi1b.jpg',
   class: 2,
   status: CarStatus.listed,
   insuranceFeePerYear: 200,
@@ -42,7 +42,7 @@ export default [{
 },
 {
   model: 'WV Up',
-  picture: 'https://bg.autodata24.com/i/audi/a3/a3-8p/medium/bac5aad7209a0d274208a8c982bdc020.jpg',
+  picture: 'https://www.nastarta.com/wp-content/uploads/2018/08/d4dd3891-vw-up-gti-tuning-4.jpg',
   class: 1,
   status: CarStatus.listed,
   insuranceFeePerYear: 300,
@@ -50,7 +50,7 @@ export default [{
 },
 {
   model: 'Ford Fiesta',
-  picture: 'https://bg.autodata24.com/i/audi/a3/a3-8p/medium/bac5aad7209a0d274208a8c982bdc020.jpg',
+  picture: 'https://www.tvevropa.com/wp-content/uploads/2019/05/Ford-Fiesta-ST.jpg',
   class: 1,
   status: CarStatus.listed,
   insuranceFeePerYear: 200,

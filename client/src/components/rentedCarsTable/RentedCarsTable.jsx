@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RentedCarsRow from '../RentedCarsRow';
-import './RentedCarsTable.css';
-import RentedCarsTableHeader from '../RentedCarsTableHeader';
+import RentedCarsRow from './RentedCarsRow';
+import './rentedCarsTable.css';
+import RentedCarsTableHeader from './RentedCarsTableHeader';
 
 
 export default function RentedCarsTable(props) {
@@ -12,13 +12,13 @@ export default function RentedCarsTable(props) {
     'Car',
     'Customer',
     'From',
-    'Estimated Return date',
-    'Estimated days rented',
+    'Estimated date',
+    'Estimated rented days',
     'Estimated price per day',
-    'Current days rented',
+    'Current rented days',
     'Current price per day',
     'Current total price',
-    'Actions',
+    '',
   ];
 
   const elements = rentals

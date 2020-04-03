@@ -1,30 +1,31 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import logo from '../../assets/IDrive logo.png';
 
 export default function Navigation() {
   return (
-    <nav className="navbar navbar-expand navbar-light bg-light mb-3">
-      <Link className="navbar-brand" to="/">
-        Navbar
-      </Link>
+    <nav className="navbar navbar-expand navbar-light navbar-white mb-3">
+      <NavLink className="navbar-brand" to="/">
+        <img src={logo} className="logo" alt="logo" />
+      </NavLink>
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
-          <li className="nav-item active">
-            <Link className="nav-link" to="/current-rentals">
+          <li className="nav-item">
+            <NavLink className="nav-link" to="/current-rentals">
               Dashboard
               {' '}
               <span className="sr-only">(current)</span>
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/cars" data="cars_link">
+            <NavLink className="nav-link" to="/cars" data="cars_NavLink">
               Cars
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/reports" data="cars_link">
+            <NavLink className="nav-link" to="/reports" data="cars_NavLink">
               Reports
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </div>

@@ -1,0 +1,21 @@
+.current-rentals .table thead th,
+.current-rentals .table tbody td {
+  font-size: 15px;
+  text-align: center;
+  vertical-align: middle;
+  min-width: 115px;
+}
+
+.current-rentals .table th, .table td {
+  padding: 0.3rem;
+}
+
+.current-rentals .table th {
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+
+.current-rentals .btn {
+  padding: 0.175rem 0.55rem;
+  font-size: 0.9rem;
+}

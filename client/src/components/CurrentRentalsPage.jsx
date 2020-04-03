@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr';
-import RentedCarsTable from './rentedCarsTable/rentedCarsTable/RentedCarsTable';
+import { Container, Row } from 'react-bootstrap';
+import RentedCarsTable from './rentedCarsTable/RentedCarsTable';
 import { API_ROOT } from '../constants/constants';
 import { setRentals } from '../actions/setRentalsAction';
 import { setCars } from '../actions/setCarsAction';
@@ -97,7 +98,7 @@ class CurrentRentals extends Component {
 
       // Add penalty
       const penaltyDays = calucalte.days(estimatedDate, today);
-      
+
       let penalty = 0;
       if (penaltyDays > 0) {
         const penaltyResult = calucalte.penalty(pricePerDay, penaltyDays);
@@ -110,7 +111,7 @@ class CurrentRentals extends Component {
 
         transformed.hasPenalty = true;
       }
-      
+
       // Client total price
       transformed.curTotalPrice = calucalte.totalPrice(transformed.curPricePerDay, transformed.curDaysRented) + penalty;
 
@@ -118,12 +119,12 @@ class CurrentRentals extends Component {
     });
 
     return (
-      <div>
-        <div className="p-3">
-          <h3>Current rentals</h3>
+      <Container className="current-rentals">
+        <Row>
+          <h3 className="mb-3">Current rentals</h3>
           <RentedCarsTable rentals={transformedRentals} returnCar={this.returnCar} />
-        </div>
-      </div>
+        </Row>
+      </Container>
     );
   }
 }
