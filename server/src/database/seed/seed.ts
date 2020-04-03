@@ -6,14 +6,22 @@ import RentalsSeed from './rentals-seed';
 const main = async () => {
 
   const connection = await createConnection();
-  await connection.getRepository("Classes").save(ClassesSeed);
-  await connection.getRepository("cars").save(CarsSeed);
-  await connection.getRepository("rentals").save(RentalsSeed);
 
+  const classes = await connection.getRepository("Classes").find();
+
+  if (classes.length) {
+    console.log(`Skipped seed. Database is not empty!`);
+  } else {
+    await connection.getRepository("Classes").save(ClassesSeed);
+    await connection.getRepository("cars").save(CarsSeed);
+    await connection.getRepository("rentals").save(RentalsSeed);
+
+    
+    // tslint:disable: no-console
+    console.log(`Data seeded successfully`);
+  }
+  
   connection.close();
-
-  // tslint:disable: no-console
-  console.log(`Data seeded successfully`);
 };
 
 main()
