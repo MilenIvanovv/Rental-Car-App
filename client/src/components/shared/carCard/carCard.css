@@ -1,12 +1,27 @@
 .align-card-text .card-text{
   display: flex;
+  justify-content: space-between;
 }
 
-.align-card-text .card-text p {
+.align-card-text .card-text > div {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 190px;
 }
 
 .card {
   width: 18rem;
+  position: relative;
+}
+
+.card-body {
+  padding: 0.7rem;
+}
+
+.sticker {
+  position: absolute;
+  height: 60px;
+  top: 0;
+  left: 2px;
 }

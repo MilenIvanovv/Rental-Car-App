@@ -18,7 +18,7 @@ export default [{
 },
 {
   model: 'VW Golf',
-  picture: 'https://lh3.googleusercontent.com/proxy/7OP_y-WScuYTDtv6nYqNVVJf2MLP_sMYtbRHN3JRs-oIpu8kjoTdmea4Jsmx-YIe_RKOwt8FCwpX1fqiKVOJEfT4HLQtmLP3AhshTucER8PyQf8NE_2F3b4y31eu24x_XxC4t_fEoQv455AEfyaYzVdMcv2g',
+  picture: 'https://www.special.bg/wp-content/uploads/2019/05/vw-golf-estate-r-4motion-fighter.jpg',
   class: 3,
   status: CarStatus.borrowed,
   insuranceFeePerYear: 300,

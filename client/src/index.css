@@ -16,3 +16,15 @@ body {
 .navbar-white {
   background-color: white;
 }
+
+.price {
+  border: solid 1px #e7e7e7;
+  padding: 2px 5px;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  cursor: default;
+}
+
+.price:hover {
+  background-color: #cccccc;
+}

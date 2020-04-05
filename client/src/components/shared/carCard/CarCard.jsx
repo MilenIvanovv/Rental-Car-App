@@ -1,8 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useRouteMatch } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 import './carCard.css';
+import classA from '../../../assets/class-a.png';
+import classB from '../../../assets/class-b.png';
+import classC from '../../../assets/class-c.png';
+import classD from '../../../assets/class-d.png';
+import classE from '../../../assets/class-e.png';
+
+const stickers = [{
+  name: 'A',
+  img: classA,
+},
+{
+  name: 'B',
+  img: classB,
+},
+{
+  name: 'C',
+  img: classC,
+},
+{
+  name: 'D',
+  img: classD,
+},
+{
+  name: 'E',
+  img: classE,
+}];
+
 
 export default function CarCard(props) {
   const match = useRouteMatch();
@@ -10,36 +39,34 @@ export default function CarCard(props) {
   const { car, noButton } = props;
 
   if (!car) {
-    return <h1>Loading car...</h1>
+    return <h1>Loading car...</h1>;
   }
 
   const checkoutBtn = () => !noButton && (
     <Link to={`${match.url}/${car.id}`} className="btn btn-primary" data="card_checkout">
-      Checkout
+      <FontAwesomeIcon icon={faShoppingCart} />
     </Link>
   );
+
+  let sticker = stickers.find((x) => x.name === car.class);
+  sticker = sticker && <img src={sticker.img} className="sticker" alt="..." />;
 
   return (
     <div className="card">
       <Link to={`${match.url}/${car.id}`}>
         <img src={car.picture} className="card-img-top" alt="..." />
+        {sticker}
       </Link>
       <div className="card-body align-card-text">
         <div className="card-text">
-          <p className="w-50">
-            <span>Model</span>
-            <span>Class</span>
-            <span>Price per day</span>
-          </p>
-          <p>
+          <div>
             <span><b data="model">{car.model}</b></span>
-            <span>{car.class}</span>
-            <span>{`$${car.price}`}</span>
-          </p>
-        </div>
-        <div className="d-flex justify-content-center">
+            <span className="price">{`$${car.price}`}</span>
+          </div>
           {checkoutBtn()}
         </div>
+        {/* <div className="d-flex justify-content-center">
+        </div> */}
       </div>
     </div>
   );
@@ -63,6 +90,3 @@ CarCard.defaultProps = {
   car: null,
   noButton: false,
 };
-
-
-
