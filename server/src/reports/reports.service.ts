@@ -1,14 +1,16 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-unused-expressions */
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RentedCar } from '../database/entities/rentals.entity';
+import { isNumber } from 'util';
 import { Repository, Between } from 'typeorm';
+import { RentedCar } from '../database/entities/rentals.entity';
 import { Car } from '../database/entities/cars.entity';
 import { RentalStatus } from '../common/rental-status.enum';
 import { CarClass } from '../database/entities/class.entity';
 import { CalculateRentService } from '../core/calculate-rent.service';
 import { CarStatus } from '../common/car-status.enum';
 import { ReportPerClass } from './models/reportPerClass';
-import { isNumber } from 'util';
 
 @Injectable()
 export class ReportsService {
@@ -20,72 +22,105 @@ export class ReportsService {
     private readonly calculate: CalculateRentService,
   ) { }
 
-  async getAverageDaysPerClass(): Promise<ReportPerClass<number>[]> {
+  async getAverageDaysPerClass(): Promise<ReportPerClass> {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned }, relations: ['car', 'car.class'] });
 
-    return classes.reduce((acc, carClass) => {
-      const result = rentals
-        .filter((rental) => rental.car.class.name === carClass.name)
-        .reduce(this.calculateAverageDays.bind(this), { result: 0 })
-        .result;
+    const rows = [{
+      name: 'days',
+      dataType: '',
+    }];
 
-      acc.push({ class: carClass.name, result });
+    const columns = classes.reduce((acc, carClass) => {
+      const { result } = rentals
+        .filter((rental) => rental.car.class.name === carClass.name)
+        .reduce(this.calculateAverageDays.bind(this), { result: 0 });
+
+      acc.push({ class: carClass.name, result: [result] });
 
       return acc;
     }, []);
+
+    return { rows, columns }
   }
 
-  async getCurrentlyRentedCars(): Promise<ReportPerClass<number>[]> {
+  async getCurrentlyRentedCars(): Promise<ReportPerClass> {
     const classes = await this.classRepository.find();
     const cars = await this.carRepository.find({ where: { status: CarStatus.borrowed }, relations: ['class'] });
 
-    return classes.reduce((acc, carClass) => {
-      const result = cars
+    const rows = [{
+      name: 'rented cars',
+      dataType: '%',
+    }];
+
+    const columns = classes.reduce((acc, carClass) => {
+      const { result } = cars
         .filter((car) => car.class.name === carClass.name)
-        .reduce(this.calculateCurrentRentedCars, { result: 0 })
-        .result;
+        .reduce(this.calculateCurrentRentedCars, { result: 0 });
 
-      acc.push({ class: carClass.name, result });
+      acc.push({ class: carClass.name, result: [result] });
 
       return acc;
     }, []);
+
+    return { rows, columns };
   }
 
-  async getAverageMonthlyIncome(year: number, month: number): Promise<any[]> {
+  async getAverageMonthlyIncome(year: number, month: number): Promise<ReportPerClass> {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInMonth(year, month) }, relations: ['car', 'car.class'] });
-    
-    return classes.reduce((acc, carClass) => {
-      const result = rentals
+
+    const rows = [{
+      name: 'income',
+      dataType: '$',
+    }];
+
+    const columns = classes.reduce((acc, carClass) => {
+      const { result } = rentals
         .filter((rental) => rental.car.class.name === carClass.name)
-        .reduce(this.calculateAverageIncome.bind(this), { result: 0 })
-        .result;
+        .reduce(this.calculateAverageIncome.bind(this), { result: 0 });
 
-      acc.push({ class: carClass.name, result });
+      acc.push({ class: carClass.name, result: [result] });
 
       return acc;
     }, []);
+
+    return { rows, columns };
   }
 
-  async getTotalMonthly(year: number, month: number): Promise<ReportPerClass<{ income: number, expenses: number, revenue: number }>[]> {
+  async getTotalMonthly(year: number, month: number): Promise<ReportPerClass> {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInMonth(year, month) }, relations: ['car', 'car.class'] });
 
-    return classes.reduce((acc, carClass) => {
+    const rows = [{
+      name: 'income',
+      dataType: '$',
+    },
+    {
+      name: 'expenses',
+      dataType: '$',
+    },
+    {
+      name: 'total',
+      dataType: '$',
+    }];
+
+    const columns = classes.reduce((acc, carClass) => {
       const rentalsByClass = rentals.filter((rental) => rental.car.class.name === carClass.name);
       const income = rentalsByClass.reduce(this.calculateAverageIncome.bind(this), { sum: 0 }).sum;
       const expenses = rentalsByClass.reduce(this.calculateAverageExpenses, { sum: 0 }).sum;
 
-      acc.push({ class: carClass.name, result: { income, expenses, revenue: +(income - expenses).toFixed(2)} });
+      acc.push({ class: carClass.name, result: [ income, expenses, +(income - expenses).toFixed(2)] });
 
       return acc;
     }, []);
+
+    return { rows, columns };
   }
 
   private isInMonth(year: number, month: number) {
-    if (!isNumber(year) || isNaN(year) || year < 1970 || 
-    !isNumber(month) || isNaN(month) || month < 1 || month > 12) {
+    if (!isNumber(year) || isNaN(year) || year < 1970 ||
+      !isNumber(month) || isNaN(month) || month < 1 || month > 12) {
       throw new BadRequestException('Invalid month');
     }
 
@@ -121,7 +156,7 @@ export class ReportsService {
     return acc;
   }
 
-  private calculateAverageIncome(acc: any, rental: RentedCar): { sum: number, count: number, result: number} {
+  private calculateAverageIncome(acc: any, rental: RentedCar): { sum: number, count: number, result: number } {
     acc.sum || (acc.sum = 0);
     acc.count || (acc.count = 0);
 

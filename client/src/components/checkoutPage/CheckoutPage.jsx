@@ -9,7 +9,7 @@ import CarCard from '../shared/carCard/CarCard';
 import { API_ROOT } from '../../constants/constants';
 // eslint-disable-next-line import/no-named-as-default
 import Estimations from './estimatoins/Estimations';
-import SectionHeader from '../common/sectionHeader/SectionHeader';
+import Section from '../shared/section/Section';
 
 function CheckoutPage(props) {
   const { cars } = props;
@@ -28,29 +28,28 @@ function CheckoutPage(props) {
   return (
     <div>
       <Container>
-        <Row>
-          <SectionHeader text="Checkout rental car" />
-        </Row>
-        <Row className="center-in-colums">
-          <Col>
-            <div>
-              <h4>Car</h4>
-              <CarCard car={carToRent} noButton />
-            </div>
-          </Col>
-          <Col>
-            <div>
-              <h4>Booking </h4>
-              <RentCarForm />
-            </div>
-          </Col>
-          <Col>
-            <div>
-              <h4>Estimated Price</h4>
-              <Estimations car={carToRent} />
-            </div>
-          </Col>
-        </Row>
+        <Section header="Checkout rental car">
+          <Row className="center-in-colums">
+            <Col>
+              <div>
+                <h4>Car</h4>
+                <CarCard car={carToRent} noButton />
+              </div>
+            </Col>
+            <Col>
+              <div>
+                <h4>Booking </h4>
+                <RentCarForm />
+              </div>
+            </Col>
+            <Col>
+              <div>
+                <h4>Estimated Price</h4>
+                <Estimations car={carToRent} />
+              </div>
+            </Col>
+          </Row>
+        </Section>
       </Container>
     </div>
   );

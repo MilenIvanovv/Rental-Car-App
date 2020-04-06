@@ -1,14 +1,15 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import reports from '../common/reports';
 import './report.css';
 
 export default function Report(props) {
   const {
     report,
-    title,
   } = props;
 
+  const reportData = reports.find((x) => x.reportId === report.reportId);
   // eslint-disable-next-line react/prop-types
   let { children: resultComp } = props;
   let otherComp;
@@ -33,9 +34,11 @@ export default function Report(props) {
     );
   });
 
+  const rows = report.data.rows.map((x) => <span>{x.name}</span>);
+
   return (
     <Card className="report-card mb-3">
-      <Card.Header>{title}</Card.Header>
+      <Card.Header>{reportData.title}</Card.Header>
       <Card.Body>
         {otherComp}
         {report.loading
@@ -52,7 +55,8 @@ export default function Report(props) {
                   <span>revenue</span>
                 </span>
               </span>
-              {cardText}
+              {
+              }
             </Card.Text>
           )}
       </Card.Body>
@@ -62,11 +66,11 @@ export default function Report(props) {
 
 Report.propTypes = {
   report: PropTypes.shape({
+    reportId: PropTypes.number.isRequired,
     data: PropTypes.arrayOf(PropTypes.shape({
       class: PropTypes.string.isRequired,
-      result: PropTypes.any,
+      rows: PropTypes.any,
     })).isRequired,
     loading: PropTypes.bool.isRequired,
   }).isRequired,
-  title: PropTypes.string.isRequired,
 };

@@ -14,12 +14,9 @@ class ReportsPage extends Component {
   render() {
     // eslint-disable-next-line react/destructuring-assignment
     const transformedReports = this.props.reports.map((report) => {
-      const reportData = reports.find((x) => x.reportId === report.reportId);
       return (
-        <Col key={reportData.reportId} xs={12}>
-          <Report key={report.reportId} title={reportData.title} report={report}>
-            {reportData.children}
-          </Report>
+        <Col key={report.reportId} xs={12}>
+          <Report report={report} />
         </Col>
       );
     });
