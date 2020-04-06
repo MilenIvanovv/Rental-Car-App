@@ -9,6 +9,7 @@ import CarCard from '../shared/carCard/CarCard';
 import { API_ROOT } from '../../constants/constants';
 // eslint-disable-next-line import/no-named-as-default
 import Estimations from './estimatoins/Estimations';
+import SectionHeader from '../common/sectionHeader/SectionHeader';
 
 function CheckoutPage(props) {
   const { cars } = props;
@@ -26,8 +27,10 @@ function CheckoutPage(props) {
 
   return (
     <div>
-      <h2 className="p-2">Checkout rental car</h2>
       <Container>
+        <Row>
+          <SectionHeader text="Checkout rental car" />
+        </Row>
         <Row className="center-in-colums">
           <Col>
             <div>

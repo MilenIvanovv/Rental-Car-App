@@ -9,6 +9,7 @@ import { API_ROOT } from '../constants/constants';
 import { setRentals } from '../actions/setRentalsAction';
 import { setCars } from '../actions/setCarsAction';
 import * as calucalte from '../utils/calculate-rent';
+import SectionHeader from './common/sectionHeader/SectionHeader';
 
 class CurrentRentals extends Component {
   constructor(props) {
@@ -77,7 +78,7 @@ class CurrentRentals extends Component {
     const openRentals = rentals.filter((rental) => rental.status === 'open');
 
     if (!openRentals.length) {
-      return <h1>Contracts not found</h1>
+      return <h1>Contracts not found</h1>;
     }
 
     const transformedRentals = openRentals.map((rental) => {
@@ -121,7 +122,7 @@ class CurrentRentals extends Component {
     return (
       <Container className="current-rentals">
         <Row>
-          <h3 className="mb-3">Current rentals</h3>
+          <SectionHeader text="Current rentals" />
           <RentedCarsTable rentals={transformedRentals} returnCar={this.returnCar} />
         </Row>
       </Container>
