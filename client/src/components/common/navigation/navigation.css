@@ -1,0 +1,20 @@
+.navbar-nav  {
+  width: 100%;
+}
+
+.navbar {
+  width: 100% !important;
+}
+
+.nav-item {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.nav-item:last-child {
+  margin-left: auto;
+}
+
+.navbar-container {
+  background-color: white;
+}

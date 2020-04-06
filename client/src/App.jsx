@@ -1,13 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter as Router, Route, Switch, Redirect,
+} from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import Navigation from './components/common/Navigation';
+import ReduxToastr from 'react-redux-toastr';
+import Navigation from './components/common/navigation/Navigation';
 import CarsPage from './components/carsPage/CarsPage';
 import CurrentRentals from './components/CurrentRentalsPage';
 import CheckoutPage from './components/checkoutPage/CheckoutPage';
 import combinedReducer from './reducers/index';
-import ReduxToastr from 'react-redux-toastr';
 import NotFoundPage from './components/common/NotFoundPage';
 import ReportsPage from './components/reportsPage/ReportsPage';
 

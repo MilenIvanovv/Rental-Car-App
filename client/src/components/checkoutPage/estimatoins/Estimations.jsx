@@ -144,7 +144,7 @@ export class Estimations extends Component {
     }
 
     return (
-      <div className="card">
+      <div className="estimations card">
         <div className="card-body align-card-text">
           <div className="card-text">
             <p className="w-50">
@@ -154,8 +154,8 @@ export class Estimations extends Component {
             </p>
             <p>
               <span>{estimations.days || 0}</span>
-              <span>{`${estimations.pricePerDay || 0} $`}</span>
-              <span>{`${estimations.totalPrice || 0} $`}</span>
+              <span>{`$${estimations.pricePerDay || 0}`}</span>
+              <span>{`$${estimations.totalPrice || 0}`}</span>
             </p>
           </div>
           <div className="buttons-container">

@@ -13,3 +13,12 @@
 .card {
   width: 18rem;
 }
+
+.estimations .card-body .card-text p {
+  display: flex;
+  flex-direction: column;
+}
+
+.estimations .align-card-text .card-text {
+  justify-content: normal;
+}
