@@ -15,7 +15,7 @@
 .report-card .align-card-text {
   display: flex;
   flex-direction: column;
-  min-width: 175px;
+  min-width: 90px;
 }
 
 .report-card .align-card-text .section {
@@ -23,7 +23,25 @@
   flex-direction: column;
 }
 
+.report-card .align-card-text .section span{
+  display: flex;
+  justify-content: center;
+}
+
+.report-card .align-card-text:first-child .section span{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  min-height: 29px;
+}
+
 .report-card .align-card-text .section:first-child {
   /* width: 40%; */
   margin-bottom: 15px;
+}
+
+.report-card .card-header {
+  background-color: rgb(191, 98, 43);
+  color: white;
+  font-weight: 600;
 }

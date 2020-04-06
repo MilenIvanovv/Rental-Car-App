@@ -16,7 +16,7 @@ export default function Report(props) {
     // eslint-disable-next-line prefer-destructuring
     resultComp = resultComp[0];
     otherComp = React.Children
-    // eslint-disable-next-line react/prop-types
+      // eslint-disable-next-line react/prop-types
       .map(props.children.slice(1), (child) => React.cloneElement(child, { report }));
   }
 
@@ -25,7 +25,8 @@ export default function Report(props) {
     return (
       <span key={x.class} className="align-card-text mb-1">
         <span className="section">
-          <span>Class: {x.class}</span>
+          {/* <span>Class: {x.class}</span> */}
+          <span><strong>{x.class}</strong></span>
         </span>
         {resultWithProps}
       </span>
@@ -41,6 +42,16 @@ export default function Report(props) {
           ? <h4>Loading...</h4>
           : (
             <Card.Text>
+              <span className="align-card-text mb-1">
+                <span className="section">
+                  <span>class</span>
+                </span>
+                <span className="section">
+                  <span>income</span>
+                  <span>expenses</span>
+                  <span>revenue</span>
+                </span>
+              </span>
               {cardText}
             </Card.Text>
           )}

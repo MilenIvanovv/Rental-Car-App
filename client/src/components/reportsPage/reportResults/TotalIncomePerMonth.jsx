@@ -6,9 +6,12 @@ export default function TotalIncomePerMonth(props) {
 
   return (
     <span className="section">
-      <span> income: ${result.income}</span>
+      {/* <span> income: ${result.income}</span>
       <span> expenses: ${result.expenses}</span>
-      <span> revenue: ${result.revenue}</span>
+      <span> revenue: ${result.revenue}</span> */}
+      <span className="price"> ${result.income}</span>
+      <span className="price"> ${result.expenses}</span>
+      <span className="price"> ${result.revenue}</span>
     </span>
   );
 }

@@ -7,7 +7,9 @@ export default function AvgDays(props) {
 
   return (
     <span className="section">
-      <span>days: {result}</span>
+      <span>{result}</span>
+      {/* <span>days: {result}</span> */}
+
     </span>
   );
 }
