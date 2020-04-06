@@ -2,7 +2,7 @@ import { CarStatus } from '../../common/car-status.enum';
 
 export default [{
   model: 'BMW 520d',
-  picture: 'https://www.sofauto.bg/uploads/import/Pic_XL/Img559408.jpg',
+  picture: 'BMW 520d.jpg',
   class: 5,
   status: CarStatus.borrowed,
   insuranceFeePerYear: 100,
@@ -10,7 +10,7 @@ export default [{
 },
 {
   model: 'Volvo V40',
-  picture: 'https://maxtondesign.com/eng_pl_FRONT-SPLITTER-Volvo-V40-R-design-8661_4.jpg',
+  picture: 'Volvo V40.jpg',
   class: 4,
   status: CarStatus.borrowed,
   insuranceFeePerYear: 200,
@@ -18,7 +18,7 @@ export default [{
 },
 {
   model: 'VW Golf',
-  picture: 'https://www.special.bg/wp-content/uploads/2019/05/vw-golf-estate-r-4motion-fighter.jpg',
+  picture: 'VW Golf.jpg',
   class: 3,
   status: CarStatus.borrowed,
   insuranceFeePerYear: 300,
@@ -26,7 +26,7 @@ export default [{
 },
 {
   model: 'Opel Astra',
-  picture: 'https://bg-media.opel.com/sites/default/files/styles/cropping_image/public/field/image/98/Opel-Astra-503773.jpg?itok=PJpZ9hki',
+  picture: 'Opel Astra.jpg',
   class: 2,
   status: CarStatus.listed,
   insuranceFeePerYear: 100,
@@ -34,7 +34,7 @@ export default [{
 },
 {
   model: 'Toyota Yaris',
-  picture: 'https://i.dir-i.net/CMS/2019/01/29/c/5f_cxmi1b.jpg',
+  picture: 'Toyota Yaris.jpg',
   class: 2,
   status: CarStatus.listed,
   insuranceFeePerYear: 200,
@@ -42,7 +42,7 @@ export default [{
 },
 {
   model: 'WV Up',
-  picture: 'https://www.nastarta.com/wp-content/uploads/2018/08/d4dd3891-vw-up-gti-tuning-4.jpg',
+  picture: 'WV Up.jpg',
   class: 1,
   status: CarStatus.listed,
   insuranceFeePerYear: 300,
@@ -50,7 +50,7 @@ export default [{
 },
 {
   model: 'Ford Fiesta',
-  picture: 'https://www.tvevropa.com/wp-content/uploads/2019/05/Ford-Fiesta-ST.jpg',
+  picture: 'Ford Fiesta.jpg',
   class: 1,
   status: CarStatus.listed,
   insuranceFeePerYear: 200,

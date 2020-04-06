@@ -3,35 +3,9 @@ import PropTypes from 'prop-types';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-
+import LoadingIdicator from '../loadingIndicator/LoadingIdicator';
+import { stickers, cars } from './index';
 import './carCard.css';
-import classA from '../../../assets/class-a.png';
-import classB from '../../../assets/class-b.png';
-import classC from '../../../assets/class-c.png';
-import classD from '../../../assets/class-d.png';
-import classE from '../../../assets/class-e.png';
-
-const stickers = [{
-  name: 'A',
-  img: classA,
-},
-{
-  name: 'B',
-  img: classB,
-},
-{
-  name: 'C',
-  img: classC,
-},
-{
-  name: 'D',
-  img: classD,
-},
-{
-  name: 'E',
-  img: classE,
-}];
-
 
 export default function CarCard(props) {
   const match = useRouteMatch();
@@ -39,7 +13,7 @@ export default function CarCard(props) {
   const { car, noButton } = props;
 
   if (!car) {
-    return <h1>Loading car...</h1>;
+    return <LoadingIdicator text="cars" />;
   }
 
   const checkoutBtn = () => !noButton && (
@@ -48,13 +22,16 @@ export default function CarCard(props) {
     </Link>
   );
 
+  let carImg = cars.find((x) => x.name === car.model);
+  carImg = carImg && <img src={carImg.img} className="card-img-top" alt="..." />;
+
   let sticker = stickers.find((x) => x.name === car.class);
   sticker = sticker && <img src={sticker.img} className="sticker" alt="..." />;
 
   return (
     <div className="card">
       <Link to={`${match.url}/${car.id}`}>
-        <img src={car.picture} className="card-img-top" alt="..." />
+        {carImg}
         {sticker}
       </Link>
       <div className="card-body align-card-text">

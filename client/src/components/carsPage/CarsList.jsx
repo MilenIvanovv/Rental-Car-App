@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'react-bootstrap';
 import CarCard from '../shared/carCard/CarCard';
+import LoadingIdicator from '../shared/loadingIndicator/LoadingIdicator';
 
 export default function CarsList(props) {
   const { cars, loadingCars } = props;
 
   if (loadingCars) {
-    return <h1>Loading cars</h1>;
+    return <LoadingIdicator text="cars" />;
   }
 
   if (!cars.length) {
