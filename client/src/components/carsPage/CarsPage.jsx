@@ -7,6 +7,8 @@ import CarsList from './CarsList';
 import SearchBar from './SearchBar';
 import { setCars } from '../../actions/setCarsAction';
 import { API_ROOT } from '../../constants/constants';
+import Section from '../shared/section/Section';
+
 
 class CarsPage extends Component {
   constructor(props) {
@@ -56,8 +58,10 @@ class CarsPage extends Component {
 
     return (
       <Container>
-        <SearchBar onSearch={this.searchHandler} />
-        <CarsList cars={filteredByModel} loadingCars={loadingCars} />
+        <Section header="Car list">
+          <SearchBar onSearch={this.searchHandler} />
+          <CarsList cars={filteredByModel} loadingCars={loadingCars} />
+        </Section>
       </Container>
     );
   }

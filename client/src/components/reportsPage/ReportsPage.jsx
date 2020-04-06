@@ -7,7 +7,7 @@ import Report from './report/Report';
 import { API_ROOT } from '../../constants/constants';
 import { modifyReport } from '../../actions/modifyReportAction';
 import reports from './common/reports';
-
+import Section from '../shared/section/Section';
 
 class ReportsPage extends Component {
   // eslint-disable-next-line react/sort-comp
@@ -26,9 +26,11 @@ class ReportsPage extends Component {
 
     return (
       <Container>
-        <Row className="mb-3">
-          {transformedReports}
-        </Row>
+        <Section header="Reports">
+          <Row className="mb-3">
+            {transformedReports}
+          </Row>
+        </Section>
       </Container>
     );
   }
