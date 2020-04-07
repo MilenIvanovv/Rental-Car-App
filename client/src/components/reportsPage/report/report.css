@@ -56,8 +56,8 @@
 }
 
 .report-card .year-month-picker {
-  background-color: #007bff;
-  color: #ffffff;
+  background-color: white;
+  color: black;
   margin-left: 5px;
   width: 147px;
   font-weight: 600;
