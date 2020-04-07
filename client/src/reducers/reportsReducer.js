@@ -11,7 +11,7 @@ export default (state = [], { type, payload }) => {
       : x);
       
       // if no report with given id is found, new one is created
-      return !found ? [{data: [], loading: false, ...payload}, ...state] : updated;
+      return !found ? [{data: {}, loading: false, ...payload}, ...state] : updated;
     default:
       return state;
   }

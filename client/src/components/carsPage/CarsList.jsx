@@ -15,7 +15,7 @@ export default function CarsList(props) {
     return <h1 data="no-cars">No cars found</h1>;
   }
 
-  const carElements = cars.map((car) => <Col className="mb-3" xs={4} key={car.model}><CarCard car={car} /></Col>);
+  const carElements = cars.map((car) => <Col className="mb-3" xs={12} md={6} lg={4} key={car.model}><CarCard car={car} /></Col>);
 
   return (
     <Row className="center-in-colums">

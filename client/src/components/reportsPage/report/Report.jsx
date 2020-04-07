@@ -22,13 +22,13 @@ export default function Report(props) {
           <span><strong>{col.class}</strong></span>
         </span>
         <span className="section">
-          {col.result.map((x, i) => <span className="price">{x}{rows[i].dataType}</span>)}
+          {col.result.map((x, i) => <span key={i} className="price">{x}{rows[i].dataType}</span>)}
         </span>
       </span>
     );
   });
 
-  const rows = report.data.rows && report.data.rows.map((x) => <span>{x.name}</span>);
+  const rows = report.data.rows && report.data.rows.map((x, index) => <span key={index}>{x.name}</span>);
 
   const calendar = reportData.monthPicker && <YearMonthPicker report={report} />;
 
