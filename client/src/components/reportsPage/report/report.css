@@ -41,7 +41,7 @@
 }
 
 .report-card .card-header {
-  background-color: rgb(191, 98, 43);
+  background-color: #007bff;
   color: white;
   font-weight: 600;
   display: flex;
@@ -52,7 +52,7 @@
 }
 
 .report-card .year-month-picker {
-  background-color: #bf622b;
+  background-color: #007bff;
   color: #ffffff;
   margin-left: 5px;
   width: 147px;
