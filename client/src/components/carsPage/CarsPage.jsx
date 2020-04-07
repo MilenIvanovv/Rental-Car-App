@@ -17,6 +17,7 @@ class CarsPage extends Component {
     this.state = {
       filter: '',
       loadingCars: false,
+      header: 'Car list',
     };
 
     this.searchHandler = this.searchHandler.bind(this);
@@ -45,20 +46,26 @@ class CarsPage extends Component {
   }
 
   searchHandler(e, filter) {
+    if (filter === '') {
+      this.setState({ header: 'Cars List' });
+    } else {
+      this.setState({ header: 'Searching cars' });
+    }
+
     e.preventDefault();
     this.setState({ filter });
   }
 
   render() {
     const { cars } = this.props;
-    const { filter, loadingCars } = this.state;
+    const { filter, loadingCars, header } = this.state;
     const filteredByStatus = cars.filter((car) => car.status === 'listed');
     const filteredByModel = filteredByStatus
       .filter((car) => car.model.toLowerCase().includes(filter.toLowerCase()));
 
     return (
       <Container>
-        <Section header="Car list">
+        <Section header={header}>
           <SearchBar onSearch={this.searchHandler} />
           <CarsList cars={filteredByModel} loadingCars={loadingCars} />
         </Section>
