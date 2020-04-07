@@ -1,0 +1,16 @@
+.inner-header {
+  position: relative;
+  background-color: #bf622b;
+  padding: 10px;
+  padding-left: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  margin-bottom: -4px;
+  z-index: 22;
+  border-radius: 10px 10px 0 0;
+  color: white;
+  font-weight: bold;
+}
+
+.inner-header h5 {
+  margin-bottom: 0;
+}

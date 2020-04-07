@@ -2,6 +2,7 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import reports from '../common/reports';
+import YearMonthPicker from '../reportResults/yearMonthPicker/YearMonthPicker';
 import './report.css';
 
 export default function Report(props) {
@@ -11,36 +12,30 @@ export default function Report(props) {
 
   const reportData = reports.find((x) => x.reportId === report.reportId);
   // eslint-disable-next-line react/prop-types
-  let { children: resultComp } = props;
-  let otherComp;
-  if (Array.isArray(resultComp)) {
-    // eslint-disable-next-line prefer-destructuring
-    resultComp = resultComp[0];
-    otherComp = React.Children
-      // eslint-disable-next-line react/prop-types
-      .map(props.children.slice(1), (child) => React.cloneElement(child, { report }));
-  }
 
-  const cardText = report.data && report.data.map((x) => {
-    const resultWithProps = React.cloneElement(resultComp, { result: x.result });
+  const columns = report.data.columns && report.data.columns.map((col) => {
+    const { rows } = report.data;
+
     return (
-      <span key={x.class} className="align-card-text mb-1">
+      <span key={col.class} className="align-card-text mb-1">
         <span className="section">
-          {/* <span>Class: {x.class}</span> */}
-          <span><strong>{x.class}</strong></span>
+          <span><strong>{col.class}</strong></span>
         </span>
-        {resultWithProps}
+        <span className="section">
+          {col.result.map((x, i) => <span className="price">{x}{rows[i].dataType}</span>)}
+        </span>
       </span>
     );
   });
 
-  const rows = report.data.rows.map((x) => <span>{x.name}</span>);
+  const rows = report.data.rows && report.data.rows.map((x) => <span>{x.name}</span>);
+
+  const calendar = reportData.monthPicker && <YearMonthPicker report={report} />;
 
   return (
     <Card className="report-card mb-3">
-      <Card.Header>{reportData.title}</Card.Header>
+      <Card.Header>{reportData.title}{calendar}</Card.Header>
       <Card.Body>
-        {otherComp}
         {report.loading
           ? <h4>Loading...</h4>
           : (
@@ -50,13 +45,10 @@ export default function Report(props) {
                   <span>class</span>
                 </span>
                 <span className="section">
-                  <span>income</span>
-                  <span>expenses</span>
-                  <span>revenue</span>
+                  {rows}
                 </span>
               </span>
-              {
-              }
+              {columns}
             </Card.Text>
           )}
       </Card.Body>
@@ -67,10 +59,16 @@ export default function Report(props) {
 Report.propTypes = {
   report: PropTypes.shape({
     reportId: PropTypes.number.isRequired,
-    data: PropTypes.arrayOf(PropTypes.shape({
-      class: PropTypes.string.isRequired,
-      rows: PropTypes.any,
-    })).isRequired,
+    data: PropTypes.shape({
+      rows: PropTypes.arrayOf(PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        dataType: PropTypes.string.isRequired,
+      })),
+      columns: PropTypes.arrayOf(PropTypes.shape({
+        class: PropTypes.string.isRequired,
+        result: PropTypes.arrayOf(PropTypes.number.isRequired),
+      })),
+    }).isRequired,
     loading: PropTypes.bool.isRequired,
   }).isRequired,
 };

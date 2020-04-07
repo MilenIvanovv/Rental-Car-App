@@ -1,3 +1,14 @@
 .calendar-container {
-  min-width: 220px;
+  min-width: 250px;
+  display: flex;
+  position: relative;
 }
+ 
+.calendar-container svg {
+  color: white;
+  position: absolute;
+  top: 4px;
+  left: 126px;
+  cursor: pointer;
+}
+

@@ -10,6 +10,7 @@ import { API_ROOT } from '../../constants/constants';
 // eslint-disable-next-line import/no-named-as-default
 import Estimations from './estimatoins/Estimations';
 import Section from '../shared/section/Section';
+import InnerHeader from '../shared/innerHeader/InnerHeader';
 
 function CheckoutPage(props) {
   const { cars } = props;
@@ -32,19 +33,19 @@ function CheckoutPage(props) {
           <Row className="center-in-colums">
             <Col>
               <div>
-                <h4>Car</h4>
+                <InnerHeader text="Car" />
                 <CarCard car={carToRent} noButton />
               </div>
             </Col>
             <Col>
               <div>
-                <h4>Booking </h4>
+                <InnerHeader text="Booking" />
                 <RentCarForm />
               </div>
             </Col>
             <Col>
               <div>
-                <h4>Estimated Price</h4>
+                <InnerHeader text="Estimated Price" />
                 <Estimations car={carToRent} />
               </div>
             </Col>

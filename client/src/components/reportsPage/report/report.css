@@ -1,6 +1,7 @@
 .report-card {
   /* width: 18rem; */
   width: 100%;
+  min-height: 178px;
 }
 
 .report-card .card-body {
@@ -31,7 +32,6 @@
 .report-card .align-card-text:first-child .section span{
   display: flex;
   justify-content: start;
-  align-items: center;
   min-height: 29px;
 }
 
@@ -44,4 +44,21 @@
   background-color: rgb(191, 98, 43);
   color: white;
   font-weight: 600;
+  display: flex;
+}
+
+.report-card .card-header label{
+  margin: 0;
+}
+
+.report-card .year-month-picker {
+  background-color: #bf622b;
+  color: #ffffff;
+  margin-left: 5px;
+  width: 147px;
+  font-weight: 600;
+  border: solid 1px white;
+  border-radius: 2px;
+  padding: 0px 6px;
+  cursor: pointer;
 }
