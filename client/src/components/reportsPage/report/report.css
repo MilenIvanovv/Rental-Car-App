@@ -4,6 +4,10 @@
   min-height: 178px;
 }
 
+.report-card.card {
+  width: 100%;
+}
+
 .report-card .card-body {
   display: flex;
 }

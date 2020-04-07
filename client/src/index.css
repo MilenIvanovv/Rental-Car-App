@@ -29,6 +29,10 @@ body {
   background-color: #cccccc;
 }
 
+.card {
+  width: 18rem;
+}
+
 @font-face {
   font-family: 'Montserrat-Bold';
   src: local('Montserrat-Boldt'), url(./fonts/Montserrat-Bold.ttf) format('ttf');

@@ -10,8 +10,7 @@
   width: 100%;
 }
 
-.card {
-  width: 18rem;
+.car-card.card {
   position: relative;
 }
 

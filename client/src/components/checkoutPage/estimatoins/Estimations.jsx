@@ -163,7 +163,7 @@ export class Estimations extends Component {
               Confirm
             </button>
             <Link to="/cars">
-              <button type="button" className="btn btn-primary">
+              <button type="button" className="btn btn-secondary">
                 Cencel
               </button>
             </Link>

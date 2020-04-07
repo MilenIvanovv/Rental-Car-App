@@ -14,7 +14,7 @@ export default function SearchBar(props) {
   return (
     <Row className="justify-content-center">
       <form className="col-12 form-inline mb-3">
-        <input className="form-control w-100" type="search" data="search" placeholder="Search" value={searchValue} onChange={onChangeHandler} />
+        <input className="form-control" type="search" data="search" placeholder="Search" value={searchValue} onChange={onChangeHandler} />
       </form>
     </Row>
   );

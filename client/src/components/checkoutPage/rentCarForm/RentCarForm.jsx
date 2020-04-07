@@ -16,7 +16,7 @@ class RentCarForm extends Component {
   // eslint-disable-next-line react/sort-comp
   render() {
     return (
-      <form className="form-min-width card p-3">
+      <form className="form-container p-3">
         {this.formInput({
           title: 'First Name', type: 'text', name: 'firstName', data: 'firstName',
         })}

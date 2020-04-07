@@ -29,7 +29,7 @@ export default function CarCard(props) {
   sticker = sticker && <img src={sticker.img} className="sticker" alt="..." />;
 
   return (
-    <div className="card">
+    <div className="car-card card">
       <Link to={`${match.url}/${car.id}`}>
         {carImg}
         {sticker}
