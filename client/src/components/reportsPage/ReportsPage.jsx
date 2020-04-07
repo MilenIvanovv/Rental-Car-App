@@ -13,7 +13,7 @@ class ReportsPage extends Component {
   // eslint-disable-next-line react/sort-comp
   render() {
     // eslint-disable-next-line react/destructuring-assignment
-    const transformedReports = this.props.reports.reverse().map((report) => {
+    const transformedReports = this.props.reports.map((report) => {
       return (
         <Col key={report.reportId} xs={12}>
           <Report report={report} getReport={this.getReport.bind(this)} />
