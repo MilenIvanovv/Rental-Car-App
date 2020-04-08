@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import Moment from 'react-moment';
 import PropTypes from 'prop-types';
+import { warnings } from '../../constants/warning-levels';
 
 export default function RentedCarsRow(props) {
   const { rental } = props;
   const [isDisabled, setIsDisabled] = useState(false);
 
+  const warning = warnings[rental.warning];
+
   return (
-    <tr className={rental.hasPenalty ? 'table-danger' : ''}>
+    <tr className={warning}>
       <td data="current_rentals_model">{rental.car.model}</td>
       <td>{`${rental.client.firstName} ${rental.client.lastName}`}</td>
       <td><Moment format="YYYY/MM/DD HH:mm">{rental.dateFrom}</Moment></td>
@@ -65,7 +68,7 @@ RentedCarsRow.propTypes = {
     curPricePerDay: PropTypes.number,
     curTotalPrice: PropTypes.number,
     status: PropTypes.oneOf(['open', 'returned']),
-    hasPenalty: PropTypes.bool,
+    warning: PropTypes.number,
   }).isRequired,
 
   returnCar: PropTypes.func.isRequired,

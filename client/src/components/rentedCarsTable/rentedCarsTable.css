@@ -19,3 +19,7 @@
   padding: 0.175rem 0.55rem;
   font-size: 0.9rem;
 }
+
+.table-super-danger {
+  background-color: #ea838e;
+}

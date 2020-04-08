@@ -10,6 +10,7 @@ import { setRentals } from '../actions/setRentalsAction';
 import { setCars } from '../actions/setCarsAction';
 import * as calucalte from '../utils/calculate-rent';
 import Section from './shared/section/Section';
+import { warningLevel } from '../constants/warning-levels';
 
 class CurrentRentals extends Component {
   constructor(props) {
@@ -88,6 +89,7 @@ class CurrentRentals extends Component {
       const today = new Date();
       const pricePerDay = transformed.car.price;
       const { age } = transformed;
+      transformed.warning = warningLevel.noWorry;
 
       // Client estimation prices
       transformed.estimatedDays = calucalte.days(rentedDate, estimatedDate);
@@ -110,7 +112,16 @@ class CurrentRentals extends Component {
         // if penalty days is 7 and price per day is 100 => total penalty = 7 * pricePerDayPenalty(100); 
         penalty = penaltyResult.totalPenalty;
 
-        transformed.hasPenalty = true;
+        if (penaltyDays > 2) {
+          transformed.warning = warningLevel.notGood;
+        } else {
+          transformed.warning = warningLevel.penalty;
+        }
+      }
+
+      const warningDays = calucalte.days(today, estimatedDate);
+      if (warningDays === 2 || warningDays === 1) {
+        transformed.warning = warningLevel.soon;
       }
 
       // Client total price
