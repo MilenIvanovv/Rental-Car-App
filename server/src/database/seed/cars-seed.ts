@@ -28,7 +28,7 @@ export default [{
   model: 'Opel Astra',
   picture: 'Opel Astra.jpg',
   class: 2,
-  status: CarStatus.listed,
+  status: CarStatus.borrowed,
   insuranceFeePerYear: 100,
   monthlyExpences: 10,
 },

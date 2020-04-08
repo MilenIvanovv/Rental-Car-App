@@ -1,12 +1,14 @@
+import moment from 'moment';
+
 export default [{
   car: 1,
   firstName: 'Bill',
   lastName: 'Gates',
   age: 18,
   status: 'open',
-  estimatedDate: 'Mon Feb 24 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
-  returnDate: 'Mon Feb 25 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
-  dateFrom: 'Mon Feb 23 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
+  estimatedDate: moment().subtract(3, 'days').toISOString(),
+  returnDate: null,
+  dateFrom: moment().subtract(5, 'days').toISOString(),
   pricePerDay: 50,
 },
 {
@@ -15,9 +17,9 @@ export default [{
   lastName: 'Ivanov',
   age: 30,
   status: 'open',
-  estimatedDate: 'Mon Feb 24 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
-  returnDate: 'Mon Feb 25 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
-  dateFrom: 'Mon Feb 23 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
+  estimatedDate: moment().subtract(1, 'days').toISOString(),
+  returnDate: null,
+  dateFrom: moment().subtract(5, 'days').toISOString(),
   pricePerDay: 50,
 },
 {
@@ -26,8 +28,19 @@ export default [{
   lastName: 'Gerogiev',
   age: 25,
   status: 'open',
-  estimatedDate: 'Mon Feb 24 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
-  returnDate: 'Mon Feb 25 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
-  dateFrom: 'Mon Feb 23 2020 12:29:30 GMT+0200 (Eastern European Standard Time)',
+  estimatedDate: moment().add(1, 'days').toISOString(),
+  returnDate: null,
+  dateFrom: moment().subtract(5, 'days').toISOString(),
+  pricePerDay: 50,
+},
+{
+  car: 4,
+  firstName: 'Petko',
+  lastName: 'Petkov',
+  age: 26,
+  status: 'open',
+  estimatedDate: moment().add(5, 'days').toISOString(),
+  returnDate: null,
+  dateFrom: moment().subtract(5, 'days').toISOString(),
   pricePerDay: 50,
 }];
