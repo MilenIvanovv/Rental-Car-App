@@ -28,7 +28,7 @@ export default function App() {
         <Navigation />
         <Switch>
           <Route exact path="/">
-            <Redirect to="/current-rentals" />
+            <Redirect to="/cars" />
           </Route>
           <Route path="/current-rentals">
             <CurrentRentals />
