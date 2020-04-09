@@ -15,8 +15,8 @@ export class Car extends BaseEntity {
   @Column({ type: 'varchar', length: 100, nullable: false })
   model: string;
   
-  @Column({ type: 'varchar', nullable: false })
-  picture: string;
+  @Column({ type: 'bytea', nullable: false })
+  picture: Buffer;
 
   @Column({ type: 'enum', enum: ['borrowed', 'listed'], nullable: true})
   status: CarStatus;
