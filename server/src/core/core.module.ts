@@ -6,7 +6,7 @@ import { JimpService } from './jimp.service';
 @Global()
 @Module({
   providers: [CalculateRentService, FsService, JimpService],
-  exports: [CalculateRentService],
+  exports: [CalculateRentService, FsService, JimpService],
 })
 export class CoreModule {
 }

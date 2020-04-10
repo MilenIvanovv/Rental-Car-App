@@ -15,4 +15,9 @@ export class CarsController {
   async getCar(@Param('carId') carId: number): Promise<CarDTO>  {
     return await this.carsService.getCar(carId);
   }
+
+  @Get('/:carId/image')
+  async getCarImage(@Param('carId') carId: number): Promise<string>  {
+    return await this.carsService.getCarImage(carId);
+  }
 }
