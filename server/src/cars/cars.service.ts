@@ -5,18 +5,26 @@ import { plainToClass } from 'class-transformer';
 import { CarDTO } from './models/cars-dto';
 import { Car } from '../database/entities/cars.entity';
 import { FsService } from '../core/fs/fs.service';
+import { JimpService } from '../core/jimp.service';
 
 @Injectable()
 export class CarsService {
   constructor(
     @InjectRepository(Car) private readonly carsRepository: Repository<Car>,
+    private readonly jimpService: JimpService,
     private readonly fsService: FsService,
   ) { }
 
   async getCars(): Promise<CarDTO[]> {
     const cars = await this.carsRepository.find({ relations: ['class'] });
 
-    return plainToClass(CarDTO, cars);
+    const carsWithImage = await Promise.all(cars.map(async (car) => {
+      car.picture = await this.jimpService.findImage(car.model, 1280, 800);
+
+      return car;
+    }));
+
+    return plainToClass(CarDTO, carsWithImage);
   }
 
   async getCar(carId: number): Promise<CarDTO> {
@@ -25,6 +33,8 @@ export class CarsService {
     if (!car) {
       throw new NotFoundException(`Car with id ${carId} not found`);
     }
+
+    car.picture = await this.jimpService.findImage(car.model, 1280, 800);
 
     return plainToClass(CarDTO, car);
   }

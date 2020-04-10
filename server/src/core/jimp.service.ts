@@ -1,21 +1,50 @@
 import { Injectable } from '@nestjs/common';
 import Jimp from 'jimp';
+import { FsService } from './fs/fs.service';
 
 @Injectable()
 export class JimpService {
-  async resizeImg(imgBase64, width, height): Promise<string> {
-     const img: any = await new Promise((res, rej) => {
+
+  constructor(private readonly fsService: FsService) {}
+
+  async resizeImg(imgBase64, width, height): Promise<Buffer> {
+    const img: any = await new Promise((res, rej) => {
       // open a file called "lenna.png"
-      Jimp.read(Buffer.from(imgBase64, 'base64'), (err, data) => {
+      Jimp.read(imgBase64, (err, data) => {
         if (err) throw err;
 
         res(data);
       });
     })
 
-    const a = await img.resize(width, height)
-    .getBase64Async(Jimp.AUTO);
+    return await img
+      .resize(width, height)
+      .getBufferAsync(Jimp.AUTO);
+  }
 
-    return a;
+  async findImage(model, width, height): Promise<Buffer> {
+    const imageName = `${model} - ${width}x${height}.jpg`;
+    const imageNameMaxRes = `${model} - 1920x1080.jpg`;
+    const path = './src/database/seed/car-images';
+
+    const fileNames = await this.fsService.readFileNames(path);
+
+    if (fileNames.includes(imageName)) {
+      return await this.fsService.readFile(`${path}/${imageName}`);
+    }
+
+    const maxResImage = await this.fsService.readFile(`${path}/${imageNameMaxRes}`);
+    const imageBuffer: any = await new Promise((res, rej) => {
+      Jimp.read(maxResImage, (err, data) => {
+        if (err) throw err;
+
+        res(data);
+      });
+    })
+
+    return await imageBuffer
+      .resize(width, height)
+      .write(`${path}/${imageName}`)
+      .getBufferAsync(Jimp.AUTO);
   }
 }

@@ -9,6 +9,7 @@ import { RentalStatus } from '../common/rental-status.enum';
 import { CarStatus } from '../common/car-status.enum';
 import { RentalDTO } from './models/rental-dto';
 import { CalculateRentService } from '../core/calculate-rent.service';
+import { FsService } from '../core/fs/fs.service';
 
 
 
@@ -20,6 +21,7 @@ export class RentalsService {
     @InjectRepository(RentedCar) private readonly rentalsRepository: Repository<RentedCar>,
     @InjectRepository(Car) private readonly carRepository: Repository<Car>,
     private readonly calculate: CalculateRentService,
+    private readonly fsService: FsService,
   ) { }
 
   async getRenals(): Promise<RentalDTO[]> {

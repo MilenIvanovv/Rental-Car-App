@@ -3,7 +3,7 @@ import { FsService } from '../../core/fs/fs.service';
 import cars from '../seed/cars-seed';
 import { JimpService } from "../../core/jimp.service";
 
-const jimp = new JimpService();
+const jimp = new JimpService(new FsService());
 
 export class StoreImg1586417626936 implements MigrationInterface {
     name = 'StoreImg1586417626936'
