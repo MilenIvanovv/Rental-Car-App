@@ -1,9 +1,11 @@
-import { Transform, Expose, Exclude } from "class-transformer";
+import { Transform, Expose, Type } from "class-transformer";
 import { CarStatus } from "../../common/car-status.enum";
 import { RentedCar } from "../../database/entities/rentals.entity";
 import { CarClass } from "../../database/entities/class.entity";
 
+
 export class CarDTO {
+
   id: string;
   
   @Transform((carClass: CarClass) => carClass.name)
