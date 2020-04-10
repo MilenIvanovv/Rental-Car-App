@@ -39,8 +39,13 @@ export class CarsService {
     return plainToClass(CarDTO, car);
   }
 
-  async getCarImage(carId: number): Promise<string> {
+  async getCarImage(carId: number, width: number, height: number): Promise<Buffer> {
     const car = await this.carsRepository.findOne({ where: { id: carId } });
-    return (await this.fsService.readFile(`./src/database/seed/car-images/${car.model}.jpg`)).toString('base64');
+
+    if (!car) {
+      throw new NotFoundException(`Car with id ${carId} not found`);
+    }
+
+    return await this.jimpService.findImage(car.model, width, height);
   }
 }

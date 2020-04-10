@@ -29,7 +29,7 @@ export default function CarCard(props) {
 
   const imageClickHandler = async () => {
     try {
-      const imageBuffer = await axios.get(`${API_ROOT}/cars/${car.id}/image`);
+      const imageBuffer = await axios.get(`${API_ROOT}/cars/${car.id}/image?width=1920&height=1080`);
       setBigCarImage(`data:image/jpg;base64, ${Buffer.from(imageBuffer.data).toString('base64')}`);
     } catch (error) {
       console.log(error);

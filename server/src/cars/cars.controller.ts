@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CarDTO } from './models/cars-dto';
 
@@ -17,7 +17,7 @@ export class CarsController {
   }
 
   @Get('/:carId/image')
-  async getCarImage(@Param('carId') carId: number): Promise<string>  {
-    return await this.carsService.getCarImage(carId);
+  async getCarImage(@Param('carId') carId: number, @Query('width') width, @Query('height') height,): Promise<Buffer>  {
+    return await this.carsService.getCarImage(carId, +width, +height);
   }
 }
