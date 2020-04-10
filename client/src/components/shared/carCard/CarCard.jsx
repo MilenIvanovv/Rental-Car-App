@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import Lightbox from 'react-image-lightbox';
+import axios from 'axios';
 import LoadingIdicator from '../loadingIndicator/LoadingIdicator';
-import { stickers, cars } from './index';
+import { stickers } from './index';
+import { API_ROOT } from '../../../constants/constants';
 import './carCard.css';
 
 export default function CarCard(props) {
   const match = useRouteMatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const [bigCarImage, setBigCarImage] = useState(undefined);
 
   const { car, noButton } = props;
 
@@ -22,18 +27,34 @@ export default function CarCard(props) {
     </Link>
   );
 
-  let carImg = cars.find((x) => x.name === car.model);
-  carImg = carImg && <img src={carImg.img} className="card-img-top" alt="..." />;
+  const imageClickHandler = async () => {
+    try {
+      const imageBuffer = await axios.get(`${API_ROOT}/cars/${car.id}/image`);
+      setBigCarImage(`data:image/jpg;base64, ${Buffer.from(imageBuffer.data).toString('base64')}`);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsOpen(true);
+  };
 
   let sticker = stickers.find((x) => x.name === car.class);
   sticker = sticker && <img src={sticker.img} className="sticker" alt="..." />;
 
+  const img = `data:image/jpg;base64, ${Buffer.from(car.picture.data).toString('base64')}`;
+
   return (
     <div className="car-card card">
-      <Link to={`${match.url}/${car.id}`}>
-        {carImg}
-        {sticker}
-      </Link>
+      {isOpen && (
+        <Lightbox
+          mainSrc={bigCarImage}
+          onCloseRequest={() => setIsOpen(false)}
+        />
+      )}
+
+      <img src={img} className="card-img-top" alt="..." onClick={imageClickHandler.bind(this)} />
+      {/* {carImg} */}
+      {sticker}
+
       <div className="card-body align-card-text">
         <div className="card-text">
           <div>
