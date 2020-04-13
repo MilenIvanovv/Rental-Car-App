@@ -2,16 +2,25 @@ import React, { useState } from 'react';
 import Moment from 'react-moment';
 import PropTypes from 'prop-types';
 import { warnings } from '../../constants/warning-levels';
+import CarCard from '../shared/carCard/CarCard';
 
 export default function RentedCarsRow(props) {
   const { rental } = props;
   const [isDisabled, setIsDisabled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const warning = warnings[rental.warning];
 
   return (
-    <tr className={warning}>
-      <td data="current_rentals_model">{rental.car.model}</td>
+    <tr className={`${warning}`} onMouseLeave={() => setIsOpen(false)}>
+      <td data="current_rentals_model" className="cell-container" onMouseEnter={() => setIsOpen(true)} >
+        <b>{rental.car.model}</b>
+        {isOpen && (
+          <div className="car-card-container">
+            <CarCard car={rental.car} noBody />
+          </div>
+        )}
+      </td>
       <td>{`${rental.client.firstName} ${rental.client.lastName}`}</td>
       <td><Moment format="YYYY/MM/DD HH:mm">{rental.dateFrom}</Moment></td>
       <td><Moment format="YYYY/MM/DD HH:mm">{rental.estimatedDate}</Moment></td>
@@ -51,7 +60,7 @@ RentedCarsRow.propTypes = {
     car: PropTypes.shape({
       id: PropTypes.number,
       model: PropTypes.string,
-      picture: PropTypes.string,
+      picture: PropTypes.any,
     }),
     client: PropTypes.shape({
       firstName: PropTypes.string,

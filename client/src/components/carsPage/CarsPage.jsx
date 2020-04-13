@@ -84,7 +84,7 @@ CarsPage.propTypes = {
     model: PropTypes.string,
     class: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    picture: PropTypes.string.isRequired,
+    picture: PropTypes.any.isRequired,
     status: PropTypes.string.isRequired,
   })),
   setCars: PropTypes.func.isRequired,

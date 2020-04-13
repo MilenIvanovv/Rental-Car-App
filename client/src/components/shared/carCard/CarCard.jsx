@@ -15,7 +15,7 @@ export default function CarCard(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [bigCarImage, setBigCarImage] = useState(undefined);
 
-  const { car, noButton } = props;
+  const { car, noButton, noBody } = props;
 
   if (!car) {
     return <LoadingIdicator text="cars" />;
@@ -47,24 +47,24 @@ export default function CarCard(props) {
           onCloseRequest={() => setIsOpen(false)}
         />
       )}
-      <div className="image-container">
-        <img src={img} className="card-img-top" alt="..." onClick={imageClickHandler.bind(this)} />
+      <div className="image-container" onClick={imageClickHandler.bind(this)}>
+        <img src={img} className="card-img-top" alt="..." />
         <div className="sticker">
           <img src={corner} alt="..." />
           <span className="class-letter">{car.class}</span>
         </div>
       </div>
-      <div className="card-body align-card-text">
-        <div className="card-text">
-          <div>
-            <span><b data="model">{car.model}</b></span>
-            <span className="price">{`$${car.price}`}</span>
+      {!noBody && (
+        <div className="card-body align-card-text">
+          <div className="card-text">
+            <div>
+              <span><b data="model">{car.model}</b></span>
+              <span className="price">{`$${car.price}`}</span>
+            </div>
+            {checkoutBtn()}
           </div>
-          {checkoutBtn()}
         </div>
-        {/* <div className="d-flex justify-content-center">
-        </div> */}
-      </div>
+      )}
     </div>
   );
 }
@@ -75,15 +75,17 @@ CarCard.propTypes = {
     model: PropTypes.string,
     class: PropTypes.string,
     price: PropTypes.number,
-    picture: PropTypes.string,
+    picture: PropTypes.any,
     status: PropTypes.string,
     insuranceFeePerYear: PropTypes.number,
     monthlyExpences: PropTypes.number,
   }),
   noButton: PropTypes.bool,
+  noBody: PropTypes.bool,
 };
 
 CarCard.defaultProps = {
   car: null,
   noButton: false,
+  noBody: false,
 };

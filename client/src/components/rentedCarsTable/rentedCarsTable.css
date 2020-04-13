@@ -23,3 +23,13 @@
 .table-super-danger {
   background-color: #ea838e;
 }
+
+.cell-container {
+  position: relative;
+}
+
+.car-card-container {
+  position: absolute;
+  left: 75px;
+  cursor: pointer;
+}

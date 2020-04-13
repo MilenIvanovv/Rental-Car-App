@@ -154,7 +154,7 @@ CurrentRentals.propTypes = {
     car: PropTypes.shape({
       id: PropTypes.number.isRequired,
       model: PropTypes.string.isRequired,
-      picture: PropTypes.string.isRequired,
+      picture: PropTypes.any.isRequired,
     }).isRequired,
     client: PropTypes.shape({
       firstName: PropTypes.string.isRequired,

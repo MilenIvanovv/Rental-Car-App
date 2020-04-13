@@ -30,7 +30,7 @@ CarsList.propTypes = {
     model: PropTypes.string.isRequired,
     class: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    picture: PropTypes.string.isRequired,
+    picture: PropTypes.any.isRequired,
     status: PropTypes.string.isRequired,
   })).isRequired,
   loadingCars: PropTypes.bool.isRequired,
