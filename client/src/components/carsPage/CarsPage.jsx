@@ -60,14 +60,14 @@ class CarsPage extends Component {
     const { cars } = this.props;
     const { filter, loadingCars, header } = this.state;
     const filteredByStatus = cars.filter((car) => car.status === 'listed');
-    const filteredByModel = filteredByStatus
-      .filter((car) => car.model.toLowerCase().includes(filter.toLowerCase()));
+    const filteredByModelAndBrand = filteredByStatus
+      .filter((car) => `${car.model} ${car.brand}`.toLowerCase().includes(filter.toLowerCase()));
 
     return (
       <Container>
         <Section header={header}>
           <SearchBar onSearch={this.searchHandler} />
-          <CarsList cars={filteredByModel} loadingCars={loadingCars} />
+          <CarsList cars={filteredByModelAndBrand} loadingCars={loadingCars} />
         </Section>
       </Container>
     );
@@ -80,8 +80,9 @@ const mapStateToProps = (state) => ({
 
 CarsPage.propTypes = {
   cars: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    model: PropTypes.string,
+    id: PropTypes.number.isRequired,
+    model: PropTypes.string.isRequired,
+    brand: PropTypes.string.isRequired,
     class: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     picture: PropTypes.any.isRequired,

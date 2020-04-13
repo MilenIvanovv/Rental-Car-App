@@ -58,7 +58,7 @@ export default function CarCard(props) {
         <div className="card-body align-card-text">
           <div className="card-text">
             <div>
-              <span><b data="model">{car.model}</b></span>
+              <span><b data="model">{car.brand} {car.model}</b></span>
               <span className="price">{`$${car.price}`}</span>
             </div>
             {checkoutBtn()}
@@ -73,6 +73,7 @@ CarCard.propTypes = {
   car: PropTypes.exact({
     id: PropTypes.number,
     model: PropTypes.string,
+    brand: PropTypes.string,
     class: PropTypes.string,
     price: PropTypes.number,
     picture: PropTypes.any,

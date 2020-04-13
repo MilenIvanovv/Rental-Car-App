@@ -61,10 +61,11 @@ const mapStateToProps = (state) => ({
 
 CheckoutPage.propTypes = {
   cars: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    model: PropTypes.string,
+    id: PropTypes.number.isRequired,
+    model: PropTypes.string.isRequired,
+    brand: PropTypes.string.isRequired,
     class: PropTypes.string.isRequired,
-    picture: PropTypes.string.isRequired,
+    picture: PropTypes.any.isRequired,
     status: PropTypes.string.isRequired,
     insuranceFeePerYear: PropTypes.number.isRequired,
     monthlyExpences: PropTypes.number.isRequired,

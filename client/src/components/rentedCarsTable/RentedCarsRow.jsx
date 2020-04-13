@@ -14,7 +14,7 @@ export default function RentedCarsRow(props) {
   return (
     <tr className={`${warning}`} onMouseLeave={() => setIsOpen(false)}>
       <td data="current_rentals_model" className="cell-container" onMouseEnter={() => setIsOpen(true)} >
-        <b>{rental.car.model}</b>
+        <b>{rental.car.brand} {rental.car.model}</b>
         {isOpen && (
           <div className="car-card-container">
             <CarCard car={rental.car} noBody />
@@ -58,9 +58,10 @@ RentedCarsRow.propTypes = {
   rental: PropTypes.exact({
     id: PropTypes.number,
     car: PropTypes.shape({
-      id: PropTypes.number,
-      model: PropTypes.string,
-      picture: PropTypes.any,
+      id: PropTypes.number.isRequired,
+      model: PropTypes.string.isRequired,
+      brand: PropTypes.string.isRequired,
+      picture: PropTypes.any.isRequired,
     }),
     client: PropTypes.shape({
       firstName: PropTypes.string,

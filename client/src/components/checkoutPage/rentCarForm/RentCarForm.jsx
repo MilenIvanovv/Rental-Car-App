@@ -120,8 +120,9 @@ class RentCarForm extends Component {
 
 RentCarForm.propTypes = {
   car: PropTypes.shape({
-    id: PropTypes.number,
-    model: PropTypes.string,
+    id: PropTypes.number.isRequired,
+    model: PropTypes.string.isRequired,
+    brand: PropTypes.string.isRequired,
     class: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     picture: PropTypes.string.isRequired,

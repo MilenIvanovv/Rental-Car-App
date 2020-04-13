@@ -28,6 +28,7 @@ CarsList.propTypes = {
   cars: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     model: PropTypes.string.isRequired,
+    brand: PropTypes.string.isRequired,
     class: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     picture: PropTypes.any.isRequired,
