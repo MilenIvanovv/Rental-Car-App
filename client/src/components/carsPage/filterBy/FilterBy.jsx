@@ -8,14 +8,17 @@ export default function FilterBy(props) {
 
   const [selected, setSelected] = useState(actions[0]);
 
-  const options = actions
-    .map((action) => <Dropdown.Item onClick={() => (setSelected(action), select(action))}>{action}</Dropdown.Item>);
+  const allActions = [...actions];
+  allActions.unshift('All');
+
+  const options = allActions
+    .map((action) => <Dropdown.Item key={action} onClick={() => (setSelected(action), select(action === 'All' ? null : action))}>{action}</Dropdown.Item>);
 
   return (
     <Dropdown className="filter-container">
       <span className="category">{category}:</span>
       <Dropdown.Toggle id="dropdown-basic">
-        {selected || actions[0]}
+        {selected || allActions[0]}
       </Dropdown.Toggle>
       <Dropdown.Menu>
         {options}
@@ -26,4 +29,6 @@ export default function FilterBy(props) {
 
 FilterBy.propTypes = {
   category: PropTypes.string.isRequired,
+  actions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  select: PropTypes.func.isRequired,
 };

@@ -9,6 +9,8 @@ import { setCars } from '../../actions/setCarsAction';
 import { API_ROOT } from '../../constants/constants';
 import Section from '../shared/section/Section';
 import FilterBy from './filterBy/FilterBy';
+import { filters } from './filters';
+import './carsPage.css';
 
 class CarsPage extends Component {
   constructor(props) {
@@ -16,7 +18,6 @@ class CarsPage extends Component {
 
     this.state = {
       filter: '',
-      classFilter: null,
       loadingCars: false,
       header: 'Car list',
     };
@@ -63,16 +64,19 @@ class CarsPage extends Component {
       filter,
       loadingCars,
       header,
-      classFilter,
     } = this.state;
 
     const filteredByStatus = cars.filter((car) => car.status === 'listed');
 
-    const classes = Array.from(new Set(filteredByStatus.map((car) => car.class)));
+    let filteredCars = filteredByStatus
+      .filter((car) => `${car.model} ${car.brand}`.toLowerCase().includes(filter.toLowerCase()));
 
-    const filteredByModelAndBrand = filteredByStatus
-      .filter((car) => `${car.model} ${car.brand}`.toLowerCase().includes(filter.toLowerCase()))
-      .filter((car) => !classFilter || (car.class === classFilter));
+    const dropdowns = filters.map((x) => {
+      const set = Array.from(new Set(filteredByStatus.map((car) => car[x.property])));
+      // eslint-disable-next-line react/destructuring-assignment
+      filteredCars = filteredCars.filter((car) => !this.state[x.property] || (car.class === this.state[x.property]));
+      return <FilterBy key={x.category} category={x.category} actions={set} select={(value) => this.setState({ [x.property]: value })} />;
+    });
 
     return (
       <Container>
@@ -81,11 +85,11 @@ class CarsPage extends Component {
             <Col>
               <SearchBar onSearch={this.searchHandler} />
             </Col>
-            <Col>
-              <FilterBy category="Class" actions={classes} select={(value) => this.setState({ classFilter: value })} />
+            <Col className="filter-dropdowns">
+              {dropdowns}
             </Col>
           </Row>
-          <CarsList cars={filteredByModelAndBrand} loadingCars={loadingCars} />
+          <CarsList cars={filteredCars} loadingCars={loadingCars} />
         </Section>
       </Container>
     );
