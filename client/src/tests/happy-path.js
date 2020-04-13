@@ -4,9 +4,8 @@ module.exports = {
   HappyPath(browser) {
 
     // const afterThreeDays = (moment(new Date()).add(3, 'days')).format('dddd, MMMM Do, YYYY');
-    const afterThreeDays = (moment(new Date()).add(3, 'days')).format('MMMM d, YYYY h:mm');
+    const afterThreeDays = (moment().add(3, 'days')).format('MMMM D, YYYY h:mm');
 
-    console.log(afterThreeDays)
     browser.searchModel = function (selector, model) {
       const self = this;
 
@@ -33,6 +32,7 @@ module.exports = {
       .setValue('.react-datepicker-wrapper .react-datepicker__input-container input[type=text]', afterThreeDays)
       .click('button[data=confirm]')
       .waitForElementVisible('[data=current_rentals_model]')
+      .pause(2000)
       .assert.containsText('[data=current_rentals_model]', 'Ford')
       .click('[data=cars_link]')
       .waitForElementVisible("input[data=search]")

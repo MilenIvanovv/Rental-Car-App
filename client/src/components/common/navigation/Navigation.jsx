@@ -23,12 +23,12 @@ export default function Navigation() {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/cars" data="cars_NavLink">
+                  <NavLink className="nav-link" to="/cars" data="cars_link">
                     Cars
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/reports" data="cars_NavLink">
+                  <NavLink className="nav-link" to="/reports" data="cars_link">
                     Reports
                   </NavLink>
                 </li>
