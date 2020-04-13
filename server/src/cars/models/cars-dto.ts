@@ -12,6 +12,8 @@ export class CarDTO {
   class: CarClass;
   
   model: string;
+
+  brand: string;
   
   picture: string;
 

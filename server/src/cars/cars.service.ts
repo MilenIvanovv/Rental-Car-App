@@ -20,7 +20,7 @@ export class CarsService {
     const cars = await this.carsRepository.find({ relations: ['class'] });
 
     const carsWithImage = await Promise.all(cars.map(async (car) => {
-      car.picture = await this.jimpService.findImage(car.model, lowRes.width, lowRes.height);
+      car.picture = await this.jimpService.findImage(`${car.brand} ${car.model}`, lowRes.width, lowRes.height);
 
       return car;
     }));
@@ -35,7 +35,7 @@ export class CarsService {
       throw new NotFoundException(`Car with id ${carId} not found`);
     }
 
-    car.picture = await this.jimpService.findImage(car.model, lowRes.width, lowRes.height);
+    car.picture = await this.jimpService.findImage(`${car.brand} ${car.model}`, lowRes.width, lowRes.height);
 
     return plainToClass(CarDTO, car);
   }
@@ -47,6 +47,6 @@ export class CarsService {
       throw new NotFoundException(`Car with id ${carId} not found`);
     }
 
-    return await this.jimpService.findImage(car.model, width, height);
+    return await this.jimpService.findImage(`${car.brand} ${car.model}`, width, height);
   }
 }

@@ -23,9 +23,9 @@ export class JimpService {
       .getBufferAsync(Jimp.AUTO);
   }
 
-  async findImage(model, width, height): Promise<Buffer> {
-    const imageName = `${model} - ${width}x${height}.jpg`;
-    const imageNameMaxRes = `${model} - ${heightRes.width}x${heightRes.height}.jpg`;
+  async findImage(name, width, height): Promise<Buffer> {
+    const imageName = `${name} - ${width}x${height}.jpg`;
+    const imageNameMaxRes = `${name} - ${heightRes.width}x${heightRes.height}.jpg`;
     const path = './src/database/seed/car-images';
 
     const fileNames = await this.fsService.readFileNames(path);
