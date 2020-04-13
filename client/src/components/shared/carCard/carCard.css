@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-.car-card.card {
+.image-container {
   position: relative;
 }
 
@@ -20,11 +20,27 @@
 
 .sticker {
   position: absolute;
-  height: 60px;
   top: 0;
-  left: 2px;
+  left: 0;
+}
+
+.sticker img {
+  width: 60px;
 }
 
 .align-card-text .card-text .btn {
   margin-left: 1.25rem;
+}
+
+.card-img-top {
+  cursor: pointer;
+}
+
+.class-letter {
+  position: absolute;
+  left: 10px;
+  top: 5px;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
 }

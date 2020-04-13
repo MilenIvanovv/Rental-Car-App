@@ -6,8 +6,8 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import Lightbox from 'react-image-lightbox';
 import axios from 'axios';
 import LoadingIdicator from '../loadingIndicator/LoadingIdicator';
-import { stickers } from './index';
 import { API_ROOT } from '../../../constants/constants';
+import corner from '../../../assets/Class-corner.png';
 import './carCard.css';
 
 export default function CarCard(props) {
@@ -37,24 +37,23 @@ export default function CarCard(props) {
     setIsOpen(true);
   };
 
-  let sticker = stickers.find((x) => x.name === car.class);
-  sticker = sticker && <img src={sticker.img} className="sticker" alt="..." />;
-
   const img = `data:image/jpg;base64, ${Buffer.from(car.picture.data).toString('base64')}`;
 
   return (
-    <div className="car-card card">
+    <div className="card">
       {isOpen && (
         <Lightbox
           mainSrc={bigCarImage}
           onCloseRequest={() => setIsOpen(false)}
         />
       )}
-
-      <img src={img} className="card-img-top" alt="..." onClick={imageClickHandler.bind(this)} />
-      {/* {carImg} */}
-      {sticker}
-
+      <div className="image-container">
+        <img src={img} className="card-img-top" alt="..." onClick={imageClickHandler.bind(this)} />
+        <div className="sticker">
+          <img src={corner} alt="..." />
+          <span className="class-letter">{car.class}</span>
+        </div>
+      </div>
       <div className="card-body align-card-text">
         <div className="card-text">
           <div>

@@ -33,7 +33,6 @@ function CheckoutPage(props) {
           <Row className="center-in-colums">
             <Col>
               <div>
-                <InnerHeader text="Car" />
                 <CarCard car={carToRent} noButton />
               </div>
             </Col>
