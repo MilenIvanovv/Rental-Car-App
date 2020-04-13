@@ -6,6 +6,7 @@ import { CarDTO } from './models/cars-dto';
 import { Car } from '../database/entities/cars.entity';
 import { FsService } from '../core/fs/fs.service';
 import { JimpService } from '../core/jimp.service';
+import { lowRes } from '../common/car-image-formats';
 
 @Injectable()
 export class CarsService {
@@ -19,7 +20,7 @@ export class CarsService {
     const cars = await this.carsRepository.find({ relations: ['class'] });
 
     const carsWithImage = await Promise.all(cars.map(async (car) => {
-      car.picture = await this.jimpService.findImage(car.model, 1280, 800);
+      car.picture = await this.jimpService.findImage(car.model, lowRes.width, lowRes.height);
 
       return car;
     }));
@@ -34,7 +35,7 @@ export class CarsService {
       throw new NotFoundException(`Car with id ${carId} not found`);
     }
 
-    car.picture = await this.jimpService.findImage(car.model, 1280, 800);
+    car.picture = await this.jimpService.findImage(car.model, lowRes.width, lowRes.height);
 
     return plainToClass(CarDTO, car);
   }

@@ -9,9 +9,8 @@ import { RentalStatus } from '../common/rental-status.enum';
 import { CarStatus } from '../common/car-status.enum';
 import { RentalDTO } from './models/rental-dto';
 import { CalculateRentService } from '../core/calculate-rent.service';
-import { FsService } from '../core/fs/fs.service';
-
-
+import { JimpService } from '../core/jimp.service';
+import { lowRes } from '../common/car-image-formats';
 
 @Injectable()
 
@@ -21,13 +20,20 @@ export class RentalsService {
     @InjectRepository(RentedCar) private readonly rentalsRepository: Repository<RentedCar>,
     @InjectRepository(Car) private readonly carRepository: Repository<Car>,
     private readonly calculate: CalculateRentService,
-    private readonly fsService: FsService,
+    private readonly jimpService: JimpService,
   ) { }
 
   async getRenals(): Promise<RentalDTO[]> {
     const rentals = await this.rentalsRepository.find({ relations: ['car', 'car.class'] });
 
-    return plainToClass(RentalDTO, rentals);
+    
+    const rentalsWithCarImage = await Promise.all(rentals.map(async (rental) => {
+      rental.car.picture = await this.jimpService.findImage(rental.car.model, lowRes.width, lowRes.height);
+
+      return rental;
+    }));
+
+    return plainToClass(RentalDTO, rentalsWithCarImage);
   }
 
   async rentCar(carId: number, estimatedDate: Date, client: ClientDTO): Promise<RentalDTO>  {
@@ -45,7 +51,7 @@ export class RentalsService {
     const pricePerDay = this.calculate.applyAllToPrice(carToRent.class.price, days, client.age);
 
     carToRent.status = CarStatus.borrowed;
-
+    
     const rental = {
       car: carToRent,
       estimatedDate,
@@ -54,11 +60,13 @@ export class RentalsService {
       pricePerDay,
       ...client
     }
-
+    
     const newRental = await getManager().transaction(async transactionalEntityManager => {
       await transactionalEntityManager.getRepository(Car).save(carToRent);
       return await transactionalEntityManager.getRepository(RentedCar).save(rental);
     });
+    
+    carToRent.picture = await this.jimpService.findImage(carToRent.model, lowRes.width, lowRes.height);
 
     return plainToClass(RentalDTO, newRental);
   }
@@ -77,11 +85,13 @@ export class RentalsService {
     rental.status = RentalStatus.returned;
     rental.car.status = CarStatus.listed;
     rental.returnDate = new Date();
-
+    
     rental = await getManager().transaction(async transactionalEntityManager => {
       await transactionalEntityManager.getRepository(Car).save(rental.car);
       return await transactionalEntityManager.getRepository(RentedCar).save(rental);
     });
+    
+    rental.car.picture = await this.jimpService.findImage(rental.car.model, lowRes.width, lowRes.height);
 
     return plainToClass(RentalDTO, rental);
   }

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import Jimp from 'jimp';
 import { FsService } from './fs/fs.service';
+import { heightRes } from '../common/car-image-formats';
 
 @Injectable()
 export class JimpService {
@@ -24,7 +25,7 @@ export class JimpService {
 
   async findImage(model, width, height): Promise<Buffer> {
     const imageName = `${model} - ${width}x${height}.jpg`;
-    const imageNameMaxRes = `${model} - 1920x1080.jpg`;
+    const imageNameMaxRes = `${model} - ${heightRes.width}x${heightRes.height}.jpg`;
     const path = './src/database/seed/car-images';
 
     const fileNames = await this.fsService.readFileNames(path);
