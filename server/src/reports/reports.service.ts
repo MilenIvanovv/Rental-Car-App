@@ -12,6 +12,87 @@ import { CalculateRentService } from '../core/calculate-rent.service';
 import { CarStatus } from '../common/car-status.enum';
 import { ReportPerClass } from './models/reportPerClass';
 
+
+interface MapEntry<T,K> {
+  key: T;
+  value: K;
+}
+
+declare global {
+  interface Array<T> {          
+      
+      aggregateBy( x:
+        { groupByFn: (a: T) => any,
+        calcFn: (a:T) => number,
+        aggFn: (x: { count:number, sum: number }) => number }): Array<MapEntry<any,number>>
+
+      averageBy(x: { groupByFn: (a: T) => any,calcFn: (a:T) => number}): Array<MapEntry<any,number>>
+
+      percentBy(x: { groupByFn: (a: T) => any, percentFn: (a:T) => boolean}): Array<MapEntry<any,number>>
+
+      groupBy(groupByFn: (a: T) => any) :Array<MapEntry<any,Array<T>>>
+
+  }
+}
+
+Array.prototype.groupBy = function( groupByFn: (a: any) => any) {
+
+  const groupByResult: Array<MapEntry<any, any>> = [];
+
+  this.forEach(element => {
+    const key = groupByFn(element);
+    const mapEntry = groupByResult.find(r => r.key === key);
+    if(!mapEntry) {
+      mapEntry.value = [element];
+    } else {
+      mapEntry.value.push(element);
+    }
+  });
+
+  return groupByResult;
+}
+
+
+Array.prototype.aggregateBy = function( x: { groupByFn: (a: any) => any,
+  calcFn: (a:any) => number,
+  aggFn: (x: { count:number, sum: number }) => number }
+) {
+
+  const groupByResult = this.groupBy(x.groupByFn);
+
+  return groupByResult.map(({key, value}) => {
+    const sum = value.reduce((sum, current ) => {
+      return sum + x.calcFn(current);
+    }, 0)
+
+    return {key, value: x.aggFn({ count: value.length, sum })}
+  });
+}
+
+Array.prototype.averageBy = function( x: { groupByFn: (a: any) => any,
+  calcFn: (a:any) => number }
+) {
+
+  return this.aggregateBy({ groupByFn: x.groupByFn, calcFn: x.calcFn, aggFn: ( { count, sum }) => sum/count })
+}
+
+Array.prototype.percentBy = function( x: {
+  groupByFn: (a: any) => any,
+  percentFn: (a:any) => boolean }  
+) {
+  const groupByResult = this.groupBy(x.groupByFn);
+  return groupByResult.map( ({key, value}) => {
+    const countTrue = value.filter(v => x.percentFn(v)).length
+    return {
+      key,
+      value: countTrue / value.length
+    }
+  });  
+}
+
+
+
+
 @Injectable()
 export class ReportsService {
 
@@ -22,6 +103,13 @@ export class ReportsService {
     private readonly calculate: CalculateRentService,
   ) { }
 
+  groupByClass(classes: CarClass[], aggData: Array<MapEntry<any, number>>): { class: string, result: string[] }[] {
+    return classes.map((c) => {
+      const agg = aggData.find(a => a.key === c.name);
+      return {class: c.name, result: [agg.value.toFixed(2) || "0"]}
+    })
+  }
+
   async getAverageDaysPerClass(): Promise<ReportPerClass> {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned }, relations: ['car', 'car.class'] });
@@ -31,15 +119,13 @@ export class ReportsService {
       dataType: '',
     }];
 
-    const columns = classes.reduce((acc, carClass) => {
-      const { result } = rentals
-        .filter((rental) => rental.car.class.name === carClass.name)
-        .reduce(this.calculateAverageDays.bind(this), { result: 0 });
 
-      acc.push({ class: carClass.name, result: [result] });
+    const aggregated = rentals.averageBy({
+      groupByFn: (r) => r.car.class.name,
+      calcFn: (r) => this.calculate.days(r.dateFrom, r.returnDate)                
+    });
 
-      return acc;
-    }, []);
+    const columns = this.groupByClass(classes, aggregated);
 
     return { rows, columns }
   }
@@ -53,15 +139,12 @@ export class ReportsService {
       dataType: '%',
     }];
 
-    const columns = classes.reduce((acc, carClass) => {
-      const { result } = cars
-        .filter((car) => car.class.name === carClass.name)
-        .reduce(this.calculateCurrentRentedCars, { result: 0 });
+    const aggregated = cars.percentBy({
+      groupByFn: (c) => c.class.name,
+      percentFn: (c) => c.status === CarStatus.borrowed             
+    });
 
-      acc.push({ class: carClass.name, result: [result] });
-
-      return acc;
-    }, []);
+        const columns = this.groupByClass(classes, aggregated);
 
     return { rows, columns };
   }
@@ -75,15 +158,10 @@ export class ReportsService {
       dataType: '$',
     }];
 
-    const columns = classes.reduce((acc, carClass) => {
-      const { result } = rentals
-        .filter((rental) => rental.car.class.name === carClass.name)
-        .reduce(this.calculateAverageIncome.bind(this), { result: 0 });
-
-      acc.push({ class: carClass.name, result: [result] });
-
-      return acc;
-    }, []);
+    const columns = this.groupByClass(classes, rentals.averageBy({
+      groupByFn: r => r.car.class.name,
+      calcFn: r => this.getRentalIncome(r)
+    }));
 
     return { rows, columns };
   }
@@ -160,6 +238,22 @@ export class ReportsService {
     acc.sum || (acc.sum = 0);
     acc.count || (acc.count = 0);
 
+    
+    acc.sum += this.getRentalIncome(rental);
+    acc.count++;
+
+    acc.result = +(acc.sum / acc.count).toFixed(2) || 0;
+
+    return acc;
+  }
+
+  private getRentalIncome(rental: {
+    dateFrom: Date,
+    returnDate: Date,
+    pricePerDay: number,
+    estimatedDate: Date,
+    age: number,
+  }) {
     const {
       dateFrom,
       returnDate,
@@ -182,12 +276,7 @@ export class ReportsService {
       penalty = penaltyResult.totalPenalty;
     }
 
-    acc.sum += this.calculate.totalPrice(newPricePerDay, days) + penalty;
-    acc.count++;
-
-    acc.result = +(acc.sum / acc.count).toFixed(2) || 0;
-
-    return acc;
+    return this.calculate.totalPrice(newPricePerDay, days) + penalty;
   }
 
   private calculateAverageExpenses(acc: any, rental: RentedCar): { sum: number, count: number, result: number } {
