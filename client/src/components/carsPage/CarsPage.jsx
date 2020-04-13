@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Container } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import CarsList from './CarsList';
 import SearchBar from './SearchBar';
 import { setCars } from '../../actions/setCarsAction';
 import { API_ROOT } from '../../constants/constants';
 import Section from '../shared/section/Section';
-
+import FilterBy from './filterBy/FilterBy';
 
 class CarsPage extends Component {
   constructor(props) {
@@ -16,6 +16,7 @@ class CarsPage extends Component {
 
     this.state = {
       filter: '',
+      classFilter: null,
       loadingCars: false,
       header: 'Car list',
     };
@@ -58,15 +59,32 @@ class CarsPage extends Component {
 
   render() {
     const { cars } = this.props;
-    const { filter, loadingCars, header } = this.state;
+    const {
+      filter,
+      loadingCars,
+      header,
+      classFilter,
+    } = this.state;
+
     const filteredByStatus = cars.filter((car) => car.status === 'listed');
+
+    const classes = Array.from(new Set(filteredByStatus.map((car) => car.class)));
+
     const filteredByModelAndBrand = filteredByStatus
-      .filter((car) => `${car.model} ${car.brand}`.toLowerCase().includes(filter.toLowerCase()));
+      .filter((car) => `${car.model} ${car.brand}`.toLowerCase().includes(filter.toLowerCase()))
+      .filter((car) => !classFilter || (car.class === classFilter));
 
     return (
       <Container>
         <Section header={header}>
-          <SearchBar onSearch={this.searchHandler} />
+          <Row>
+            <Col>
+              <SearchBar onSearch={this.searchHandler} />
+            </Col>
+            <Col>
+              <FilterBy category="Class" actions={classes} select={(value) => this.setState({ classFilter: value })} />
+            </Col>
+          </Row>
           <CarsList cars={filteredByModelAndBrand} loadingCars={loadingCars} />
         </Section>
       </Container>

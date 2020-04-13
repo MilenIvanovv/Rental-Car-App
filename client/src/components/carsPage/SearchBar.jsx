@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Row } from 'react-bootstrap';
 
 export default function SearchBar(props) {
   const [searchValue, setSearchValue] = useState('');
@@ -12,11 +11,9 @@ export default function SearchBar(props) {
   };
 
   return (
-    <Row className="justify-content-center">
-      <form className="col-12 form-inline mb-3">
-        <input className="form-control" type="search" data="search" placeholder="Search" value={searchValue} onChange={onChangeHandler} />
-      </form>
-    </Row>
+    <form className="col-12 form-inline mb-3">
+      <input className="form-control" type="search" data="search" placeholder="Search" value={searchValue} onChange={onChangeHandler} />
+    </form>
   );
 }
 
