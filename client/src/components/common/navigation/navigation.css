@@ -18,3 +18,27 @@
 .navbar-container {
   background-color: white;
 }
+
+.nav-item .dropdown .btn {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: grey;
+}
+
+.nav-item .dropdown .dropdown-toggle::after {
+  display: inline-block;
+  margin-left: 0.45em;
+  vertical-align: 0.155em;
+}
+
+.nav-item .dropdown .dropdown-menu {
+  position: absolute !important;
+  top: 39px !important;
+  transform: none !important;
+  min-width: auto;
+  padding: 0;
+}
+
+.nav-item .dropdown .dropdown-item {
+  padding: 0px 1rem;
+}

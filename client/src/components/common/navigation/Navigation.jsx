@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Container, Row } from 'react-bootstrap';
+import { Container, Row, Dropdown } from 'react-bootstrap';
 import logo from '../../../assets/IDrive logo.png';
 import './navigation.css';
 
@@ -28,9 +28,24 @@ export default function Navigation() {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/reports" data="cars_link">
-                    Reports
-                  </NavLink>
+                  <Dropdown>
+                    <Dropdown.Toggle variant="" id="dropdown-basic">
+                      Reports
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item>
+                        <NavLink className="nav-link" to="/reports-tables">
+                          Tables
+                        </NavLink>
+                      </Dropdown.Item>
+                      <Dropdown.Item>
+                        <NavLink className="nav-link" to="/reports-graphs">
+                          Graphs
+                        </NavLink>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+
                 </li>
               </ul>
             </div>
