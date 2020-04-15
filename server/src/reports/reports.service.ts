@@ -14,7 +14,6 @@ import { CalculateRentService } from '../core/calculate-rent.service';
 import { CarStatus } from '../common/car-status.enum';
 import { ReportPerClass } from './models/reportPerClass';
 
-
 interface MapEntry<T, K> {
   key: T;
   value: K;
