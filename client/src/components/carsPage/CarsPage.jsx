@@ -72,9 +72,9 @@ class CarsPage extends Component {
       .filter((car) => `${car.model} ${car.brand}`.toLowerCase().includes(filter.toLowerCase()));
 
     const dropdowns = filters.map((x) => {
-      const set = Array.from(new Set(filteredByStatus.map((car) => car[x.property])));
       // eslint-disable-next-line react/destructuring-assignment
       filteredCars = filteredCars.filter((car) => !this.state[x.property] || (car.class === this.state[x.property]));
+      const set = Array.from(new Set(filteredCars.map((car) => car[x.property])));
       return <FilterBy key={x.category} category={x.category} actions={set} select={(value) => this.setState({ [x.property]: value })} />;
     });
 
