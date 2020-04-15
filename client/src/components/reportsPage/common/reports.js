@@ -12,6 +12,7 @@ export default [
     title: 'Average income per class',
     urlRequest: `reports/class/avgMonthlyIncome/?year=${today.getFullYear()}&month=${today.getMonth() + 1}`,
     monthPicker: true,
+    graph: true,
   },
   {
     reportId: 2,

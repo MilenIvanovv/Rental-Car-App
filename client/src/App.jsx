@@ -12,7 +12,6 @@ import CheckoutPage from './components/checkoutPage/CheckoutPage';
 import combinedReducer from './reducers/index';
 import NotFoundPage from './components/common/NotFoundPage';
 import ReportsPage from './components/reportsPage/ReportsPage';
-import ReportsGraphPage from './components/reportsGraphPage/ReportsGraphPage';
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -45,7 +44,7 @@ export default function App() {
             <ReportsPage />
           </Route>
           <Route path="/reports-graphs">
-            <ReportsGraphPage />
+            <ReportsPage />
           </Route>
           <Route path="/not-found">
             <NotFoundPage />
