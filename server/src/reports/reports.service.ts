@@ -190,45 +190,6 @@ export class ReportsService {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInMonth(year, month) }, relations: ['car', 'car.class'] });
 
-    // const rows = [{
-    //   name: 'income',
-    //   dataType: '$',
-    // },
-    // {
-    //   name: 'expenses',
-    //   dataType: '$',
-    // },
-    // {
-    //   name: 'total',
-    //   dataType: '$',
-    // }];
-
-    // const columns = classes.reduce((acc, carClass) => {
-    //   const rentalsByClass = rentals.filter((rental) => rental.car.class.name === carClass.name);
-    //   const income = rentalsByClass.reduce(this.calculateAverageIncome.bind(this), { sum: 0 }).sum;
-    //   const expenses = rentalsByClass.reduce(this.calculateAverageExpenses, { sum: 0 }).sum;
-
-    //   acc.push({ class: carClass.name, result: [ income, expenses, +(income - expenses).toFixed(2)] });
-
-    //   return acc;
-    // }, []);
-
-    // const agregatedIncome = rentals.totalBy({
-    //   groupByFn: r => r.car.class.name,
-    //   calcFn: r => this.getRentalIncome(r),
-    // });
-
-    // const agregatedExpenses = rentals.totalBy({
-    //   groupByFn: r => r.car.class.name,
-    //   calcFn: r => this.getRentalExpenses(r)
-    // });
-
-    // const agregatedTotal = rentals.totalBy({
-    //   groupByFn: r => r.car.class.name,
-    //   calcFn: r => this.getRentalIncome(r) - this.getRentalExpenses(r)
-    // });
-
-
     let rows = [{
       name: 'income',
       dataType: '$',
@@ -268,45 +229,6 @@ export class ReportsService {
     return Between(firstDay, lastDay);
   }
 
-  private calculateAverageDays(acc: any, rental: RentedCar): number {
-    acc.days || (acc.days = 0);
-    acc.count || (acc.count = 0);
-
-    acc.days = this.calculate.days(new Date(rental.dateFrom), new Date(rental.returnDate));
-    acc.count++;
-
-    acc.result = Math.floor(acc.days / acc.count) || 0;
-
-    return acc;
-  }
-
-  private calculateCurrentRentedCars(acc: any, car: Car): { result: number } {
-    acc.rented || (acc.rented = 0);
-    acc.sum || (acc.sum = 0);
-
-    if (car.status === CarStatus.borrowed) {
-      acc.rented++;
-    }
-
-    acc.sum++;
-    acc.result = Math.floor(acc.rented / acc.sum * 100) || 0;
-
-    return acc;
-  }
-
-  private calculateAverageIncome(acc: any, rental: RentedCar): { sum: number, count: number, result: number } {
-    acc.sum || (acc.sum = 0);
-    acc.count || (acc.count = 0);
-
-
-    acc.sum += this.getRentalIncome(rental);
-    acc.count++;
-
-    acc.result = +(acc.sum / acc.count).toFixed(2) || 0;
-
-    return acc;
-  }
-
   private getRentalIncome(rental: {
     dateFrom: Date,
     returnDate: Date,
@@ -343,21 +265,6 @@ export class ReportsService {
     return (rental.car.monthlyExpences + rental.car.insuranceFeePerYear / 12) || 0;
   }
 
-  private calculateAverageExpenses(acc: any, rental: RentedCar): { sum: number, count: number, result: number } {
-    acc.sum || (acc.sum = 0);
-    acc.count || (acc.count = 0);
-
-    const { car } = rental;
-
-    acc.sum += (car.monthlyExpences + car.insuranceFeePerYear / 12) || 0;
-    acc.sum = +acc.sum.toFixed(2);
-
-    acc.count++;
-
-    acc.result = +(acc.sum / acc.count).toFixed(2) || 0;
-
-    return acc;
-  }
 }
 
 
