@@ -1,78 +1,99 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { ReportsService } from './reports.service';
 import { RentedCar } from '../database/entities/rentals.entity';
 import { CarClass } from '../database/entities/class.entity';
 import { Car } from '../database/entities/cars.entity';
 import { CalculateRentService } from '../core/calculate-rent.service';
 import { CarStatus } from '../common/car-status.enum';
+import { RentalStatus } from '../common/rental-status.enum';
+
+const getCarClass = (name: string): CarClass => ({
+  id: '1',
+  name,
+  price: 50,
+  car: ({} as any)
+}) as any;
+
+const getCar = (className: string, carStatus?: CarStatus): Car => ({
+  id: '1',
+  class: getCarClass(className),
+  model: 'Fiesta',
+  picture: '' as any,
+  status: carStatus || CarStatus.listed,
+  insuranceFeePerYear: 24,
+  monthlyExpences: 20,
+  rentals: [],
+}) as any;
+
+const getRental = (className: string): RentedCar => ({
+  id: '1',
+  car: getCar(className),
+  estimatedDate: new Date(),
+  firstName: 'Petko',
+  lastName: 'Petkov',
+  age: 20,
+  status: RentalStatus.returned,
+  returnDate: new Date(),
+  dateFrom: new Date(),
+  pricePerDay: 50,
+}) as any;
+
+const getCalService = () => {
+  jest.mock('../core/calculate-rent.service');
+  const calService = new CalculateRentService();
+
+  jest.spyOn(calService, 'days')
+    .mockImplementation(() => 0);
+
+  jest.spyOn(calService, 'applyAllToPrice')
+    .mockImplementation(() => 0);
+
+  jest.spyOn(calService, 'totalPrice')
+    .mockImplementation(() => 0);
+
+  jest.spyOn(calService, 'penalty')
+    .mockImplementation(() => ({} as any));
+
+  return calService;
+}
+
+const getRentalsService = () => {
+  const rentalRepo = new Repository<RentedCar>();
+
+  jest.spyOn(rentalRepo, 'find')
+    .mockImplementation(async () => ([{}] as any));
+
+  jest.spyOn(rentalRepo, 'save')
+    .mockImplementation(async () => ({} as any));
+
+  const carClassRepo = new Repository<CarClass>();
+
+  jest.spyOn(rentalRepo, 'find')
+    .mockImplementation(async () => ([{}] as any));
+
+  jest.spyOn(rentalRepo, 'findOne')
+    .mockImplementation(async () => ({} as any));
+
+  const carRepo = new Repository<Car>();
+
+  jest.spyOn(carRepo, 'findOne')
+    .mockImplementation(async () => ({} as any));
+
+  jest.spyOn(carRepo, 'find')
+    .mockImplementation(async () => ([{}] as any));
+
+  const calService = getCalService();
+
+  const rentalsService = new ReportsService(rentalRepo, carClassRepo, carRepo, calService);
+
+  return { rentalsService, rentalRepo, carClassRepo, carRepo, calService };
+};
 
 describe('ReportsService', () => {
-  let service: ReportsService;
-  let rentalsRepo;
-  let carClass;
-  let carRepo;
-  let calService;
-
-  beforeEach(async () => {
-
-    rentalsRepo = {
-      find() {
-        //implementation
-      },
-      save() {
-        //implementation
-      }
-    }
-
-    carRepo = {
-      find() {
-        //implementation
-      },
-      findOne() {
-        //implementation
-      }
-    }
-
-    carClass = {
-      find() {
-        //implementation
-      },
-      findOne() {
-        //implementation
-      }
-    }
-
-
-    calService = {
-      days() {
-        return 0;
-      },
-      applyAllToPrice() {
-        //implementation
-      },
-      totalPrice() {
-        //implementation
-      },
-      penalty() {
-        //implementation
-      },
-    }
-
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ReportsService,
-        { provide: getRepositoryToken(CarClass), useValue: carClass },
-        { provide: getRepositoryToken(RentedCar), useValue: rentalsRepo },
-        { provide: getRepositoryToken(Car), useValue: carRepo },
-        { provide: CalculateRentService, useValue: calService },
-      ],
-    }).compile();
-
-    service = module.get<ReportsService>(ReportsService);
-  });
-
   it('should be defined', () => {
+    const service = getRentalsService().rentalsService;
     expect(service).toBeDefined();
   });
 
@@ -97,7 +118,7 @@ describe('ReportsService', () => {
       expect(result).toEqual(expectedGroup);
     });
 
-    fit('groupBy should return expected', () => {
+    it('aggregateBy should return expected', () => {
       const arrToGroup = [
         { class: "A", otherProp: 5 },
         { class: "B", otherProp: 5 },
@@ -120,135 +141,320 @@ describe('ReportsService', () => {
 
       expect(result).toEqual(expected);
     });
+
+    it('percentBy should return expected', () => {
+      const arrToGroup = [
+        { class: "A", otherProp: 4 },
+        { class: "B", otherProp: 4 },
+        { class: "C", otherProp: 2 },
+        { class: "D", otherProp: 2 },
+      ];
+
+      const result = arrToGroup.percentBy({
+        groupByFn: (x) => x.class,
+        percentFn: (x) => x.otherProp > 3,
+      });
+
+      const expected = [
+        { key: "A", value: 100 },
+        { key: "B", value: 100 },
+        { key: "C", value: 0 },
+        { key: "D", value: 0 },
+      ]
+
+      expect(result).toEqual(expected);
+    });
   });
 
-  describe(('calculateAverageDays'), () => {
-    it('should calculate correct average days', () => {
-      const rental = {};
+  describe(('reportsService'), () => {
+    it('groupByClass should return correct result', () => {
+      const service = getRentalsService().rentalsService;
 
-      const spy = jest.spyOn(calService, 'days')
-        .mockImplementation(() => 6);
+      const classes = [
+        { name: 'A' },
+        { name: 'B' },
+        { name: 'C' },
+        { name: 'D' },
+      ]
 
-      const result = (service as any).calculateAverageDays({ days: 0, count: 1 }, rental);
+      const aggData = [
+        { key: 'A', value: 'test' },
+        { key: 'B', value: 'test' },
+        { key: 'C', value: 'test' },
+        { key: 'D', value: 'test' },
+      ]
 
-      expect(result).toEqual({ days: 6, count: 2, result: 3 })
+      const result = service.groupByClass(classes as any, aggData as any)
+
+      const expected = [
+        { class: 'A', result: ['test'] },
+        { class: 'B', result: ['test'] },
+        { class: 'C', result: ['test'] },
+        { class: 'D', result: ['test'] },
+      ];
+
+      expect(result).toEqual(expected);
     });
 
-    it('should return 0 if input is incorrect', () => {
-      const rental = {};
+    it('groupByClass should return correct result with more then 2 arguments', () => {
+      const service = getRentalsService().rentalsService;
 
-      const spy = jest.spyOn(calService, 'days')
-        .mockImplementation(() => 6);
+      const classes = [
+        { name: 'A' },
+        { name: 'B' },
+        { name: 'C' },
+        { name: 'D' },
+      ]
 
-      const result = (service as any).calculateAverageDays({ days: 0, count: 'test' }, rental);
+      const aggData1 = [
+        { key: 'A', value: 'aggData1' },
+        { key: 'B', value: 'aggData1' },
+        { key: 'C', value: 'aggData1' },
+        { key: 'D', value: 'aggData1' },
+      ]
 
-      expect(result).toEqual({ days: 6, count: NaN, result: 0 })
+      const aggData2 = [
+        { key: 'A', value: 'aggData2' },
+        { key: 'B', value: 'aggData2' },
+        { key: 'C', value: 'aggData2' },
+        { key: 'D', value: 'aggData2' },
+      ]
+
+      const result = service.groupByClass(classes as any, aggData1 as any, aggData2 as any);
+
+      const expected = [
+        { class: 'A', result: ['aggData1', 'aggData2'] },
+        { class: 'B', result: ['aggData1', 'aggData2'] },
+        { class: 'C', result: ['aggData1', 'aggData2'] },
+        { class: 'D', result: ['aggData1', 'aggData2'] },
+      ];
+
+      expect(result).toEqual(expected);
     });
 
-    it('should work with empty object as acc', () => {
-      const rental = {};
+    it('groupByClass should missing classes with "0"', () => {
+      const service = getRentalsService().rentalsService;
 
-      const spy = jest.spyOn(calService, 'days')
-        .mockImplementation(() => 6);
+      const classes = [
+        { name: 'A' },
+        { name: 'B' },
+        { name: 'C' },
+        { name: 'D' },
+      ]
 
-      const result = (service as any).calculateAverageDays({}, rental);
+      const aggData1 = [
+        { key: 'B', value: 'aggData1' },
+        { key: 'C', value: 'aggData1' },
+        { key: 'D', value: 'aggData1' },
+      ]
 
-      expect(result).toEqual({ days: 6, count: 1, result: 6 })
+      const aggData2 = [
+        { key: 'A', value: 'aggData2' },
+        { key: 'C', value: 'aggData2' },
+        { key: 'D', value: 'aggData2' },
+      ]
+
+      const result = service.groupByClass(classes as any, aggData1 as any, aggData2 as any);
+
+      const expected = [
+        { class: 'A', result: ['0', 'aggData2'] },
+        { class: 'B', result: ['aggData1', '0'] },
+        { class: 'C', result: ['aggData1', 'aggData2'] },
+        { class: 'D', result: ['aggData1', 'aggData2'] },
+      ];
+
+      expect(result).toEqual(expected);
     });
-  })
 
-  describe(('calculateCurrentRentedCars'), () => {
-    it('should calculate correct current rented cars in %', () => {
-      const car = {
-        status: CarStatus.listed,
-      };
+    it('getAverageDaysPerClass return correct result', async () => {
+      const { rentalsService, carClassRepo, rentalRepo, calService } = getRentalsService();
 
-      const result = (service as any).calculateCurrentRentedCars({ sum: 9, rented: 5 }, car);
+      jest.spyOn(carClassRepo, 'find')
+        .mockImplementation(async () => [
+          getCarClass('A'),
+          getCarClass('B'),
+        ]);
 
-      expect(result).toEqual({ sum: 10, rented: 5, result: 50 })
-    });
-
-    it('should work with empty object as acc', () => {
-      const car = {
-        status: CarStatus.borrowed,
-      };
-
-      const result = (service as any).calculateCurrentRentedCars({}, car);
-
-      expect(result).toEqual({ sum: 1, rented: 1, result: 100 })
-    });
-  })
-
-  describe(('calculateAverageIncome'), () => {
-    it('should calculate correct average income without penalty', () => {
-      const rental = {};
-      const days = 6;
-      const price = 10;
+      jest.spyOn(rentalRepo, 'find')
+        .mockImplementation(async () => [
+          getRental('A'),
+          getRental('B'),
+        ]);
 
       jest.spyOn(calService, 'days')
-        .mockImplementationOnce(() => days);
-      jest.spyOn(calService, 'applyAllToPrice')
-        .mockImplementation(() => price);
-      const spy = jest.spyOn(calService, 'totalPrice')
-        .mockImplementation(() => 10);
+        .mockImplementationOnce(() => 5)
+        .mockImplementationOnce(() => 10);
 
-      (service as any).calculateAverageIncome({ sum: 0, count: 1 }, rental);
+      const result = await rentalsService.getAverageDaysPerClass();
 
-      expect(spy).toHaveBeenCalledWith(price, days);
+      const expected = {
+        rows: [
+          { name: 'days', dataType: '' }
+        ],
+        columns: [
+          { class: 'A', result: ["5"] },
+          { class: 'B', result: ["10"] },
+        ]
+      }
+
+      expect(result).toEqual(expected);
     });
 
-    it('should calculate average correct', () => {
-      const rental = {};
+    it('getCurrentlyRentedCars return correct result', async () => {
+      const { rentalsService, carClassRepo, carRepo } = getRentalsService();
+
+      jest.spyOn(carClassRepo, 'find')
+        .mockImplementation(async () => [
+          getCarClass('A'),
+          getCarClass('B'),
+        ]);
+
+      jest.spyOn(carRepo, 'find')
+        .mockImplementation(async () => [
+          getCar('A', CarStatus.borrowed),
+          getCar('A', CarStatus.listed),
+        ]);
+
+      const result = await rentalsService.getCurrentlyRentedCars();
+
+      const expected = {
+        rows: [
+          { name: 'rented cars', dataType: '%' },
+        ],
+        columns: [
+          { class: 'A', result: ["50"] },
+          { class: 'B', result: ["0"] },
+        ]
+      }
+
+      expect(result).toEqual(expected);
+    });
+
+    describe(('calculateIncome'), () => {
+      it('should calculate correct average income without penalty', () => {
+        const { rentalsService, calService } = getRentalsService();
+
+        const days = 6;
+        const price = 10;
+
+        jest.spyOn(calService, 'days')
+          .mockImplementationOnce(() => days);
+        jest.spyOn(calService, 'applyAllToPrice')
+          .mockImplementation(() => price);
+        const spy = jest.spyOn(calService, 'totalPrice')
+          .mockImplementation(() => 10);
+
+        (rentalsService as any).getRentalIncome(getRental('A'));
+
+        expect(spy).toHaveBeenCalledWith(price, days);
+      });
+
+      it('should add penalty correctly', () => {
+        const { rentalsService, calService } = getRentalsService();
+
+        const totalPrice = 10;
+        const totalPenalty = 60;
+
+        jest.spyOn(calService, 'days')
+          .mockImplementation(() => 2);
+        jest.spyOn(calService, 'totalPrice')
+          .mockImplementation(() => totalPrice);
+        jest.spyOn(calService, 'penalty')
+          .mockImplementation(() => ({ totalPenalty }) as any);
+
+        const result = (rentalsService as any).getRentalIncome(getRental('A'));
+
+        expect(result).toEqual(totalPrice + totalPenalty);
+      });
+    })
+
+    it('getAverageMonthlyIncome return correct result', async () => {
+      const { rentalsService, carClassRepo, rentalRepo, calService } = getRentalsService();
+
+      jest.spyOn(carClassRepo, 'find')
+        .mockImplementation(async () => [
+          getCarClass('A'),
+          getCarClass('B'),
+        ]);
+
+      jest.spyOn(rentalRepo, 'find')
+        .mockImplementation(async () => [
+          getRental('A'),
+          getRental('B'),
+        ]);
 
       jest.spyOn(calService, 'totalPrice')
-        .mockImplementation(() => 10);
+        .mockImplementationOnce(() => 150)
+        .mockImplementationOnce(() => 50);
 
-      const result = (service as any).calculateAverageIncome({ count: 1 }, rental);
+      const result = await rentalsService.getAverageMonthlyIncome(2020, 5);
 
-      expect(result).toEqual({ sum: 10, count: 2, result: 5 })
+      const expected = {
+        rows: [
+          { name: 'income', dataType: '$' },
+        ],
+        columns: [
+          { class: 'A', result: ["150"] },
+          { class: 'B', result: ["50"] },
+        ]
+      }
+
+      expect(result).toEqual(expected);
     });
+  });
 
-    it('should add penalty correctly', () => {
-      const rental = {};
+  it('getRentalExpenses return correct result', async () => {
+    const { rentalsService } = getRentalsService();
 
-      jest.spyOn(calService, 'days')
-        .mockImplementation(() => 2);
-      jest.spyOn(calService, 'totalPrice')
-        .mockImplementation(() => 10);
-      jest.spyOn(calService, 'penalty')
-        .mockImplementation(() => ({ totalPenalty: 50 }));
+    const rental = {
+      car: {
+        monthlyExpences: 20,
+        insuranceFeePerYear: 12,
+      }
+    }
 
-      const result = (service as any).calculateAverageIncome({ count: 1 }, rental);
+    const result = (rentalsService as any).getRentalExpenses(rental)
 
-      expect(result).toEqual({ sum: 60, count: 2, result: 30 })
-    });
-  })
+    expect(result).toEqual(21);
+  });
 
-  describe(('calculateAverageExpenses'), () => {
-    it('should calculate average expenses correctrly', () => {
-      const rental = {
-        car: {
-          monthlyExpences: 11,
-          insuranceFeePerYear: 12,
-        }
-      };
+  it('getTotalMonthly return correct result', async () => {
+    const { rentalsService, carClassRepo, rentalRepo, calService } = getRentalsService();
 
-      const result = (service as any).calculateAverageExpenses({ sum: 0, count: 1 }, rental);
+    jest.spyOn(carClassRepo, 'find')
+      .mockImplementation(async () => [
+        getCarClass('A'),
+        getCarClass('B'),
+      ]);
 
-      expect(result).toEqual({ sum: 12, count: 2, result: 6 })
-    });
+    jest.spyOn(rentalRepo, 'find')
+      .mockImplementation(async () => [
+        getRental('A'),
+        getRental('B'),
+      ]);
 
-    it('should return result 0 with invalid input', () => {
-      const rental = {
-        car: {
-          monthlyExpences: 11,
-          insuranceFeePerYear: 'test',
-        }
-      };
+    jest.spyOn(calService, 'totalPrice')
+      .mockImplementationOnce(() => 150)
+      .mockImplementationOnce(() => 50)
+      .mockImplementationOnce(() => 150)
+      .mockImplementationOnce(() => 50);
 
-      const result = (service as any).calculateAverageExpenses({ sum: 0, count: 1 }, rental);
+    const result = await rentalsService.getTotalMonthly(2020, 5);
 
-      expect(result).toEqual({ sum: 0, count: 2, result: 0 })
-    });
-  })
+    const expected = {
+      rows: [
+        { name: 'income', dataType: '$'},
+        { name: 'expenses', dataType: '$'},
+        { name: 'total', dataType: '$'}
+      ],
+      columns: [
+        { class: 'A', result: ["150", "22", "128"] },
+        { class: 'B', result: ["50", "22", "28"] },
+      ]
+    }
+
+    expect(result).toEqual(expected);
+  });
+
+  
 });

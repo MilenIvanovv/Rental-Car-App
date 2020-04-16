@@ -100,6 +100,7 @@ Array.prototype.percentBy = function (x: {
 }
 ) {
   const groupByResult = this.groupBy(x.groupByFn);
+
   return groupByResult.map(({ key, value }) => {
     const countTrue = value.filter(v => x.percentFn(v)).length
     return {
