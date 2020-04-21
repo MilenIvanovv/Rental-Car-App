@@ -6,20 +6,32 @@ import PropTypes from 'prop-types';
 import Report from './report/Report';
 import { API_ROOT } from '../../constants/constants';
 import { modifyReport } from '../../actions/modifyReportAction';
-import reports from './common/reports';
 import Section from '../shared/section/Section';
+import reports from './common/reports';
 
 class ReportsPage extends Component {
   // eslint-disable-next-line react/sort-comp
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      pageReports: [],
+    };
+  }
+
   render() {
     // eslint-disable-next-line react/destructuring-assignment
-    const transformedReports = this.props.reports.map((report) => {
-      return (
-        <Col key={report.reportId} xs={12}>
-          <Report report={report} getReport={this.getReport.bind(this)} />
-        </Col>
-      );
-    });
+    const { pageReports } = this.state;
+
+    const transformedReports = this.props.reports
+      .filter((r) => pageReports.includes(r.reportId))
+      .map((report) => {
+        return (
+          <Col key={report.reportId} xs={12}>
+            <Report report={report} getReport={this.getReport.bind(this)} />
+          </Col>
+        );
+      });
 
     return (
       <Container>
@@ -33,7 +45,27 @@ class ReportsPage extends Component {
   }
 
   componentDidMount() {
-    reports.forEach(this.getReport.bind(this));
+    this.loadReports();
+  }
+
+  componentDidUpdate(prevProps) {
+    // eslint-disable-next-line react/destructuring-assignment
+    if (prevProps.reportFilter !== this.props.reportFilter) {
+      this.loadReports();
+    }
+  }
+
+  loadReports() {
+    const { reportFilter } = this.props;
+
+    const pageReports = reports
+      .filter(reportFilter)
+      .map((r) => {
+        this.getReport(r);
+        return r.reportId;
+      });
+
+    this.setState({ pageReports });
   }
 
   async getReport(report) {
@@ -57,6 +89,7 @@ ReportsPage.propTypes = {
     data: PropTypes.any.isRequired,
     loading: PropTypes.bool.isRequired,
   })).isRequired,
+  reportFilter: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

@@ -8,24 +8,35 @@ import PropTypes from 'prop-types';
 export default function ReportGraph(props) {
   const { report } = props;
 
-  const bars = [];
-  const oneMonth = { name: 'Month' };
-  const data = [oneMonth];
-  // eslint-disable-next-line no-unused-expressions
-  report.data.columns && report.data.columns.forEach((col) => {
-    bars.push(<Bar dataKey={col.class} label fill="#8884d8" />);
-    Object.assign(oneMonth, { [col.class]: col.result[0] });
-  });
+  const getSectionData = (title, columns) => {
+    const sectionData = { name: title };
 
-  const rows = report.data.rows && report.data.rows.map((x, index) => <span key={index}>{x.name}</span>);
+    // eslint-disable-next-line no-unused-expressions
+    columns && columns
+      .forEach((col) => Object.assign(sectionData, { [col.class]: col.result[0] }));
+
+    return sectionData;
+  };
+
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const data = Array.isArray(report.data)
+    ? report.data.map((perMonthReport, index) => getSectionData(monthNames[index], perMonthReport.columns))
+    : [getSectionData('month', report.data.columns)];
+
+  const bars = Object.keys(data[0]).map((key) => <Bar dataKey={key} fill="#8884d8" />).slice(1);
+
+  // const rows = report.data.rows && report.data.rows.map((x, index) => <span key={index}>{x.name}</span>);
 
   return (
     <BarChart
-      width={900}
+      width={1020}
       height={300}
       data={data}
       margin={{
-        top: 5, right: 30, left: 20, bottom: 5,
+        top: 5, right: 5, left: 0, bottom: 5,
       }}
     >
       <CartesianGrid strokeDasharray="3 3" />

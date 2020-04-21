@@ -2,6 +2,24 @@ const today = new Date();
 
 export default [
   {
+    reportId: 7,
+    title: 'Average car revenue grouped by car class (and month)',
+    urlRequest: `reports/class/yearly/?year=${today.getFullYear()}&type=revenue`,
+    graph: true,
+  },
+  {
+    reportId: 6,
+    title: 'Average car expenses grouped by car class (and month)',
+    urlRequest: `reports/class/yearly/?year=${today.getFullYear()}&type=expenses`,
+    graph: true,
+  },
+  {
+    reportId: 5,
+    title: 'Average car income grouped by car class (and month)',
+    urlRequest: `reports/class/yearly/?year=${today.getFullYear()}&type=income`,
+    graph: true,
+  },
+  {
     reportId: 4,
     title: 'Total income per class',
     urlRequest: `reports/class/totalMonthly/?year=${today.getFullYear()}&month=${today.getMonth() + 1}`,
@@ -12,7 +30,6 @@ export default [
     title: 'Average income per class',
     urlRequest: `reports/class/avgMonthlyIncome/?year=${today.getFullYear()}&month=${today.getMonth() + 1}`,
     monthPicker: true,
-    graph: true,
   },
   {
     reportId: 2,
