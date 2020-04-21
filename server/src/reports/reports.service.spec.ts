@@ -8,6 +8,7 @@ import { Car } from '../database/entities/cars.entity';
 import { CalculateRentService } from '../core/calculate-rent.service';
 import { CarStatus } from '../common/car-status.enum';
 import { RentalStatus } from '../common/rental-status.enum';
+import '../common/array-extentions';
 
 const getCarClass = (name: string): CarClass => ({
   id: '1',
@@ -466,29 +467,40 @@ describe('ReportsService', () => {
         getCarClass('B'),
       ]);
 
+    const rental = getRental('A');
+    rental.returnDate = new Date(2020, 4, 15);
+
     jest.spyOn(rentalRepo, 'find')
       .mockImplementation(async () => [
         getRental('A'),
-        getRental('B'),
       ]);
 
     jest.spyOn(calService, 'totalPrice')
       .mockImplementationOnce(() => 150)
       .mockImplementationOnce(() => 50)
-      .mockImplementationOnce(() => 150)
-      .mockImplementationOnce(() => 50);
 
-    const result = await rentalsService.getTotalMonthly(2020, 5);
+    const result = await rentalsService.getYearly(2020);
 
-    const expected = {
+    const expected = [];
+    for (let i = 0; i < 12; i++) {
+      expected.push({
+          rows: [
+            { name: 'income', dataType: '$'},
+          ],
+          columns: [
+            { class: 'A', result: ["0"] },
+            { class: 'B', result: ["0"] },
+          ]
+      })    
+    }
+
+    expected[3] = {
       rows: [
         { name: 'income', dataType: '$'},
-        { name: 'expenses', dataType: '$'},
-        { name: 'total', dataType: '$'}
       ],
       columns: [
-        { class: 'A', result: ["150", "22", "128"] },
-        { class: 'B', result: ["50", "22", "28"] },
+        { class: 'A', result: ["150"] },
+        { class: 'B', result: ["0"] },
       ]
     }
 

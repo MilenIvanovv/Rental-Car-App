@@ -27,6 +27,12 @@ export class ReportsService {
     private readonly calculate: CalculateRentService,
   ) { }
 
+  reportTypes = {
+    [ReportType.income]: (r) => this.getRentalIncome(r),
+    [ReportType.expenses]: (r) => this.getRentalExpenses(r),
+    [ReportType.revenue]: (r) => this.getRentalIncome(r) - this.getRentalExpenses(r),
+  }
+
   groupByClass(classes: CarClass[], ...aggData: Array<Array<MapEntry<any, number>>>): { class: string, result: string[] }[] {
     return classes.map((c) => {
       const result = aggData.map((d) => {
@@ -38,7 +44,7 @@ export class ReportsService {
     })
   }
 
-  groupByYear(collection: any): { key: string, value: any[] }[] {
+  groupByYear(collection: any): { key: string, value: any[] }[] { // Fills months with no data
     const monthNames = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
     ];
@@ -118,17 +124,17 @@ export class ReportsService {
     let rows = [{
       name: 'income',
       dataType: '$',
-      calcFn: r => +this.getRentalIncome(r)
+      calcFn: this.reportTypes[ReportType.income],
     },
     {
       name: 'expenses',
       dataType: '$',
-      calcFn: r => this.getRentalExpenses(r),
+      calcFn: this.reportTypes[ReportType.expenses],
     },
     {
       name: 'total',
       dataType: '$',
-      calcFn: r => this.getRentalIncome(r) - this.getRentalExpenses(r),
+      calcFn: this.reportTypes[ReportType.revenue],
     }];
 
     const agregated = rows.map((x) => rentals.totalBy({
@@ -153,11 +159,6 @@ export class ReportsService {
       .map(({ key, value }) => this.calculateAverageMonthly(classes, value, type));
   }
 
-  reportTypes = {
-      [ReportType.income]: (r) => this.getRentalIncome(r),
-      [ReportType.expenses]: (r) => this.getRentalExpenses(r),
-      [ReportType.revenue]: (r) => this.getRentalIncome(r) - this.getRentalExpenses(r),
-  }
 
   private isInMonth(year: number, month: number) {
     const { firstDay, lastDay } = this.getMonthInterval(year, month);
