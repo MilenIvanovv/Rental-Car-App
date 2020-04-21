@@ -7,6 +7,7 @@ import { modifyReport } from '../../../../actions/modifyReportAction';
 import { API_ROOT } from '../../../../constants/constants';
 import YearPickerComp from "../../../../utils/react-year-picker/src/index";
 import './yearPicker.css';
+import { reportTypes } from '../../../../common/models/prop-types';
 
 class YearPicker extends Component {
   // eslint-disable-next-line react/sort-comp
@@ -43,12 +44,7 @@ class YearPicker extends Component {
 }
 
 YearPicker.propTypes = {
-  report: PropTypes.shape({
-    reportId: PropTypes.number.isRequired,
-    data: PropTypes.any.isRequired,
-    loading: PropTypes.bool.isRequired,
-    date: PropTypes.string,
-  }).isRequired,
+  report: PropTypes.shape(reportTypes).isRequired,
   modifyReport: PropTypes.func.isRequired,
 };
 

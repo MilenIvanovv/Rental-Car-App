@@ -4,6 +4,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceLine,
 } from 'recharts';
 import PropTypes from 'prop-types';
+import { reportTypes } from '../../../common/models/prop-types';
 
 export default function ReportGraph(props) {
   const { report } = props;
@@ -26,7 +27,7 @@ export default function ReportGraph(props) {
     ? report.data.map((perMonthReport, index) => getSectionData(monthNames[index], perMonthReport.columns))
     : [getSectionData('month', report.data.columns)];
 
-  const bars = Object.keys(data[0]).map((key) => <Bar dataKey={key} fill="#8884d8" />).slice(1);
+  const bars = Object.keys(data[0]).map((key) => <Bar key={key} dataKey={key} fill="#8884d8" />).slice(1);
 
   // const rows = report.data.rows && report.data.rows.map((x, index) => <span key={index}>{x.name}</span>);
 
@@ -51,18 +52,5 @@ export default function ReportGraph(props) {
 }
 
 ReportGraph.propTypes = {
-  report: PropTypes.shape({
-    reportId: PropTypes.number.isRequired,
-    data: PropTypes.shape({
-      rows: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        dataType: PropTypes.string.isRequired,
-      })),
-      columns: PropTypes.arrayOf(PropTypes.shape({
-        class: PropTypes.string.isRequired,
-        result: PropTypes.arrayOf(PropTypes.number.isRequired),
-      })),
-    }).isRequired,
-    loading: PropTypes.bool.isRequired,
-  }).isRequired,
+  report: PropTypes.shape(reportTypes).isRequired,
 };

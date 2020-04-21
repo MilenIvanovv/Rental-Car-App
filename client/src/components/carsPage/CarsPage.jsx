@@ -10,6 +10,7 @@ import { API_ROOT } from '../../constants/constants';
 import Section from '../shared/section/Section';
 import FilterBy from './filterBy/FilterBy';
 import { filters } from './filters';
+import { carTypes } from '../../common/models/prop-types';
 import './carsPage.css';
 
 class CarsPage extends Component {
@@ -101,15 +102,7 @@ const mapStateToProps = (state) => ({
 });
 
 CarsPage.propTypes = {
-  cars: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    model: PropTypes.string.isRequired,
-    brand: PropTypes.string.isRequired,
-    class: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    picture: PropTypes.any.isRequired,
-    status: PropTypes.string.isRequired,
-  })),
+  cars: PropTypes.arrayOf(PropTypes.shape(carTypes)),
   setCars: PropTypes.func.isRequired,
 };
 

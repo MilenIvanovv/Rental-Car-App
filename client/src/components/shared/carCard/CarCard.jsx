@@ -8,6 +8,8 @@ import axios from 'axios';
 import LoadingIdicator from '../loadingIndicator/LoadingIdicator';
 import { API_ROOT } from '../../../constants/constants';
 import corner from '../../../assets/Class-corner.png';
+import { carTypes } from '../../../common/models/prop-types';
+
 import './carCard.css';
 
 export default function CarCard(props) {
@@ -70,17 +72,7 @@ export default function CarCard(props) {
 }
 
 CarCard.propTypes = {
-  car: PropTypes.exact({
-    id: PropTypes.number,
-    model: PropTypes.string,
-    brand: PropTypes.string,
-    class: PropTypes.string,
-    price: PropTypes.number,
-    picture: PropTypes.any,
-    status: PropTypes.string,
-    insuranceFeePerYear: PropTypes.number,
-    monthlyExpences: PropTypes.number,
-  }),
+  car: PropTypes.exact(carTypes),
   noButton: PropTypes.bool,
   noBody: PropTypes.bool,
 };

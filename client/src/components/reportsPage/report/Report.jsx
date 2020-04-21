@@ -6,6 +6,7 @@ import YearMonthPicker from '../reportResults/yearMonthPicker/YearMonthPicker';
 import YearPicker from '../reportResults/yearPicker/YearPicker';
 import ReportTable from '../reportTable/ReportTable';
 import ReportGraph from '../reportGraph/ReportGraph';
+import reportTypes from '../../../common/models/prop-types';
 import './report.css';
 
 export default function Report(props) {
@@ -30,18 +31,5 @@ export default function Report(props) {
 }
 
 Report.propTypes = {
-  report: PropTypes.shape({
-    reportId: PropTypes.number.isRequired,
-    data: PropTypes.shape({
-      rows: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        dataType: PropTypes.string.isRequired,
-      })),
-      columns: PropTypes.arrayOf(PropTypes.shape({
-        class: PropTypes.string.isRequired,
-        result: PropTypes.arrayOf(PropTypes.number.isRequired),
-      })),
-    }).isRequired,
-    loading: PropTypes.bool.isRequired,
-  }).isRequired,
+  report: PropTypes.shape(reportTypes).isRequired,
 };

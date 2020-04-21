@@ -11,6 +11,7 @@ import { setCars } from '../actions/setCarsAction';
 import * as calucalte from '../utils/calculate-rent';
 import Section from './shared/section/Section';
 import { warningLevel } from '../constants/warning-levels';
+import { rentalTypes } from '../common/models/prop-types';
 
 class CurrentRentals extends Component {
   constructor(props) {
@@ -149,24 +150,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, { setRentals, setCars })(CurrentRentals);
 
 CurrentRentals.propTypes = {
-  rentals: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    car: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      model: PropTypes.string.isRequired,
-      brand: PropTypes.string.isRequired,
-      picture: PropTypes.any.isRequired,
-    }).isRequired,
-    client: PropTypes.shape({
-      firstName: PropTypes.string.isRequired,
-      lastName: PropTypes.string.isRequired,
-      age: PropTypes.number.isRequired,
-    }).isRequired,
-    returnDate: PropTypes.string,
-    dateFrom: PropTypes.string.isRequired,
-    status: PropTypes.oneOf(['open', 'returned']).isRequired,
-    hasPenalty: PropTypes.bool,
-  })).isRequired,
-
+  rentals: PropTypes.arrayOf(PropTypes.shape(rentalTypes)).isRequired,
   setRentals: PropTypes.func.isRequired,
 };

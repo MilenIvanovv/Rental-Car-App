@@ -11,6 +11,7 @@ import { API_ROOT } from '../../constants/constants';
 import Estimations from './estimatoins/Estimations';
 import Section from '../shared/section/Section';
 import InnerHeader from '../shared/innerHeader/InnerHeader';
+import { carTypes } from '../../common/models/prop-types';
 
 function CheckoutPage(props) {
   const { cars } = props;
@@ -60,16 +61,7 @@ const mapStateToProps = (state) => ({
 });
 
 CheckoutPage.propTypes = {
-  cars: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    model: PropTypes.string.isRequired,
-    brand: PropTypes.string.isRequired,
-    class: PropTypes.string.isRequired,
-    picture: PropTypes.any.isRequired,
-    status: PropTypes.string.isRequired,
-    insuranceFeePerYear: PropTypes.number.isRequired,
-    monthlyExpences: PropTypes.number.isRequired,
-  })),
+  cars: PropTypes.arrayOf(PropTypes.shape(carTypes)),
 };
 
 CheckoutPage.defaultProps = {

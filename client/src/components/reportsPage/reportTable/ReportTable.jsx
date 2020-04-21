@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { reportTypes } from '../../../common/models/prop-types';
 
 export default function ReportTable(props) {
 
@@ -39,18 +40,5 @@ export default function ReportTable(props) {
 }
 
 ReportTable.propTypes = {
-  report: PropTypes.shape({
-    reportId: PropTypes.number.isRequired,
-    data: PropTypes.shape({
-      rows: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        dataType: PropTypes.string.isRequired,
-      })),
-      columns: PropTypes.arrayOf(PropTypes.shape({
-        class: PropTypes.string.isRequired,
-        result: PropTypes.arrayOf(PropTypes.number.isRequired),
-      })),
-    }).isRequired,
-    loading: PropTypes.bool.isRequired,
-  }).isRequired,
+  report: PropTypes.shape(reportTypes).isRequired,
 };

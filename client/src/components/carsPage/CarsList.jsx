@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Row, Col } from 'react-bootstrap';
 import CarCard from '../shared/carCard/CarCard';
 import LoadingIdicator from '../shared/loadingIndicator/LoadingIdicator';
+import { carTypes } from '../../common/models/prop-types';
 
 export default function CarsList(props) {
   const { cars, loadingCars } = props;
@@ -25,14 +26,6 @@ export default function CarsList(props) {
 }
 
 CarsList.propTypes = {
-  cars: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    model: PropTypes.string.isRequired,
-    brand: PropTypes.string.isRequired,
-    class: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    picture: PropTypes.any.isRequired,
-    status: PropTypes.string.isRequired,
-  })).isRequired,
+  cars: PropTypes.arrayOf(PropTypes.shape(carTypes)).isRequired,
   loadingCars: PropTypes.bool.isRequired,
 };

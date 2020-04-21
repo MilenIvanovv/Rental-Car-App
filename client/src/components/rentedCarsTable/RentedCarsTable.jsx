@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import RentedCarsRow from './RentedCarsRow';
 import './rentedCarsTable.css';
 import RentedCarsTableHeader from './RentedCarsTableHeader';
-
+import { rentalTypes } from '../../common/models/prop-types';
 
 export default function RentedCarsTable(props) {
   const { rentals, returnCar } = props;
@@ -43,28 +43,6 @@ export default function RentedCarsTable(props) {
 }
 
 RentedCarsTable.propTypes = {
-  rentals: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    car: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      model: PropTypes.string.isRequired,
-      brand: PropTypes.string.isRequired,
-      picture: PropTypes.any.isRequired,
-    }),
-    client: PropTypes.shape({
-      firstName: PropTypes.string.isRequired,
-      lastName: PropTypes.string.isRequired,
-      age: PropTypes.number.isRequired,
-    }),
-    dateFrom: PropTypes.string.isRequired,
-    estimatedDate: PropTypes.string.isRequired,
-    estimatedDays: PropTypes.number.isRequired,
-    estimatedPricePerDay: PropTypes.number.isRequired,
-    curDaysRented: PropTypes.number.isRequired,
-    curPricePerDay: PropTypes.number.isRequired,
-    curTotalPrice: PropTypes.number.isRequired,
-    status: PropTypes.oneOf(['open', 'returned']).isRequired,
-  })).isRequired,
-
+  rentals: PropTypes.arrayOf(PropTypes.shape(rentalTypes)).isRequired,
   returnCar: PropTypes.func.isRequired,
 };

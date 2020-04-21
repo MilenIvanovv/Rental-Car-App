@@ -8,6 +8,7 @@ import { API_ROOT } from '../../constants/constants';
 import { modifyReport } from '../../actions/modifyReportAction';
 import Section from '../shared/section/Section';
 import reports from './common/reports';
+import reportTypes from '../../common/models/prop-types';
 
 class ReportsPage extends Component {
   // eslint-disable-next-line react/sort-comp
@@ -19,19 +20,19 @@ class ReportsPage extends Component {
     };
   }
 
+  // eslint-disable-next-line react/sort-comp
   render() {
     // eslint-disable-next-line react/destructuring-assignment
     const { pageReports } = this.state;
+    const { reports } = this.props;
 
-    const transformedReports = this.props.reports
+    const transformedReports = reports
       .filter((r) => pageReports.includes(r.reportId))
-      .map((report) => {
-        return (
-          <Col key={report.reportId} xs={12}>
-            <Report report={report} getReport={this.getReport.bind(this)} />
-          </Col>
-        );
-      });
+      .map((report) => (
+        <Col key={report.reportId} xs={12}>
+          <Report report={report} getReport={this.getReport.bind(this)} />
+        </Col>
+      ));
 
     return (
       <Container>
@@ -84,11 +85,7 @@ class ReportsPage extends Component {
 
 ReportsPage.propTypes = {
   modifyReport: PropTypes.func.isRequired,
-  reports: PropTypes.arrayOf(PropTypes.shape({
-    reportId: PropTypes.number.isRequired,
-    data: PropTypes.any.isRequired,
-    loading: PropTypes.bool.isRequired,
-  })).isRequired,
+  reports: PropTypes.arrayOf(PropTypes.shape(reportTypes)).isRequired,
   reportFilter: PropTypes.func.isRequired,
 };
 

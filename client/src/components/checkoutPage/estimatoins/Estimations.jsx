@@ -9,6 +9,8 @@ import * as calculate from '../../../utils/calculate-rent';
 import { setRentals } from '../../../actions/setRentalsAction';
 import { setCars } from '../../../actions/setCarsAction';
 import setRentalCarForm from '../../../actions/setRentCarFormActions';
+import { carTypes } from '../../../common/models/prop-types';
+
 import './estimations.css';
 import '../checkoutPage.css';
 
@@ -194,15 +196,7 @@ Estimations.propTypes = {
     }),
     isFormValid: PropTypes.bool.isRequired,
   }).isRequired,
-  car: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    model: PropTypes.string.isRequired,
-    brand: PropTypes.string.isRequired,
-    class: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    picture: PropTypes.any.isRequired,
-    status: PropTypes.string.isRequired,
-  }),
+  car: PropTypes.shape(carTypes),
   setRentals: PropTypes.func.isRequired,
   setCars: PropTypes.func.isRequired,
   resetForm: PropTypes.func.isRequired,

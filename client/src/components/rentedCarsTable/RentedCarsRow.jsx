@@ -3,6 +3,7 @@ import Moment from 'react-moment';
 import PropTypes from 'prop-types';
 import { warnings } from '../../constants/warning-levels';
 import CarCard from '../shared/carCard/CarCard';
+import { carTypes } from '../../common/models/prop-types';
 
 export default function RentedCarsRow(props) {
   const { rental } = props;
@@ -57,12 +58,7 @@ export default function RentedCarsRow(props) {
 RentedCarsRow.propTypes = {
   rental: PropTypes.exact({
     id: PropTypes.number,
-    car: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      model: PropTypes.string.isRequired,
-      brand: PropTypes.string.isRequired,
-      picture: PropTypes.any.isRequired,
-    }),
+    car: PropTypes.shape(carTypes),
     client: PropTypes.shape({
       firstName: PropTypes.string,
       lastName: PropTypes.string,

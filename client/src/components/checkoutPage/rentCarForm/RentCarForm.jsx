@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import setRentalCarForm from '../../../actions/setRentCarFormActions';
+import { carTypes } from '../../../common/models/prop-types';
 import 'react-datepicker/dist/react-datepicker.css';
 import './rentCarForm.css';
 
@@ -119,15 +120,7 @@ class RentCarForm extends Component {
 }
 
 RentCarForm.propTypes = {
-  car: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    model: PropTypes.string.isRequired,
-    brand: PropTypes.string.isRequired,
-    class: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    picture: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
-  }),
+  car: PropTypes.shape(carTypes),
   rentCarForm: PropTypes.shape({
     firstName: PropTypes.shape({
       value: PropTypes.string.isRequired,
