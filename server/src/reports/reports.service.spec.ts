@@ -145,9 +145,9 @@ describe('ReportsService', () => {
     it('percentBy should return expected', () => {
       const arrToGroup = [
         { class: "A", otherProp: 4 },
+        { class: "A", otherProp: 2 },
         { class: "B", otherProp: 4 },
         { class: "C", otherProp: 2 },
-        { class: "D", otherProp: 2 },
       ];
 
       const result = arrToGroup.percentBy({
@@ -156,10 +156,9 @@ describe('ReportsService', () => {
       });
 
       const expected = [
-        { key: "A", value: 100 },
+        { key: "A", value: 50 },
         { key: "B", value: 100 },
         { key: "C", value: 0 },
-        { key: "D", value: 0 },
       ]
 
       expect(result).toEqual(expected);
@@ -362,6 +361,8 @@ describe('ReportsService', () => {
         jest.spyOn(calService, 'penalty')
           .mockImplementation(() => ({ totalPenalty }) as any);
 
+
+
         const result = (rentalsService as any).getRentalIncome(getRental('A'));
 
         expect(result).toEqual(totalPrice + totalPenalty);
@@ -456,5 +457,41 @@ describe('ReportsService', () => {
     expect(result).toEqual(expected);
   });
 
-  
+  it('getYearly return correct result', async () => {
+    const { rentalsService, carClassRepo, rentalRepo, calService } = getRentalsService();
+
+    jest.spyOn(carClassRepo, 'find')
+      .mockImplementation(async () => [
+        getCarClass('A'),
+        getCarClass('B'),
+      ]);
+
+    jest.spyOn(rentalRepo, 'find')
+      .mockImplementation(async () => [
+        getRental('A'),
+        getRental('B'),
+      ]);
+
+    jest.spyOn(calService, 'totalPrice')
+      .mockImplementationOnce(() => 150)
+      .mockImplementationOnce(() => 50)
+      .mockImplementationOnce(() => 150)
+      .mockImplementationOnce(() => 50);
+
+    const result = await rentalsService.getTotalMonthly(2020, 5);
+
+    const expected = {
+      rows: [
+        { name: 'income', dataType: '$'},
+        { name: 'expenses', dataType: '$'},
+        { name: 'total', dataType: '$'}
+      ],
+      columns: [
+        { class: 'A', result: ["150", "22", "128"] },
+        { class: 'B', result: ["50", "22", "28"] },
+      ]
+    }
+
+    expect(result).toEqual(expected);
+  });
 });

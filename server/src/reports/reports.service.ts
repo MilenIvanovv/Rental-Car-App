@@ -13,102 +13,9 @@ import { CarClass } from '../database/entities/class.entity';
 import { CalculateRentService } from '../core/calculate-rent.service';
 import { CarStatus } from '../common/car-status.enum';
 import { ReportPerClass } from './models/reportPerClass';
-
-interface MapEntry<T, K> {
-  key: T;
-  value: K;
-}
-
-declare global {
-  interface Array<T> {
-
-    aggregateBy(x:
-      {
-        groupByFn: (a: T) => any,
-        calcFn: (a: T) => number,
-        aggFn: (x: { count: number, sum: number }) => number
-      }): Array<MapEntry<any, number>>
-
-    averageBy(x: { groupByFn: (a: T) => any, calcFn: (a: T) => number }): Array<MapEntry<any, number>>
-
-    totalBy(x: { groupByFn: (a: T) => any, calcFn: (a: T) => number }): Array<MapEntry<any, number>>
-
-    percentBy(x: { groupByFn: (a: T) => any, percentFn: (a: T) => boolean }): Array<MapEntry<any, number>>
-
-    groupBy(groupByFn: (a: T) => any): Array<MapEntry<any, Array<T>>>
-
-  }
-}
-
-Array.prototype.groupBy = function (groupByFn: (a: any) => any) {
-
-  const groupByResult: Array<MapEntry<any, any>> = [];
-
-  this.forEach(element => {
-    const key = groupByFn(element);
-    const mapEntry = groupByResult.find(r => r.key === key);
-    if (!mapEntry) {
-      groupByResult.push({ key, value: [element] })
-    } else {
-      mapEntry.value.push(element);
-    }
-  });
-
-  return groupByResult;
-}
+import { ReportType } from '../common/report-type.enum';
 
 
-Array.prototype.aggregateBy = function (x: {
-  groupByFn: (a: any) => any,
-  calcFn: (a: any) => number,
-  aggFn: (x: { count: number, sum: number }) => number
-}
-) {
-
-  const groupByResult = this.groupBy(x.groupByFn);
-
-  return groupByResult.map(({ key, value }) => {
-    const sum = value.reduce((sum, current) => {
-      return sum + x.calcFn(current);
-    }, 0)
-
-    return { key, value: x.aggFn({ count: value.length, sum }) }
-  });
-}
-
-Array.prototype.averageBy = function (x: {
-  groupByFn: (a: any) => any,
-  calcFn: (a: any) => number
-}
-) {
-
-  return this.aggregateBy({ groupByFn: x.groupByFn, calcFn: x.calcFn, aggFn: ({ count, sum }) => sum / count })
-}
-
-Array.prototype.totalBy = function (x: {
-  groupByFn: (a: any) => any,
-  calcFn: (a: any) => number
-}
-) {
-
-  return this.aggregateBy({ groupByFn: x.groupByFn, calcFn: x.calcFn, aggFn: ({ count, sum }) => +sum.toFixed(2) })
-}
-
-Array.prototype.percentBy = function (x: {
-  groupByFn: (a: any) => any,
-  percentFn: (a: any) => boolean
-}
-) {
-  const groupByResult = this.groupBy(x.groupByFn);
-
-  return groupByResult.map(({ key, value }) => {
-    const countTrue = value.filter(v => x.percentFn(v)).length
-    return {
-      key,
-      value: countTrue / value.length * 100
-    }
-  });
-}
 
 @Injectable()
 export class ReportsService {
@@ -128,6 +35,18 @@ export class ReportsService {
       })
 
       return { class: c.name, result }
+    })
+  }
+
+  groupByYear(collection: any): { key: string, value: any[] }[] {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+
+    return monthNames.map((m) => {
+      const agg = collection.find(a => a.key === m);
+
+      return { key: m, value: (agg && agg.value) || [] }
     })
   }
 
@@ -173,15 +92,21 @@ export class ReportsService {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInMonth(year, month) }, relations: ['car', 'car.class'] });
 
+    return this.calculateAverageMonthly(classes, rentals, ReportType.income);
+  }
+
+  calculateAverageMonthly(classes: CarClass[], rentals: RentedCar[], reportType: ReportType) {
     const rows = [{
       name: 'income',
       dataType: '$',
     }];
 
-    const columns = this.groupByClass(classes, rentals.averageBy({
+    const groupedRentals = rentals.averageBy({
       groupByFn: r => r.car.class.name,
-      calcFn: r => this.getRentalIncome(r)
-    }));
+      calcFn: r => this.reportTypes[reportType](r),
+    });
+
+    const columns = this.groupByClass(classes, groupedRentals);
 
     return { rows, columns };
   }
@@ -217,7 +142,30 @@ export class ReportsService {
     return { rows, columns };
   }
 
+  async getYearly(year: number, type: ReportType = ReportType.income): Promise<ReportPerClass[]> {
+    const classes = await this.classRepository.find();
+    const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInYear(year) }, relations: ['car', 'car.class'] });
+
+    const groupedRentals = rentals
+      .groupBy((r) => new Date(r.returnDate).toLocaleString('default', { month: 'long' }));
+
+    return this.groupByYear(groupedRentals)
+      .map(({ key, value }) => this.calculateAverageMonthly(classes, value, type));
+  }
+
+  reportTypes = {
+      [ReportType.income]: (r) => this.getRentalIncome(r),
+      [ReportType.expenses]: (r) => this.getRentalExpenses(r),
+      [ReportType.revenue]: (r) => this.getRentalIncome(r) - this.getRentalExpenses(r),
+  }
+
   private isInMonth(year: number, month: number) {
+    const { firstDay, lastDay } = this.getMonthInterval(year, month);
+
+    return Between(firstDay, lastDay);
+  }
+
+  private getMonthInterval(year: number, month: number) {
     if (!isNumber(year) || isNaN(year) || year < 1970 ||
       !isNumber(month) || isNaN(month) || month < 1 || month > 12) {
       throw new BadRequestException('Invalid month');
@@ -226,7 +174,18 @@ export class ReportsService {
     const firstDay = new Date(year, month - 1, 2);
     const lastDay = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0);
 
-    return Between(firstDay, lastDay);
+    return { firstDay, lastDay }
+  }
+
+  private isInYear(year: number) {
+    if (!isNumber(year) || isNaN(year) || year < 1970) {
+      throw new BadRequestException('Invalid year');
+    }
+
+    const yearStart = new Date(year, 0, 1);
+    const yearEnd = new Date(year, 11, 31);
+
+    return Between(yearStart, yearEnd);
   }
 
   private getRentalIncome(rental: {
