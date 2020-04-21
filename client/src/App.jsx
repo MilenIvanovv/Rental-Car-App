@@ -23,6 +23,7 @@ const store = createStore(combinedReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 export default function App() {
+
   return (
     <Provider store={store}>
       <Router>
@@ -40,8 +41,11 @@ export default function App() {
           <Route path="/cars">
             <CarsPage />
           </Route>
-          <Route path="/reports">
-            <ReportsPage />
+          <Route path="/reports-tables">
+            <ReportsPage reportFilter={(x) => !x.graph} />
+          </Route>
+          <Route path="/reports-graphs">
+            <ReportsPage reportFilter={(x) => x.graph} />
           </Route>
           <Route path="/not-found">
             <NotFoundPage />

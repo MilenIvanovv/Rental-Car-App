@@ -1,3 +1,5 @@
+/* eslint-disable no-extend-native */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-unused-expressions */
 import { Injectable, BadRequestException } from '@nestjs/common';
@@ -11,6 +13,9 @@ import { CarClass } from '../database/entities/class.entity';
 import { CalculateRentService } from '../core/calculate-rent.service';
 import { CarStatus } from '../common/car-status.enum';
 import { ReportPerClass } from './models/reportPerClass';
+import { ReportType } from '../common/report-type.enum';
+
+
 
 @Injectable()
 export class ReportsService {
@@ -22,6 +27,35 @@ export class ReportsService {
     private readonly calculate: CalculateRentService,
   ) { }
 
+  reportTypes = {
+    [ReportType.income]: (r) => this.getRentalIncome(r),
+    [ReportType.expenses]: (r) => this.getRentalExpenses(r),
+    [ReportType.revenue]: (r) => this.getRentalIncome(r) - this.getRentalExpenses(r),
+  }
+
+  groupByClass(classes: CarClass[], ...aggData: Array<Array<MapEntry<any, number>>>): { class: string, result: string[] }[] {
+    return classes.map((c) => {
+      const result = aggData.map((d) => {
+        const agg = d.find(a => a.key === c.name);
+        return (agg && agg.value.toString()) || "0";
+      })
+
+      return { class: c.name, result }
+    })
+  }
+
+  groupByYear(collection: any): { key: string, value: any[] }[] { // Fills months with no data
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+
+    return monthNames.map((m) => {
+      const agg = collection.find(a => a.key === m);
+
+      return { key: m, value: (agg && agg.value) || [] }
+    })
+  }
+
   async getAverageDaysPerClass(): Promise<ReportPerClass> {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned }, relations: ['car', 'car.class'] });
@@ -31,15 +65,12 @@ export class ReportsService {
       dataType: '',
     }];
 
-    const columns = classes.reduce((acc, carClass) => {
-      const { result } = rentals
-        .filter((rental) => rental.car.class.name === carClass.name)
-        .reduce(this.calculateAverageDays.bind(this), { result: 0 });
+    const aggregated = rentals.averageBy({
+      groupByFn: (r) => r.car.class.name,
+      calcFn: (r) => this.calculate.days(r.dateFrom, r.returnDate)
+    });
 
-      acc.push({ class: carClass.name, result: [result] });
-
-      return acc;
-    }, []);
+    const columns = this.groupByClass(classes, aggregated);
 
     return { rows, columns }
   }
@@ -53,15 +84,12 @@ export class ReportsService {
       dataType: '%',
     }];
 
-    const columns = classes.reduce((acc, carClass) => {
-      const { result } = cars
-        .filter((car) => car.class.name === carClass.name)
-        .reduce(this.calculateCurrentRentedCars, { result: 0 });
+    const aggregated = cars.percentBy({
+      groupByFn: (c) => c.class.name,
+      percentFn: (c) => c.status === CarStatus.borrowed
+    });
 
-      acc.push({ class: carClass.name, result: [result] });
-
-      return acc;
-    }, []);
+    const columns = this.groupByClass(classes, aggregated);
 
     return { rows, columns };
   }
@@ -70,20 +98,21 @@ export class ReportsService {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInMonth(year, month) }, relations: ['car', 'car.class'] });
 
+    return this.calculateAverageMonthly(classes, rentals, ReportType.income);
+  }
+
+  calculateAverageMonthly(classes: CarClass[], rentals: RentedCar[], reportType: ReportType) {
     const rows = [{
       name: 'income',
       dataType: '$',
     }];
 
-    const columns = classes.reduce((acc, carClass) => {
-      const { result } = rentals
-        .filter((rental) => rental.car.class.name === carClass.name)
-        .reduce(this.calculateAverageIncome.bind(this), { result: 0 });
+    const groupedRentals = rentals.averageBy({
+      groupByFn: r => r.car.class.name,
+      calcFn: r => this.reportTypes[reportType](r),
+    });
 
-      acc.push({ class: carClass.name, result: [result] });
-
-      return acc;
-    }, []);
+    const columns = this.groupByClass(classes, groupedRentals);
 
     return { rows, columns };
   }
@@ -92,33 +121,52 @@ export class ReportsService {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInMonth(year, month) }, relations: ['car', 'car.class'] });
 
-    const rows = [{
+    let rows = [{
       name: 'income',
       dataType: '$',
+      calcFn: this.reportTypes[ReportType.income],
     },
     {
       name: 'expenses',
       dataType: '$',
+      calcFn: this.reportTypes[ReportType.expenses],
     },
     {
       name: 'total',
       dataType: '$',
+      calcFn: this.reportTypes[ReportType.revenue],
     }];
 
-    const columns = classes.reduce((acc, carClass) => {
-      const rentalsByClass = rentals.filter((rental) => rental.car.class.name === carClass.name);
-      const income = rentalsByClass.reduce(this.calculateAverageIncome.bind(this), { sum: 0 }).sum;
-      const expenses = rentalsByClass.reduce(this.calculateAverageExpenses, { sum: 0 }).sum;
+    const agregated = rows.map((x) => rentals.totalBy({
+      groupByFn: r => r.car.class.name,
+      calcFn: x.calcFn,
+    }))
 
-      acc.push({ class: carClass.name, result: [ income, expenses, +(income - expenses).toFixed(2)] });
-
-      return acc;
-    }, []);
+    const columns = this.groupByClass(classes, ...agregated);
+    rows = rows.map((x) => (delete x.calcFn, x))
 
     return { rows, columns };
   }
 
+  async getYearly(year: number, type: ReportType = ReportType.income): Promise<ReportPerClass[]> {
+    const classes = await this.classRepository.find();
+    const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInYear(year) }, relations: ['car', 'car.class'] });
+
+    const groupedRentals = rentals
+      .groupBy((r) => new Date(r.returnDate).toLocaleString('default', { month: 'long' }));
+
+    return this.groupByYear(groupedRentals)
+      .map(({ key, value }) => this.calculateAverageMonthly(classes, value, type));
+  }
+
+
   private isInMonth(year: number, month: number) {
+    const { firstDay, lastDay } = this.getMonthInterval(year, month);
+
+    return Between(firstDay, lastDay);
+  }
+
+  private getMonthInterval(year: number, month: number) {
     if (!isNumber(year) || isNaN(year) || year < 1970 ||
       !isNumber(month) || isNaN(month) || month < 1 || month > 12) {
       throw new BadRequestException('Invalid month');
@@ -127,39 +175,27 @@ export class ReportsService {
     const firstDay = new Date(year, month - 1, 2);
     const lastDay = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0);
 
-    return Between(firstDay, lastDay);
+    return { firstDay, lastDay }
   }
 
-  private calculateAverageDays(acc: any, rental: RentedCar): number {
-    acc.days || (acc.days = 0);
-    acc.count || (acc.count = 0);
-
-    acc.days = this.calculate.days(new Date(rental.dateFrom), new Date(rental.returnDate));
-    acc.count++;
-
-    acc.result = Math.floor(acc.days / acc.count) || 0;
-
-    return acc;
-  }
-
-  private calculateCurrentRentedCars(acc: any, car: Car): { result: number } {
-    acc.rented || (acc.rented = 0);
-    acc.sum || (acc.sum = 0);
-
-    if (car.status === CarStatus.borrowed) {
-      acc.rented++;
+  private isInYear(year: number) {
+    if (!isNumber(year) || isNaN(year) || year < 1970) {
+      throw new BadRequestException('Invalid year');
     }
 
-    acc.sum++;
-    acc.result = Math.floor(acc.rented / acc.sum * 100) || 0;
+    const yearStart = new Date(year, 0, 1);
+    const yearEnd = new Date(year, 11, 31);
 
-    return acc;
+    return Between(yearStart, yearEnd);
   }
 
-  private calculateAverageIncome(acc: any, rental: RentedCar): { sum: number, count: number, result: number } {
-    acc.sum || (acc.sum = 0);
-    acc.count || (acc.count = 0);
-
+  private getRentalIncome(rental: {
+    dateFrom: Date,
+    returnDate: Date,
+    pricePerDay: number,
+    estimatedDate: Date,
+    age: number,
+  }) {
     const {
       dateFrom,
       returnDate,
@@ -182,29 +218,13 @@ export class ReportsService {
       penalty = penaltyResult.totalPenalty;
     }
 
-    acc.sum += this.calculate.totalPrice(newPricePerDay, days) + penalty;
-    acc.count++;
-
-    acc.result = +(acc.sum / acc.count).toFixed(2) || 0;
-
-    return acc;
+    return this.calculate.totalPrice(newPricePerDay, days) + penalty;
   }
 
-  private calculateAverageExpenses(acc: any, rental: RentedCar): { sum: number, count: number, result: number } {
-    acc.sum || (acc.sum = 0);
-    acc.count || (acc.count = 0);
-
-    const { car } = rental;
-
-    acc.sum += (car.monthlyExpences + car.insuranceFeePerYear / 12) || 0;
-    acc.sum = +acc.sum.toFixed(2);
-
-    acc.count++;
-
-    acc.result = +(acc.sum / acc.count).toFixed(2) || 0;
-
-    return acc;
+  private getRentalExpenses(rental: { car: any }) {
+    return (rental.car.monthlyExpences + rental.car.insuranceFeePerYear / 12) || 0;
   }
+
 }
 
 

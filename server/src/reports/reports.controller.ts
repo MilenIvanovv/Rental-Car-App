@@ -1,6 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { ReportPerClass } from './models/reportPerClass';
+import { ReportType } from '../common/report-type.enum';
 
 @Controller('reports')
 export class ReportsController {
@@ -25,5 +26,10 @@ export class ReportsController {
   @Get('/class/totalMonthly')
   async getTotalMonthly(@Query('year') year: number, @Query('month') month: number ): Promise<ReportPerClass> {
     return await this.repotsService.getTotalMonthly(+year, +month);
+  }
+
+  @Get('/class/yearly')
+  async geYearly(@Query('year') year: number, @Query('type') type: ReportType ): Promise<ReportPerClass[]> {
+    return await this.repotsService.getYearly(+year, type);
   }
 }
