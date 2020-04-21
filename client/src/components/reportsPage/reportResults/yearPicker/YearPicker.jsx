@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import reports from '../../common/reports';
 import { modifyReport } from '../../../../actions/modifyReportAction';
 import { API_ROOT } from '../../../../constants/constants';
-import YearPickerComp from "react-year-picker";
+import YearPickerComp from "../../../../utils/react-year-picker/src/index";
 import './yearPicker.css';
 
 class YearPicker extends Component {
