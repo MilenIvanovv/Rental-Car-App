@@ -2,6 +2,13 @@ const today = new Date();
 
 export default [
   {
+    reportId: 8,
+    title: 'Total car income and expenses grouped by car class (and month)',
+    urlRequest: `reports/class/yearlyRevenueAndIncome?year=${today.getFullYear()}`,
+    yearPicker: true,
+    graph: true,
+  },
+  {
     reportId: 7,
     title: 'Average car revenue grouped by car class (and month)',
     urlRequest: `reports/class/yearly/?year=${today.getFullYear()}&type=revenue`,

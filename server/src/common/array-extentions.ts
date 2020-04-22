@@ -26,6 +26,11 @@ declare global {
   }
 }
 
+export enum Aggregation {
+  average = 'averageBy',
+  total = 'totalBy',
+}
+
 Array.prototype.groupBy = function (groupByFn: (a: any) => any) {
 
   const groupByResult: Array<MapEntry<any, any>> = [];
