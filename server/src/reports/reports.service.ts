@@ -56,27 +56,20 @@ export class ReportsService {
     return { rows, columns };
   }
 
-  reportTypes = {
+  private reportTypes = {
     [ReportType.income]: {
-      calcFn: (r) => this.getRentalIncome(r),
+      calcFn: (r) => this.calculateRentalIncome(r),
       row: { name: 'income', dataType: '$' },
     },
     [ReportType.expenses]: {
-      calcFn: (r) => this.getRentalExpenses(r),
+      calcFn: (r) => this.calculateRentalExpenses(r),
       row: { name: 'expenses', dataType: '$' },
     },
     [ReportType.revenue]: {
-      calcFn: (r) => this.getRentalIncome(r) - this.getRentalExpenses(r),
+      calcFn: (r) => this.calculateRentalIncome(r) - this.calculateRentalExpenses(r),
       row: { name: 'revenue', dataType: '$' },
     }
   }
-
-  // async getAverageMonthlyIncome(year: number, month: number): Promise<ReportPerClass> {
-  //   const classes = await this.classRepository.find();
-  //   const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInMonth(year, month) }, relations: ['car', 'car.class'] });
-
-  //   return this.calculateMonthly(classes, rentals, ReportType.income, 'averageBy');
-  // }
 
   async getMonthly(year: number, month: number, type: ReportType[] = [ReportType.income], aggergation: Aggregation = Aggregation.average): Promise<ReportPerClass> {
     const classes = await this.classRepository.find();
@@ -109,7 +102,7 @@ export class ReportsService {
     return { rows, columns };
   }
 
-  private getRentalIncome(rental: {
+  private calculateRentalIncome(rental: {
     dateFrom: Date,
     returnDate: Date,
     pricePerDay: number,
@@ -141,7 +134,7 @@ export class ReportsService {
     return this.calculate.totalPrice(newPricePerDay, days) + penalty;
   }
 
-  private getRentalExpenses(rental: { car: any }) {
+  private calculateRentalExpenses(rental: { car: any }) {
     return (rental.car.monthlyExpences + rental.car.insuranceFeePerYear / 12) || 0;
   }
 
