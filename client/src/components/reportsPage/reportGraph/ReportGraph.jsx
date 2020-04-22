@@ -9,12 +9,27 @@ import { reportTypes } from '../../../common/models/prop-types';
 export default function ReportGraph(props) {
   const { report } = props;
 
-  const getSectionData = (title, columns) => {
+  let bars = [];
+
+  const getSectionData = (title, columns = [], rows = []) => {
     const sectionData = { name: title };
 
     // eslint-disable-next-line no-unused-expressions
-    columns && columns
-      .forEach((col) => Object.assign(sectionData, { [col.class]: col.result[0] }));
+    columns.forEach((col) => { // Maps table structure to graph data
+      rows.forEach((row, index) => {
+        Object.assign(sectionData, { [`${col.class} ${row.name}`]: col.result[index] })
+      });
+    });
+
+    if (!bars.length) {
+      bars = Object.keys(sectionData)
+        .map((x, index) => {
+          const colors = ['#007bff', '#8884d8', '#d8391f'];
+
+          return <Bar key={x} dataKey={x} stackId={x.split(' ')[0]} fill={colors[index % rows.length]} />
+        })
+        .slice(1);
+    }
 
     return sectionData;
   };
@@ -24,12 +39,8 @@ export default function ReportGraph(props) {
   ];
 
   const data = Array.isArray(report.data)
-    ? report.data.map((perMonthReport, index) => getSectionData(monthNames[index], perMonthReport.columns))
-    : [getSectionData('month', report.data.columns)];
-
-  const bars = Object.keys(data[0]).map((key) => <Bar key={key} dataKey={key} fill="#8884d8" />).slice(1);
-
-  // const rows = report.data.rows && report.data.rows.map((x, index) => <span key={index}>{x.name}</span>);
+    ? report.data.map((perMonthReport, index) => getSectionData(monthNames[index], perMonthReport.columns, perMonthReport.rows))
+    : [getSectionData('month', report.data.columns, report.data.rows)];
 
   return (
     <BarChart

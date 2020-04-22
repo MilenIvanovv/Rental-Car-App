@@ -67,16 +67,20 @@ class CarsPage extends Component {
       header,
     } = this.state;
 
-    const filteredByStatus = cars.filter((car) => car.status === 'listed');
-
-    let filteredCars = filteredByStatus
+    let filteredCars = cars
+      .filter((car) => car.status === 'listed')
       .filter((car) => `${car.model} ${car.brand}`.toLowerCase().includes(filter.toLowerCase()));
+
+    filters.forEach((x) => {
+      filteredCars = filteredCars
+      // eslint-disable-next-line react/destructuring-assignment
+        .filter((car) => !this.state[x.inState] || (x.property(car) === this.state[x.inState]));
+    });
 
     const dropdowns = filters.map((x) => {
       // eslint-disable-next-line react/destructuring-assignment
-      filteredCars = filteredCars.filter((car) => !this.state[x.property] || (car.class === this.state[x.property]));
-      const set = Array.from(new Set(filteredCars.map((car) => car[x.property])));
-      return <FilterBy key={x.category} category={x.category} actions={set} select={(value) => this.setState({ [x.property]: value })} />;
+      const set = Array.from(new Set(filteredCars.map(x.property)));
+      return <FilterBy key={x.category} category={x.category} actions={set} select={(value) => this.setState({ [x.inState]: value })} />;
     });
 
     return (
