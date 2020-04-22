@@ -41,8 +41,8 @@ export default [{
   monthlyExpences: 20,
 },
 {
-  model: 'WV Up',
-  picture: 'WV Up.jpg',
+  model: 'VW Up',
+  picture: 'VW Up.jpg',
   class: 1,
   status: CarStatus.listed,
   insuranceFeePerYear: 300,
