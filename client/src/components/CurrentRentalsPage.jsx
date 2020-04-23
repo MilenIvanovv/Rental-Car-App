@@ -13,6 +13,7 @@ import Section from './shared/section/Section';
 import { warningLevel } from '../constants/warning-levels';
 import { rentalTypes } from '../common/models/prop-types';
 import LoadingIdicator from './shared/loadingIndicator/LoadingIdicator';
+import NotFound from './shared/notFound/NotFound';
 
 class CurrentRentals extends Component {
   constructor(props) {
@@ -126,9 +127,9 @@ class CurrentRentals extends Component {
       return transformed;
     });
 
-    const table = openRentals.length 
-    ? <RentedCarsTable rentals={transformedRentals} returnCar={this.returnCar} />
-    : <h1>Contracts not found</h1>;
+    const table = openRentals.length
+      ? <RentedCarsTable rentals={transformedRentals} returnCar={this.returnCar} />
+      : <NotFound text="No rented cars" />;
 
     return (
       <Container className="current-rentals">

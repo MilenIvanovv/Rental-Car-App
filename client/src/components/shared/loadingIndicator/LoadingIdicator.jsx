@@ -1,9 +1,7 @@
 import React from 'react';
 import { Row } from 'react-bootstrap';
 import HashLoader from 'react-spinners/HashLoader';
-import PropTypes from 'prop-types'
-
-import './loadingIdicator.css';
+import PropTypes from 'prop-types';
 
 export default function LoadingIdicator(props) {
   const { center } = props;

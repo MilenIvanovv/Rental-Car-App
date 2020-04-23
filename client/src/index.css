@@ -37,3 +37,10 @@ body {
   font-family: 'Montserrat-Bold';
   src: local('Montserrat-Boldt'), url(./fonts/Montserrat-Bold.ttf) format('ttf');
 }
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
