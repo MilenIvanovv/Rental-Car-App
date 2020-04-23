@@ -68,6 +68,10 @@ export class ReportsService {
     [ReportType.revenue]: {
       calcFn: (r) => this.calculateRentalIncome(r) - this.calculateRentalExpenses(r),
       row: { name: 'revenue', dataType: '$' },
+    },
+    [ReportType.insuaranceExpense]: {
+      calcFn: (r) => this.calculateRentalInsuranceExpense(r),
+      row: { name: 'insuarance expense', dataType: '$' },
     }
   }
 
@@ -135,7 +139,11 @@ export class ReportsService {
   }
 
   private calculateRentalExpenses(rental: { car: any }) {
-    return (rental.car.monthlyExpences + rental.car.insuranceFeePerYear / 12) || 0;
+    return (rental.car.monthlyExpences + this.calculateRentalInsuranceExpense(rental)) || 0;
+  }
+
+  private calculateRentalInsuranceExpense(rental: { car: any }) {
+    return (rental.car.insuranceFeePerYear / 12) || 0;
   }
 
   private groupByClass(classes: CarClass[], ...aggData: Array<Array<MapEntry<any, number>>>): { class: string, result: string[] }[] {
