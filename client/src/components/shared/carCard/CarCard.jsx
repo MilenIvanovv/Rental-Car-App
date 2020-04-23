@@ -20,7 +20,7 @@ export default function CarCard(props) {
   const { car, noButton, noBody } = props;
 
   if (!car) {
-    return <LoadingIdicator text="cars" />;
+    return <LoadingIdicator />;
   }
 
   const checkoutBtn = () => !noButton && (

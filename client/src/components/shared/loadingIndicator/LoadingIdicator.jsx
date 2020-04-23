@@ -1,18 +1,24 @@
 import React from 'react';
 import { Row } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import HashLoader from 'react-spinners/HashLoader';
+import PropTypes from 'prop-types'
 
+import './loadingIdicator.css';
 
 export default function LoadingIdicator(props) {
-  const { text } = props;
+  const { center } = props;
 
   return (
-    <Row className="justify-content-center">
-      <h1>Loading {text}...</h1>
+    <Row className={`${center ? 'centered' : 'justify-content-center my-5'}`}>
+      <HashLoader size={60} color="#007bff" />
     </Row>
   );
 }
 
 LoadingIdicator.propTypes = {
-  text: PropTypes.string.isRequired,
+  center: PropTypes.bool,
+};
+
+LoadingIdicator.defaultProps = {
+  center: false,
 };

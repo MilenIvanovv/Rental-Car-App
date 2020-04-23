@@ -12,6 +12,7 @@ import * as calucalte from '../utils/calculate-rent';
 import Section from './shared/section/Section';
 import { warningLevel } from '../constants/warning-levels';
 import { rentalTypes } from '../common/models/prop-types';
+import LoadingIdicator from './shared/loadingIndicator/LoadingIdicator';
 
 class CurrentRentals extends Component {
   constructor(props) {
@@ -70,18 +71,12 @@ class CurrentRentals extends Component {
   }
 
   render() {
-    // eslint-disable-next-line react/destructuring-assignment
-    if (this.state.loadingRentals) {
-      return <h1>Loading...</h1>;
-    }
-
+    const { loadingRentals } = this.state;
     const { rentals } = this.props;
 
     const openRentals = rentals.filter((rental) => rental.status === 'open');
 
-    if (!openRentals.length) {
-      return <h1>Contracts not found</h1>;
-    }
+
 
     const transformedRentals = openRentals.map((rental) => {
       const transformed = JSON.parse(JSON.stringify(rental));
@@ -131,11 +126,17 @@ class CurrentRentals extends Component {
       return transformed;
     });
 
+    const table = openRentals.length 
+    ? <RentedCarsTable rentals={transformedRentals} returnCar={this.returnCar} />
+    : <h1>Contracts not found</h1>;
+
     return (
       <Container className="current-rentals">
         <Row>
           <Section header="Current rentals">
-            <RentedCarsTable rentals={transformedRentals} returnCar={this.returnCar} />
+            {loadingRentals
+              ? <LoadingIdicator center />
+              : table}
           </Section>
         </Row>
       </Container>

@@ -33,3 +33,7 @@
   left: 75px;
   cursor: pointer;
 }
+
+.current-rentals .table thead th, .current-rentals .table tbody td {
+  min-width: 111px;
+}

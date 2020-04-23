@@ -8,6 +8,7 @@ import ReportTable from '../reportTable/ReportTable';
 import ReportGraph from '../reportGraph/ReportGraph';
 import reportTypes from '../../../common/models/prop-types';
 import './report.css';
+import LoadingIdicator from '../../shared/loadingIndicator/LoadingIdicator';
 
 export default function Report(props) {
   const {
@@ -18,7 +19,7 @@ export default function Report(props) {
   const calendar = reportData.monthPicker && <YearMonthPicker report={report} />;
   const yearPicker = reportData.yearPicker && <YearPicker report={report} />;
   const reportElement = reportData.graph ? <ReportGraph report={report} /> : <ReportTable report={report} />;
-  const body = report.loading ? <h4>Loading...</h4> : reportElement;
+  const body = report.loading ? <LoadingIdicator center /> : reportElement;
 
   return (
     <Card className="report-card mb-3">

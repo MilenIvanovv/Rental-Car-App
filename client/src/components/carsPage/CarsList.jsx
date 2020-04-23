@@ -9,7 +9,7 @@ export default function CarsList(props) {
   const { cars, loadingCars } = props;
 
   if (loadingCars) {
-    return <LoadingIdicator text="cars" />;
+    return <LoadingIdicator />;
   }
 
   if (!cars.length) {
