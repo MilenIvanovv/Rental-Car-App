@@ -2,6 +2,13 @@ const today = new Date();
 
 export default [
   {
+    reportId: 9,
+    title: 'Average insurance expense and average monthly expense',
+    urlRequest: `reports/class/yearlyExpenses?year=${today.getFullYear()}`,
+    yearPicker: true,
+    graph: true,
+  },
+  {
     reportId: 8,
     title: 'Total car income and expenses grouped by car class (and month)',
     urlRequest: `reports/class/yearlyRevenueAndIncome?year=${today.getFullYear()}`,
