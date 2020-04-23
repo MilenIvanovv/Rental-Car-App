@@ -37,12 +37,12 @@ class YearPicker extends Component {
     const rightTrue = windowWidth - X - elementWidth / 2 > 120;
 
     if (topTrue && !botTrue && leftTrue && rightTrue) {
-      const top = -230;
-      const left = -120 + elementWidth / 2;
+      const top = -220;
+      const left = -110 + elementWidth / 2;
       this.setState({ panelTop: top, panelLeft: left });
     } else if (!topTrue && botTrue && rightTrue && leftTrue) {
       const top = elementHeight + 10;
-      const left = -120 + elementWidth / 2;
+      const left = -110 + elementWidth / 2;
       this.setState({ panelTop: top, panelLeft: left });
     } else if (halfBotTrue && halfTopTrue && leftTrue && !rightTrue) {
       const top = -110 + elementHeight / 2;
@@ -168,8 +168,8 @@ class YearPicker extends Component {
           jumpBackward={this.jumpBackward}
           thisYear={this.thisYear}
           choiseYear={this.choiseYear}
-          top={this.state.panelTop}
-          left={this.state.panelLeft}
+          top={this.state.panelTop - 8}
+          left={this.state.panelLeft + 8}
         />
       </div>
     );
