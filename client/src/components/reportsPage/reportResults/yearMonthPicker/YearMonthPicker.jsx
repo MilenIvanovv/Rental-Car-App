@@ -17,21 +17,19 @@ class YearMonthPicker extends Component {
     const { report } = this.props;
 
     return (
-      <label>
+      <span>
         <div className="calendar-container">
           <DatePicker
+            id={report.reportId}
             selected={report.date ? new Date(report.date) : new Date()}
             showMonthYearPicker
-            showYearDropdown
             dateFormat="MMMM yyyy"
             className="year-month-picker"
-            // eslint-disable-next-line react/jsx-no-bind
-            onChange={this.getReport.bind(this)}
-          // inline
+            onChange={(value) => this.getReport(value)}
           />
-          <FontAwesomeIcon icon={faCalendarAlt} />
+          <label htmlFor={report.reportId}><FontAwesomeIcon icon={faCalendarAlt} /></label>
         </div>
-      </label>
+      </span>
     );
   }
 

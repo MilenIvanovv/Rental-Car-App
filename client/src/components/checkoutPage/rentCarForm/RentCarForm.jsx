@@ -120,7 +120,6 @@ class RentCarForm extends Component {
 }
 
 RentCarForm.propTypes = {
-  car: PropTypes.shape(carTypes),
   rentCarForm: PropTypes.shape({
     firstName: PropTypes.shape({
       value: PropTypes.string.isRequired,

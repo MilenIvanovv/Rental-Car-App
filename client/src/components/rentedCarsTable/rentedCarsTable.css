@@ -32,6 +32,7 @@
   position: absolute;
   left: 75px;
   cursor: pointer;
+  z-index: 1;
 }
 
 .current-rentals .table thead th, .current-rentals .table tbody td {

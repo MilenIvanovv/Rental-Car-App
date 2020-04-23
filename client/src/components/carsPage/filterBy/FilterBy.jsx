@@ -6,10 +6,10 @@ import PropTypes from 'prop-types';
 export default function FilterBy(props) {
   const { category, actions, select } = props;
 
-  const [selected, setSelected] = useState(actions[0]);
-
   const allActions = [...actions];
   allActions.unshift('All');
+
+  const [selected, setSelected] = useState(allActions[0]);
 
   const options = allActions
     .map((action) => <Dropdown.Item key={action} onClick={() => (setSelected(action), select(action === 'All' ? null : action))}>{action}</Dropdown.Item>);
@@ -18,7 +18,7 @@ export default function FilterBy(props) {
     <Dropdown className="filter-container">
       <span className="category">{category}:</span>
       <Dropdown.Toggle id="dropdown-basic">
-        {selected || allActions[0]}
+        {selected}
       </Dropdown.Toggle>
       <Dropdown.Menu>
         {options}
