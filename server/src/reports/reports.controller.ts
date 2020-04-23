@@ -44,6 +44,6 @@ export class ReportsController {
 
   @Get('/class/yearlyExpenses')
   async geYearlyExpenses(@Query('year') year: number): Promise<ReportPerClass[]> {
-    return await this.repotsService.getYearly(+year, [ReportType.income, ReportType.insuaranceExpense]);
+    return await this.repotsService.getYearly(+year, [ReportType.income, ReportType.insuaranceExpenses]);
   }
 }

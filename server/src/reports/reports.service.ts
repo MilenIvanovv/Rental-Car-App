@@ -69,20 +69,20 @@ export class ReportsService {
       calcFn: (r) => this.calculateRentalIncome(r) - this.calculateRentalExpenses(r),
       row: { name: 'revenue', dataType: '$' },
     },
-    [ReportType.insuaranceExpense]: {
+    [ReportType.insuaranceExpenses]: {
       calcFn: (r) => this.calculateRentalInsuranceExpense(r),
       row: { name: 'insuarance expense', dataType: '$' },
     }
   }
 
-  async getMonthly(year: number, month: number, type: ReportType[] = [ReportType.income], aggergation: Aggregation = Aggregation.average): Promise<ReportPerClass> {
+  async getMonthly(year: number, month: number, type: ReportType[] = [ReportType.income], aggregation: Aggregation = Aggregation.average): Promise<ReportPerClass> {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInMonth(year, month) }, relations: ['car', 'car.class'] });
 
-    return this.calculateMonthly(classes, rentals, type, aggergation)
+    return this.calculateMonthly(classes, rentals, type, aggregation)
   }
 
-  async getYearly(year: number, type: ReportType[] = [ReportType.income], aggergation: Aggregation = Aggregation.average): Promise<ReportPerClass[]> {
+  async getYearly(year: number, type: ReportType[] = [ReportType.income], aggregation: Aggregation = Aggregation.average): Promise<ReportPerClass[]> {
     const classes = await this.classRepository.find();
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.returned, returnDate: this.isInYear(year) }, relations: ['car', 'car.class'] });
 
@@ -90,12 +90,12 @@ export class ReportsService {
       .groupBy((r) => new Date(r.returnDate).toLocaleString('default', { month: 'long' }));
 
     return this.groupByYear(groupedRentals)
-      .map(({ key, value }) => this.calculateMonthly(classes, value, type, aggergation));
+      .map(({ key, value }) => this.calculateMonthly(classes, value, type, aggregation));
   }
 
-  private calculateMonthly(classes: CarClass[], rentals: RentedCar[], reportType: ReportType[], aggergation: Aggregation) {
+  private calculateMonthly(classes: CarClass[], rentals: RentedCar[], reportType: ReportType[], aggregation: Aggregation) {
     const agregated = reportType
-      .map((x) => rentals[aggergation]({
+      .map((x) => rentals[aggregation]({
         groupByFn: r => r.car.class.name,
         calcFn: r => this.reportTypes[x].calcFn(r),
       }))
@@ -135,7 +135,7 @@ export class ReportsService {
       penalty = penaltyResult.totalPenalty;
     }
 
-    return this.calculate.totalPrice(newPricePerDay, days) + penalty;
+    return +(this.calculate.totalPrice(newPricePerDay, days) + penalty).toFixed(2);
   }
 
   private calculateRentalExpenses(rental: { car: any }) {
@@ -143,7 +143,7 @@ export class ReportsService {
   }
 
   private calculateRentalInsuranceExpense(rental: { car: any }) {
-    return (rental.car.insuranceFeePerYear / 12) || 0;
+    return +(rental.car.insuranceFeePerYear / 12).toFixed(2) || 0;
   }
 
   private groupByClass(classes: CarClass[], ...aggData: Array<Array<MapEntry<any, number>>>): { class: string, result: string[] }[] {

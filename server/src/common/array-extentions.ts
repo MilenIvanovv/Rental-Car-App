@@ -73,7 +73,7 @@ Array.prototype.averageBy = function (x: {
 }
 ) {
 
-  return this.aggregateBy({ groupByFn: x.groupByFn, calcFn: x.calcFn, aggFn: ({ count, sum }) => sum / count })
+  return this.aggregateBy({ groupByFn: x.groupByFn, calcFn: x.calcFn, aggFn: ({ count, sum }) => +(sum / count).toFixed(2) })
 }
 
 Array.prototype.totalBy = function (x: {
