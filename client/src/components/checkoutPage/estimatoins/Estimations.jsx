@@ -82,13 +82,14 @@ export class Estimations extends Component {
   estimatePrices() {
     const { car, rentCarForm } = this.props;
     const age = rentCarForm.age.value;
+    const fromDate = rentCarForm.fromDate.value;
     const returnDate = rentCarForm.returnDate.value;
 
     if (car && (age.value === '' || returnDate === '')) {
       return;
     }
 
-    const days = calculate.days(new Date(), new Date(returnDate));
+    const days = calculate.days(new Date(fromDate), new Date(returnDate));
     const pricePerDay = calculate.applyAllToPrice(car.price, days, age);
     const totalPrice = calculate.totalPrice(pricePerDay, days);
 
@@ -122,7 +123,7 @@ export class Estimations extends Component {
       age: +age.value,
     };
 
-    // try {
+    try {
       this.setState({ isDisabled: true });
       await axios.post(`${API_ROOT}/rentals`, {
         fromDate: new Date(fromDate.value),
@@ -135,10 +136,10 @@ export class Estimations extends Component {
       resetForm();
       this.setState({ redirect: '/current-rentals' });
       toastr.success('Car rented', 'You successfully rented a car!');
-    // } catch (error) {
-    //   toastr.error('Car renting failed', 'Error occureed while renting a car!');
-    //   console.log(error);
-    // }
+    } catch (error) {
+      toastr.error('Car renting failed', 'Error occureed while renting a car!');
+      console.log(error);
+    }
     this.setState({ isDisabled: false });
   }
 
