@@ -38,7 +38,7 @@ Go to project directory and type
     DB_DATABASE_NAME = postgres   
 
 4. Create file with exact name **ormconfig.json** in **/server** diretory and copy the text below.
-  (for connecting to the database only for running migrations and seed)
+  (for connecting to the database only for running migrations)
 ```json
 {
   "type": "postgres",
@@ -69,10 +69,6 @@ Go to project directory and type
 6. Run migrations.
 
 >  $ npm run typeorm -- migration:run
-
-7. Run seed script.
-
->  $ npm run seed
 
 ## Running the app
 

@@ -7,7 +7,7 @@ import Report from './report/Report';
 import { API_ROOT } from '../../constants/constants';
 import { modifyReport } from '../../actions/modifyReportAction';
 import Section from '../shared/section/Section';
-import reports from './common/reports';
+import reportData from './common/reports';
 import reportTypes from '../../common/models/prop-types';
 
 class ReportsPage extends Component {
@@ -59,7 +59,7 @@ class ReportsPage extends Component {
   loadReports() {
     const { reportFilter } = this.props;
 
-    const pageReports = reports
+    const pageReports = reportData
       .filter(reportFilter)
       .map((r) => {
         this.getReport(r);

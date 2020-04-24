@@ -40,7 +40,7 @@ export default function Navigation() {
                       </Dropdown.Item>
                       <Dropdown.Item>
                         <NavLink className="nav-link" to="/reports-graphs">
-                          Graphs
+                          Charts
                         </NavLink>
                       </Dropdown.Item>
                     </Dropdown.Menu>
