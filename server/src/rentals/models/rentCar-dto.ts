@@ -12,6 +12,12 @@ export class RentCarDTO {
   @IsNotEmpty()
   @IsDateString()
   @IsDateOld()
+  fromDate: Date;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsDateString()
+  @IsDateOld()
   estimatedDate: Date;
 
   @ValidateNested()

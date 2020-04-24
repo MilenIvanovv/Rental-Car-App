@@ -36,7 +36,7 @@ export class RentalsService {
     return plainToClass(RentalDTO, rentalsWithCarImage);
   }
 
-  async rentCar(carId: number, estimatedDate: Date, client: ClientDTO): Promise<RentalDTO>  {
+  async rentCar(carId: number, fromDate: Date, estimatedDate: Date, client: ClientDTO): Promise<RentalDTO>  {
     const carToRent = await this.carRepository.findOne({ where: { id: carId }, relations: ['class'] });
 
     if (!carToRent) {
@@ -47,7 +47,7 @@ export class RentalsService {
       throw new BadRequestException(`Car with ${carId} is borrowed`);
     }
 
-    const days = this.calculate.days(new Date(), new Date(estimatedDate));
+    const days = this.calculate.days(new Date(fromDate), new Date(estimatedDate));
     const pricePerDay = this.calculate.applyAllToPrice(carToRent.class.price, days, client.age);
 
     carToRent.status = CarStatus.borrowed;

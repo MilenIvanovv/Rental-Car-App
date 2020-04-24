@@ -3,25 +3,31 @@ import { SET_RENT_CAR_RESET } from '../constants/action-types';
 import { MODIFY_RENT_CAR_FORM } from '../constants/action-types';
 import moment from 'moment';
 
+const ceilHour = { hours: moment().hours() + 1, minutes: 0 };
+
 const initialState = {
   firstName: {
     value: '',
-    error: 'not touched'
+    error: 'not touched',
   },
   lastName: {
     value: '',
-    error: 'not touched'
+    error: 'not touched',
   },
   age: {
     value: '',
-    error: 'not touched'
+    error: 'not touched',
+  },
+  fromDate: {
+    value: moment().set(ceilHour),
+    error: '',
   },
   returnDate: {
-    value: undefined,
-    error: 'not touched'
+    value: moment().set(ceilHour).add(1, 'days'),
+    error: '',
   },
   isFormValid: false,
-}
+};
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {

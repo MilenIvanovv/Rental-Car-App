@@ -17,8 +17,8 @@ export class RentalsController {
 
   @Post()
   async rentCar(@Body(new ValidationPipe({ transform: true, whitelist: true })) body: RentCarDTO ): Promise<RentalDTO>  {
-    const { carId, estimatedDate, client } = body;
-    return await this.rentalsService.rentCar(carId, estimatedDate, client);
+    const { carId, fromDate, estimatedDate, client } = body;
+    return await this.rentalsService.rentCar(carId, fromDate, estimatedDate, client);
   }
 
   @Put('/:rentalId')

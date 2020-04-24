@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import setRentalCarForm from '../../../actions/setRentCarFormActions';
-import { carTypes } from '../../../common/models/prop-types';
 import 'react-datepicker/dist/react-datepicker.css';
 import './rentCarForm.css';
 
@@ -18,16 +17,11 @@ class RentCarForm extends Component {
   render() {
     return (
       <form className="form-container p-3">
-        {this.formInput({
-          title: 'First Name', type: 'text', name: 'firstName', data: 'firstName',
-        })}
-        {this.formInput({
-          title: 'Last name', type: 'text', name: 'lastName', data: 'lastName',
-        })}
-        {this.formInput({
-          title: 'Age', type: 'number', name: 'age', data: 'age',
-        })}
-        {this.datePicker()}
+        {this.formInput({ title: 'First Name', type: 'text', name: 'firstName', data: 'firstName' })}
+        {this.formInput({ title: 'Last name', type: 'text', name: 'lastName', data: 'lastName' })}
+        {this.formInput({ title: 'Age', type: 'number', name: 'age', data: 'age' })}
+        {this.datePicker({ title: 'From date', name: 'fromDate', data: 'from-date', start: true })}
+        {this.datePicker({ title: 'Return date', name: 'returnDate', data: 'date', end: true })}
       </form>
     );
   }
@@ -86,32 +80,36 @@ class RentCarForm extends Component {
     );
   }
 
-  datePicker() {
+  datePicker({ title, name, data, start, end }) {
     const { rentCarForm } = this.props;
-    const date = rentCarForm.returnDate;
+    const date = rentCarForm[name];
     const { isFormValid } = rentCarForm;
     const error = !(date.error === '' || date.error === 'not touched') ? date.error : null;
     const errorMsg = (
       <small className="form-text not-valid">
-        {`Return date ${error}`}
+        {`${title} ${error}`}
       </small>
     );
 
     return (
       <div className="form-group">
-        <div>Date</div>
+        <div>{title}</div>
         <DatePicker
-          isClearable
-          data="date"
+          data={data}
           className={`form-control ${!isFormValid && error ? 'is-invalid' : ''}`}
           selected={date.value ? new Date(date.value) : null}
-          onChange={(val) => this.handleChange({ target: { value: val, name: 'returnDate' } })}
+          onChange={(val) => this.handleChange({ target: { value: val, name } })}
           showTimeSelect
-          minDate={new Date()}
+          minDate={end ? new Date(rentCarForm.fromDate.value) : new Date()}
           timeFormat="HH:mm"
           timeIntervals={60}
           timeCaption="time"
           dateFormat="MMMM d, yyyy h:mm aa"
+          selectsStart={!!start}
+          selectsEnd={!!end}
+          startDate={new Date(rentCarForm.fromDate.value)}
+          endDate={new Date(rentCarForm.returnDate.value)}
+          showDisabledMonthNavigation
         />
         {error && errorMsg}
       </div>
@@ -133,6 +131,10 @@ RentCarForm.propTypes = {
       value: PropTypes.string.isRequired,
       error: PropTypes.string.isRequired,
     }),
+    fromDate: PropTypes.shape({
+      value: PropTypes.string,
+      error: PropTypes.string.isRequired,
+    }),
     returnDate: PropTypes.shape({
       value: PropTypes.string,
       error: PropTypes.string.isRequired,
@@ -140,10 +142,6 @@ RentCarForm.propTypes = {
     isFormValid: PropTypes.bool.isRequired,
   }).isRequired,
   modifyForm: PropTypes.func.isRequired,
-};
-
-RentCarForm.defaultProps = {
-  car: null,
 };
 
 const mapStateToProps = (state) => ({

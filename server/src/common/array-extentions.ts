@@ -5,10 +5,8 @@ declare global {
     key: T;
     value: K;
   }
-  
 
   interface Array<T> {
-
     aggregateBy(x:
       {
         groupByFn: (a: T) => any,

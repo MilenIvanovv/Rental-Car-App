@@ -64,10 +64,13 @@ export class Estimations extends Component {
     const tempForm = JSON.parse(JSON.stringify(rentCarForm));
     let isValid = true;
     Object.values(tempForm).forEach((field) => {
-      if (field.error === 'not touched') {
-        // eslint-disable-next-line no-param-reassign
-        field.error = 'cannot be empty!';
+      if (field.error) {
         isValid = false;
+
+        if (field.error === 'not touched') {
+          // eslint-disable-next-line no-param-reassign
+          field.error = 'cannot be empty!';
+        }
       }
     });
 
@@ -106,7 +109,11 @@ export class Estimations extends Component {
     const { car, rentCarForm, resetForm } = this.props;
 
     const {
-      firstName, lastName, age, returnDate,
+      firstName,
+      lastName,
+      age,
+      fromDate,
+      returnDate,
     } = rentCarForm;
 
     const client = {
@@ -115,9 +122,10 @@ export class Estimations extends Component {
       age: +age.value,
     };
 
-    try {
+    // try {
       this.setState({ isDisabled: true });
       await axios.post(`${API_ROOT}/rentals`, {
+        fromDate: new Date(fromDate.value),
         estimatedDate: new Date(returnDate.value),
         client,
         carId: car.id,
@@ -127,10 +135,10 @@ export class Estimations extends Component {
       resetForm();
       this.setState({ redirect: '/current-rentals' });
       toastr.success('Car rented', 'You successfully rented a car!');
-    } catch (error) {
-      toastr.error('Car renting failed', 'Error occureed while renting a car!');
-      console.log(error);
-    }
+    // } catch (error) {
+    //   toastr.error('Car renting failed', 'Error occureed while renting a car!');
+    //   console.log(error);
+    // }
     this.setState({ isDisabled: false });
   }
 
@@ -188,6 +196,10 @@ Estimations.propTypes = {
     }),
     age: PropTypes.shape({
       value: PropTypes.string.isRequired,
+      error: PropTypes.string.isRequired,
+    }),
+    fromDate: PropTypes.shape({
+      value: PropTypes.string,
       error: PropTypes.string.isRequired,
     }),
     returnDate: PropTypes.shape({
