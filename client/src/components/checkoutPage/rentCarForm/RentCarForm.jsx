@@ -42,12 +42,23 @@ class RentCarForm extends Component {
 
     if (name === 'age') {
       tempForm[name].error = +tempForm[name].value < 18 ? 'cannot be under 18!' : '';
+    } else if (name === 'returnDate' || name === 'fromDate') {
+      if (!this.dateIsAfter(tempForm.fromDate.value, tempForm.returnDate.value)) {
+        tempForm.returnDate.error = 'must be after From date';
+      }
     }
 
     tempForm.isFormValid = !Object.values(tempForm)
       .some((x) => x.error && (x.error !== 'not touched' || x.error !== ''));
 
     return tempForm;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  dateIsAfter(past, future) {
+    const date = new Date(future);
+    const pastDate = new Date(past);
+    return !(date.getTime() - pastDate.getTime() <= 0);
   }
 
   formInput({
