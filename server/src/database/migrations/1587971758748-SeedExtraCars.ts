@@ -9,6 +9,8 @@ export class SeedExtraCars1587971758748 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        // await queryRunner.query('DELETE FROM "cars"')
+        await Promise.all(extraCars.map(async item =>
+            await queryRunner.query(`DELETE FROM "cars" WHERE cars.picture = '${item.picture}' `)
+        ));
     }
 }

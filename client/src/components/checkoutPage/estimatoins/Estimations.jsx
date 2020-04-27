@@ -45,7 +45,7 @@ export class Estimations extends Component {
     const { setRentals } = this.props;
     try {
       const rentals = await axios.get(`${API_ROOT}/rentals`);
-      setRentals(rentals.data);
+      setRentals(rentals.data.reverse());
     } catch (error) {
       console.log(error);
     }

@@ -40,7 +40,7 @@ class CurrentRentals extends Component {
     const { setRentals } = this.props;
     try {
       const rentals = await axios.get(`${API_ROOT}/rentals`);
-      setRentals(rentals.data);
+      setRentals(rentals.data.reverse());
     } catch (error) {
       console.log(error);
     }
@@ -76,8 +76,6 @@ class CurrentRentals extends Component {
     const { rentals } = this.props;
 
     const openRentals = rentals.filter((rental) => rental.status === 'open');
-
-
 
     const transformedRentals = openRentals.map((rental) => {
       const transformed = JSON.parse(JSON.stringify(rental));

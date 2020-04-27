@@ -69,7 +69,7 @@ class CarsPage extends Component {
 
     let filteredCars = cars
       .filter((car) => car.status === 'listed')
-      .filter((car) => `${car.model} ${car.brand}`.toLowerCase().includes(filter.toLowerCase()));
+      .filter((car) => `${car.brand} ${car.model}`.toLowerCase().includes(filter.toLowerCase()));
 
     filters.forEach((x) => {
       filteredCars = filteredCars

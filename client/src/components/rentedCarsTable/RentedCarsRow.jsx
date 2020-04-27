@@ -15,7 +15,7 @@ export default function RentedCarsRow(props) {
   return (
     <tr className={`${warning}`} onMouseLeave={() => setIsOpen(false)}>
       <td className="cell-container" onMouseEnter={() => setIsOpen(true)}>
-        <b><span data="current_rentals_model">{rental.car.brand}</span> {rental.car.model}</b>
+        <b data="current_rentals_model">{rental.car.brand} {rental.car.model}</b>
         {isOpen && (
           <div className="car-card-container">
             <CarCard car={rental.car} noBody />

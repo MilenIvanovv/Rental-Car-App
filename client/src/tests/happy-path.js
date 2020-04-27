@@ -23,20 +23,19 @@ module.exports = {
       .waitForElementVisible('[data=model]')
       .searchModel('input[data=search]', 'Lada')
       .assert.not.containsText("[data=no-cars]", 'Lada')
-      .searchModel('input[data=search]', 'Ford')
-      .assert.containsText('[data=model]', 'Ford')
+      .searchModel('input[data=search]', 'Volvo XC90')
+      .assert.containsText('[data=model]', 'Volvo XC90')
       .click('css selector', '[data=card_checkout]')
       .setValue('input[data=firstName]', 'Petko')
       .setValue('input[data=lastName]', 'Petkov')
       .setValue('input[data=age]', '25')
-      .setValue('.react-datepicker-wrapper .react-datepicker__input-container input[type=text]', afterThreeDays)
       .click('button[data=confirm]')
       .waitForElementVisible('[data=current_rentals_model]')
       .pause(2000)
-      .assert.containsText('[data=current_rentals_model]', 'Ford')
+      .assert.containsText('[data=current_rentals_model]', 'Volvo XC90')
       .click('[data=cars_link]')
       .waitForElementVisible("input[data=search]")
-      .searchModel('input[data=search]', 'Ford')
-      .assert.not.containsText("[data=no-cars]", 'Ford');
+      .searchModel('input[data=search]', 'Volvo XC90')
+      .assert.not.containsText("[data=no-cars]", 'Volvo XC90');
   },
 };
