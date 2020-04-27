@@ -29,10 +29,14 @@ export class Estimations extends Component {
 
   componentDidUpdate(prevProps) {
     const { rentCarForm } = this.props;
+    const fromDate = rentCarForm.fromDate.value;
+    const returnDate = rentCarForm.returnDate.value;
 
     if (JSON.stringify(prevProps.rentCarForm) !== JSON.stringify(rentCarForm)
-      && (rentCarForm.age.value !== '' && rentCarForm.returnDate.value !== null)) {
-      this.estimatePrices();
+      && fromDate !== null && returnDate !== null) {
+      const daysOnly = rentCarForm.age.value === '';
+
+      this.estimatePrices(!daysOnly);
     }
   }
 
@@ -79,7 +83,7 @@ export class Estimations extends Component {
     return isValid;
   }
 
-  estimatePrices() {
+  estimatePrices(daysOnly) {
     const { car, rentCarForm } = this.props;
     const age = rentCarForm.age.value;
     const fromDate = rentCarForm.fromDate.value;
@@ -90,6 +94,12 @@ export class Estimations extends Component {
     }
 
     const days = calculate.days(new Date(fromDate), new Date(returnDate));
+
+    if (daysOnly) {
+      this.setState((prevState) => ({ estimations: { ...prevState.estimations, days } }));
+      return;
+    }
+
     const pricePerDay = calculate.applyAllToPrice(car.price, days, age);
     const totalPrice = calculate.totalPrice(pricePerDay, days);
 

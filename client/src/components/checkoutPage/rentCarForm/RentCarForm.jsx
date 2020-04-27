@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import setRentalCarForm from '../../../actions/setRentCarFormActions';
+import { dateIsAfter } from '../../../utils/calculate-rent';
 import 'react-datepicker/dist/react-datepicker.css';
 import './rentCarForm.css';
 
@@ -43,7 +44,7 @@ class RentCarForm extends Component {
     if (name === 'age') {
       tempForm[name].error = +tempForm[name].value < 18 ? 'cannot be under 18!' : '';
     } else if (name === 'returnDate' || name === 'fromDate') {
-      if (!this.dateIsAfter(tempForm.fromDate.value, tempForm.returnDate.value)) {
+      if (!dateIsAfter(tempForm.fromDate.value, tempForm.returnDate.value)) {
         tempForm.returnDate.error = 'must be after From date';
       }
     }
@@ -52,13 +53,6 @@ class RentCarForm extends Component {
       .some((x) => x.error && (x.error !== 'not touched' || x.error !== ''));
 
     return tempForm;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  dateIsAfter(past, future) {
-    const date = new Date(future);
-    const pastDate = new Date(past);
-    return !(date.getTime() - pastDate.getTime() <= 0);
   }
 
   formInput({
@@ -105,25 +99,45 @@ class RentCarForm extends Component {
     return (
       <div className="form-group">
         <div>{title}</div>
-        <DatePicker
-          data={data}
-          className={`form-control ${!isFormValid && error ? 'is-invalid' : ''}`}
-          selected={date.value ? new Date(date.value) : null}
-          onChange={(val) => this.handleChange({ target: { value: val, name } })}
-          showTimeSelect
-          minDate={end ? new Date(rentCarForm.fromDate.value) : new Date()}
-          timeFormat="HH:mm"
-          timeIntervals={60}
-          timeCaption="time"
-          dateFormat="MMMM d, yyyy h:mm aa"
-          selectsStart={!!start}
-          selectsEnd={!!end}
-          startDate={new Date(rentCarForm.fromDate.value)}
-          endDate={new Date(rentCarForm.returnDate.value)}
-          showDisabledMonthNavigation
-        />
+        <div className="d-flex">
+          <DatePicker
+            data={data}
+            className={`form-control ${!isFormValid && error ? 'is-invalid' : ''}`}
+            selected={date.value ? new Date(date.value) : null}
+            onChange={(val) => this.handleChange({ target: { value: val, name } })}
+            showTimeSelect
+            minDate={end ? new Date(rentCarForm.fromDate.value) : new Date()}
+            timeFormat="HH:mm"
+            timeIntervals={60}
+            timeCaption="time"
+            dateFormat="MMMM d, yyyy h:mm aa"
+            selectsStart={!!start}
+            selectsEnd={!!end}
+            startDate={new Date(rentCarForm.fromDate.value)}
+            endDate={new Date(rentCarForm.returnDate.value)}
+            showDisabledMonthNavigation
+          />
+          {start && this.nowButton()}
+        </div>
         {error && errorMsg}
       </div>
+    );
+  }
+
+  nowButton() {
+    const { rentCarForm, modifyForm } = this.props;
+    let tempForm = JSON.parse(JSON.stringify(rentCarForm));
+
+    const clickHandler = () => {
+      tempForm.fromDate.value = new Date();
+      tempForm = this.validateInput(tempForm, 'returnDate');
+      modifyForm(tempForm);
+    };
+
+    return (
+      <button type="button" className="btn btn-primary ml-3" onClick={clickHandler}>
+        Now
+      </button>
     );
   }
 }

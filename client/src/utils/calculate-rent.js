@@ -55,3 +55,9 @@ export const applyAllToPrice = (price, daysRented, age) => {
 
   return (price + changeFromDays + changeFromAge);
 };
+
+export const dateIsAfter = (past, future) => {
+  const date = new Date(future);
+  const pastDate = new Date(past);
+  return !(date.getTime() - pastDate.getTime() <= 0);
+};
