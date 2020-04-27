@@ -10,6 +10,8 @@ export default function ReportGraph(props) {
   const { report } = props;
 
   let bars = [];
+  const classColorPalet = [['#0974f0', '#d20012'], ['#99c8fb', '#a08486'], ['#61a1ec', '#9e6166'], ['#5097ea', '#9a343d'], ['#2b84ec', '#9c1e29']];
+  const colors = ['#007bff', '#8884d8', '#d8391f'];
 
   const getSectionData = (title, columns = [], rows = []) => {
     const sectionData = { name: title };
@@ -17,16 +19,21 @@ export default function ReportGraph(props) {
     // eslint-disable-next-line no-unused-expressions
     columns.forEach((col) => { // Maps table structure to graph data
       rows.forEach((row, index) => {
-        Object.assign(sectionData, { [`${col.class} ${row.name}`]: col.result[index] })
+        Object.assign(sectionData, { [`${col.class} ${row.name}`]: col.result[index] });
       });
     });
 
     if (!bars.length) {
-      bars = Object.keys(sectionData)
-        .map((x, index) => {
-          const colors = ['#007bff', '#8884d8', '#d8391f'];
+      const keys = Object.keys(sectionData);
+      const classes = (keys.length - 1) / rows.length;
+      let count = 0;
 
-          return <Bar key={x} dataKey={x} stackId={x.split(' ')[0]} fill={colors[index % rows.length]} />
+      bars = keys
+        .map((x, index) => {
+          const c = index % rows.length ? count : count++;
+          const color = classColorPalet[c % classes][index % rows.length];
+
+          return <Bar key={x} dataKey={x} stackId={x.split(' ')[0]} fill={color} />;
         })
         .slice(1);
     }
