@@ -61,7 +61,7 @@ export default function ReportGraph(props) {
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="name" />
       <YAxis />
-      <Tooltip />
+      <Tooltip cursor={{ stroke: 'red', fill: 'black', strokeWidth: 2 }} offset={40} />
       <Legend />
       <ReferenceLine y={0} stroke="#000" />
       {bars}

@@ -1,7 +1,6 @@
 .report-card {
   /* width: 18rem; */
   width: 100%;
-  min-height: 178px;
 }
 
 .report-card.card {
@@ -65,5 +64,20 @@
   border: solid 1px white;
   border-radius: 2px;
   padding: 0px 6px;
+  cursor: pointer;
+}
+
+.drop-icon {
+  position: relative;
+  top: 3px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.report-card .report-card-body {
+  min-height: 178px;
+}
+
+.report-card span {
   cursor: pointer;
 }
