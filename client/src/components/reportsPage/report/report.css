@@ -72,32 +72,43 @@
 
 .drop-icon {
   position: relative;
-  top: 3px;
+  top: 5px;
   margin-left: 20px;
   cursor: pointer;
 }
 
 .report-card .card-body-container {
   position: relative;
-  transition: max-height 1s ease-out;
-  /* transition: min-height 1s ease-out; */
-  animation-duration: 3s;
   max-height: 0;
   overflow: hidden;
 }
 
+.report-card .report-collapse {
+  animation: collapse 0.7s;
+  max-height: 0;
+}
+
 .report-card .active {
+  animation: drop 0.7s;
   max-height: 600px;
+}
+
+@keyframes drop {
+  from {max-height: 0}
+  to {max-height: 600px}
+}
+
+@keyframes collapse {
+  from {max-height: 600px}
+  to {max-height: 0 }
 }
 
 .report-card span {
   cursor: pointer;
 }
 
-.pos-abs {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
+.loading-container {
+  position: relative;
+  margin-left: 20px;
+  width: 16px;
 }

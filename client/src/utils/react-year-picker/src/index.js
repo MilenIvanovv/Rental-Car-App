@@ -9,9 +9,9 @@ class YearPicker extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentYear: new Date().getFullYear(),
+      currentYear: props.selectedYear,
       yearIsSelected: false,
-      selectedYear: new Date().getFullYear(),
+      selectedYear: props.selectedYear,
       panelIsOpen: false,
       panelTop: 0,
       panelLeft: 0
@@ -89,6 +89,7 @@ class YearPicker extends Component {
         }
       }.bind(this)
     );
+
   }
 
   openPanel = event => {

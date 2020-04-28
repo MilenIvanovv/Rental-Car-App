@@ -11,11 +11,13 @@ import { reportTypes } from '../../../../common/models/prop-types';
 
 class YearPicker extends Component {
   // eslint-disable-next-line react/sort-comp
-
   render() {
+    const { report } = this.props;
+    const reportDate = report.date && report.date.getFullYear();
+
     return (
-      <label>
-        <YearPickerComp onChange={this.getReport.bind(this)} />
+      <label onClick={(ev) => ev.preventDefault()}>
+        <YearPickerComp onChange={this.getReport.bind(this)} selectedYear={reportDate || new Date().getFullYear()} />
       </label>
     );
   }
@@ -23,7 +25,7 @@ class YearPicker extends Component {
   async getReport(value) {
     // eslint-disable-next-line no-shadow
     const { report, modifyReport } = this.props;
-    const date = new Date(value);
+    const date = new Date(value, 0);
     const reportData = reports.find((x) => x.reportId === report.reportId);
     const id = report.reportId;
 

@@ -23,7 +23,8 @@ class Report extends Component {
     super(props);
 
     this.state = {
-      isActive: false,
+      isActive: null,
+      isDropped: false,
     };
 
     this.clickDropHandler = this.clickDropHandler.bind(this);
@@ -32,6 +33,9 @@ class Report extends Component {
   // eslint-disable-next-line react/sort-comp
   cardDropdown({ reportTitle, calendar, yearPicker, isLoading, report, reportElement }) {
     const { isActive } = this.state;
+    const icon = isLoading
+      ? <div className="loading-container"><LoadingIdicator center color="white" size={30} /></div>
+      : <FontAwesomeIcon className="drop-icon" icon={faChevronCircleDown} size="1x" onClick={() => this.clickDropHandler(report)} />;
 
     return (
       <Card className="report-card mb-3">
@@ -40,13 +44,12 @@ class Report extends Component {
           <div className="d-flex">
             {calendar}
             {yearPicker}
-            <FontAwesomeIcon className="drop-icon" icon={faChevronCircleDown} size="1x" onClick={() => this.clickDropHandler(report)} />
+            {icon}
           </div>
         </Card.Header>
-        <div className={`card-body-container ${isActive ? 'active' : ''}`} onAnimationEnd={() => console.log('asdf')}>
+        <div className={`card-body-container ${isActive !== null && (isActive ? 'active' : 'report-collapse')}`} onAnimationEnd={(ev) => this.onDropEnd(ev)} >
           <Card.Body>
             {reportElement}
-            {isLoading}
           </Card.Body>
         </div>
       </Card>
@@ -55,7 +58,7 @@ class Report extends Component {
 
   // eslint-disable-next-line react/sort-comp
   render() {
-    const { isActive } = this.state;
+    const { isDropped, isActive } = this.state;
     const { reportData, reports } = this.props;
 
     const report = reports.find((x) => x.reportId === reportData.reportId);
@@ -66,9 +69,9 @@ class Report extends Component {
 
     const calendar = isActive && reportData.monthPicker && <YearMonthPicker report={report} />;
     const yearPicker = isActive && reportData.yearPicker && <YearPicker report={report} />;
-    const reportElement = reportData.graph ? <ReportGraph report={report} isActive={isActive} /> : <ReportTable report={report} />;
-    const isLoading = report.loading ? <LoadingIdicator center /> : undefined;
-    const data = isActive ? reportElement : undefined;
+    const reportElement = reportData.graph ? <ReportGraph report={report} isActive={isDropped} /> : <ReportTable report={report} />;
+    const data = isDropped ? reportElement : undefined;
+    const isLoading = report.loading;
 
     return this.cardDropdown({ reportTitle: reportData.title, calendar, yearPicker, isLoading, report: reportData, reportElement: data });
   }
@@ -87,15 +90,27 @@ class Report extends Component {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  clickDropHandler(reportData) {
+  async clickDropHandler(reportData) {
     const { reports } = this.props;
     const report = reports.find((x) => x.reportId === reportData.reportId);
 
     if (!report) {
-      this.getReport(reportData);
+      await this.getReport(reportData);
     }
 
-    this.setState((prevState) => ({ isActive: !prevState.isActive }));
+    this.setState((prevState) => ({ isActive: !prevState.isActive, isDropped: true }));
+  }
+
+  onDropEnd(ev) {
+    if (ev.animationName === 'collapse') {
+      this.setState({ isDropped: false });
+    }
+  }
+
+  onDropStart(ev) {
+    if (ev.animationName === 'drop') {
+      this.setState({ isDropped: true });
+    }
   }
 }
 

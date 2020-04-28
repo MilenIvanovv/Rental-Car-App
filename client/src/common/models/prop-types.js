@@ -55,6 +55,6 @@ export const reportTypes = {
     reportGraphData,
   ]),
   loading: PropTypes.bool.isRequired,
-  date: PropTypes.string,
+  date: PropTypes.date,
 };
 
