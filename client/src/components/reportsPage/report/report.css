@@ -9,6 +9,8 @@
 
 .report-card .card-body {
   display: flex;
+  min-height: 150px;
+  
 }
 
 .report-card .card-text {
@@ -49,6 +51,7 @@
   font-weight: 600;
   display: flex;
   justify-content: space-between;
+  min-height: 51px;
 }
 
 .report-card .card-header label{
@@ -74,10 +77,27 @@
   cursor: pointer;
 }
 
-.report-card .report-card-body {
-  min-height: 178px;
+.report-card .card-body-container {
+  position: relative;
+  transition: max-height 1s ease-out;
+  /* transition: min-height 1s ease-out; */
+  animation-duration: 3s;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.report-card .active {
+  max-height: 600px;
 }
 
 .report-card span {
   cursor: pointer;
+}
+
+.pos-abs {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
 }

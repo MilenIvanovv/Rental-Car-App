@@ -30,7 +30,9 @@ class Report extends Component {
   }
 
   // eslint-disable-next-line react/sort-comp
-  cardDropdown({ reportTitle, calendar, yearPicker, data, report }) {
+  cardDropdown({ reportTitle, calendar, yearPicker, isLoading, report, reportElement }) {
+    const { isActive } = this.state;
+
     return (
       <Card className="report-card mb-3">
         <Card.Header>
@@ -41,7 +43,12 @@ class Report extends Component {
             <FontAwesomeIcon className="drop-icon" icon={faChevronCircleDown} size="1x" onClick={() => this.clickDropHandler(report)} />
           </div>
         </Card.Header>
-        {data}
+        <div className={`card-body-container ${isActive ? 'active' : ''}`} onAnimationEnd={() => console.log('asdf')}>
+          <Card.Body>
+            {reportElement}
+            {isLoading}
+          </Card.Body>
+        </div>
       </Card>
     );
   }
@@ -59,11 +66,11 @@ class Report extends Component {
 
     const calendar = isActive && reportData.monthPicker && <YearMonthPicker report={report} />;
     const yearPicker = isActive && reportData.yearPicker && <YearPicker report={report} />;
-    const reportElement = reportData.graph ? <ReportGraph report={report} /> : <ReportTable report={report} />;
-    const body = report.loading ? <LoadingIdicator center /> : reportElement;
-    const data = isActive ? <Card.Body className="report-card-body"> {body} </Card.Body> : undefined;
+    const reportElement = reportData.graph ? <ReportGraph report={report} isActive={isActive} /> : <ReportTable report={report} />;
+    const isLoading = report.loading ? <LoadingIdicator center /> : undefined;
+    const data = isActive ? reportElement : undefined;
 
-    return this.cardDropdown({ reportTitle: reportData.title, calendar, yearPicker, data, report: reportData });
+    return this.cardDropdown({ reportTitle: reportData.title, calendar, yearPicker, isLoading, report: reportData, reportElement: data });
   }
 
   async getReport(report) {

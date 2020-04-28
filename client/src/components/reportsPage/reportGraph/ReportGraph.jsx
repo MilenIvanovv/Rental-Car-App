@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './reportGraph.css';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceLine,
@@ -45,9 +45,9 @@ export default function ReportGraph(props) {
     "July", "August", "September", "October", "November", "December"
   ];
 
-  const data = Array.isArray(report.data)
+  const data = report.data.length && (Array.isArray(report.data)
     ? report.data.map((perMonthReport, index) => getSectionData(monthNames[index], perMonthReport.columns, perMonthReport.rows))
-    : [getSectionData('month', report.data.columns, report.data.rows)];
+    : [getSectionData('month', report.data.columns, report.data.rows)]);
 
   return (
     <BarChart

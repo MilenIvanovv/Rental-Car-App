@@ -19,11 +19,11 @@ function YearInput({ value, openPanel, selected, clear }) {
         readOnly
       />
       <FontAwesomeIcon icon={faCalendarAlt} />
-      <i
+      {/* <i
         name="calendar"
         className="input-icon input-icon-close fa fa-times"
         onClick={clearHandler}
-      />
+      /> */}
     </div>
   );
 }
