@@ -49,14 +49,13 @@ class CarsPage extends Component {
     this.setState({ loadingCars: false });
   }
 
-  searchHandler(e, filter) {
+  searchHandler(filter) {
     if (filter === '') {
       this.setState({ header: 'Cars List' });
     } else {
       this.setState({ header: 'Searching cars' });
     }
 
-    e.preventDefault();
     this.setState({ filter });
   }
 

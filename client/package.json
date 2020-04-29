@@ -8,6 +8,7 @@
     "@fortawesome/react-fontawesome": "^0.1.9",
     "@types/chromedriver": "^2.38.0",
     "@types/react-datepicker": "^2.11.0",
+    "awesome-debounce-promise": "^2.1.0",
     "axios": "^0.19.2",
     "babel-eslint": "^10.1.0",
     "bootstrap": "^4.4.1",
@@ -27,7 +28,8 @@
     "react-spinners": "^0.8.1",
     "react-year-picker": "^0.3.7",
     "recharts": "^1.8.5",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "uninstall": "0.0.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.21.0",
