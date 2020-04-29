@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { faChevronCircleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 import { connect } from 'react-redux';
 import YearMonthPicker from '../reportResults/yearMonthPicker/YearMonthPicker';
 import YearPicker from '../reportResults/yearPicker/YearPicker';
@@ -84,7 +85,7 @@ class Report extends Component {
       const response = await axios.get(`${API_ROOT}/${report.urlRequest}`);
       modifyReport({ reportId: report.reportId, data: response.data });
     } catch (error) {
-      console.log(error);
+      toastr.error('Failed getting report', report.title);
     }
     modifyReport({ reportId: report.reportId, loading: false });
   }

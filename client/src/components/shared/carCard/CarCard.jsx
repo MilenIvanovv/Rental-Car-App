@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import Lightbox from 'react-image-lightbox';
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 import LoadingIdicator from '../loadingIndicator/LoadingIdicator';
 import { API_ROOT } from '../../../constants/constants';
 import corner from '../../../assets/Class-corner.png';
@@ -33,10 +34,10 @@ export default function CarCard(props) {
     try {
       const imageBuffer = await axios.get(`${API_ROOT}/cars/${car.id}/image?width=1920&height=1080`);
       setBigCarImage(`data:image/jpg;base64, ${Buffer.from(imageBuffer.data).toString('base64')}`);
+      setIsOpen(true);
     } catch (error) {
-      console.log(error);
+      toastr.error('Failed getting report', `${car.brand} ${car.model}`);
     }
-    setIsOpen(true);
   };
 
   const img = `data:image/jpg;base64, ${Buffer.from(car.picture.data).toString('base64')}`;

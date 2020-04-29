@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 import { Container, Row, Col } from 'react-bootstrap';
 import CarsList from './CarsList';
 import SearchBar from './SearchBar';
@@ -41,11 +42,11 @@ class CarsPage extends Component {
     this.setState({ loadingCars: true });
     try {
       cars = await axios.get(`${API_ROOT}/cars`);
+      dispatchSetCars(cars.data);
     } catch (error) {
-      console.log(error);
+      toastr.error('Car return error', 'Error occurred while returning car!');
     }
     this.setState({ loadingCars: false });
-    dispatchSetCars(cars.data);
   }
 
   searchHandler(e, filter) {

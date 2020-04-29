@@ -42,7 +42,7 @@ class CurrentRentals extends Component {
       const rentals = await axios.get(`${API_ROOT}/rentals`);
       setRentals(rentals.data.reverse());
     } catch (error) {
-      console.log(error);
+      toastr.error('Failed getting rentals', 'Error occurred while getting rentals!');
     }
     this.setState({ loadingRentals: false });
   }
@@ -55,7 +55,7 @@ class CurrentRentals extends Component {
     try {
       cars = await axios.get(`${API_ROOT}/cars`);
     } catch (error) {
-      console.log(error);
+      toastr.error('Failed getting cars', 'Error occurred while getting cars!');
     }
     dispatchSetCars(cars.data);
   }
@@ -63,12 +63,12 @@ class CurrentRentals extends Component {
   async returnCar(ev, id) {
     try {
       await axios.put(`${API_ROOT}/rentals/${id}`);
+      toastr.success('Car returned', 'Car was succesfully returned!');
+      await this.getCurrentRentals();
+      await this.getCars();
     } catch (error) {
       toastr.error('Car return error', 'Error occurred while returning car!');
     }
-    toastr.success('Car returned', 'Car was succesfully returned!');
-    await this.getCurrentRentals();
-    await this.getCars();
   }
 
   render() {

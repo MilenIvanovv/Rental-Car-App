@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 import PropTypes from 'prop-types';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -50,7 +51,7 @@ class YearMonthPicker extends Component {
       const response = await axios.get(`${API_ROOT}/${url}`);
       modifyReport({ reportId: id, data: response.data });
     } catch (error) {
-      console.log(error);
+      toastr.error('Failed getting report', reportData.title);
     }
     modifyReport({ reportId: id, loading: false });
   }

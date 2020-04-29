@@ -47,7 +47,7 @@ export class Estimations extends Component {
       const rentals = await axios.get(`${API_ROOT}/rentals`);
       setRentals(rentals.data.reverse());
     } catch (error) {
-      console.log(error);
+      toastr.error('Failed getting rentals', 'Error occurred while getting rentals!');
     }
   }
 
@@ -57,10 +57,10 @@ export class Estimations extends Component {
     let cars;
     try {
       cars = await axios.get(`${API_ROOT}/cars`);
+      dispatchSetCars(cars.data);
     } catch (error) {
-      console.log(error);
+      toastr.error('Failed getting cars', 'Error occurred while getting cars!');
     }
-    dispatchSetCars(cars.data);
   }
 
   validateForm() {
