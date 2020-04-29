@@ -10,7 +10,8 @@ export default function ReportGraph(props) {
   const { report } = props;
 
   let bars = [];
-  const classColorPalet = [['#0974f0', '#d20012'], ['#99c8fb', '#a08486'], ['#61a1ec', '#9e6166'], ['#5097ea', '#9a343d'], ['#2b84ec', '#9c1e29']];
+  const mapReportTypeToColor = ['expense', 'income', 'revenue'];
+  const classColorPalet = [['#d20012', '#0974f0', '#194108'], ['#a08486', '#99c8fb', '#4ec530'], ['#9e6166', '#61a1ec', '#47a526'], ['#9a343d', '#5097ea', '#36811c'], ['#9c1e29', '#2b84ec', '#265c11']];
   const colors = ['#007bff', '#8884d8', '#d8391f'];
 
   const getSectionData = (title, columns = [], rows = []) => {
@@ -31,7 +32,10 @@ export default function ReportGraph(props) {
       bars = keys
         .map((x, index) => {
           const c = index % rows.length ? count : count++;
-          const color = classColorPalet[c % classes][index % rows.length];
+          // const color = classColorPalet[c % classes][index % rows.length];
+
+          const typeIndex = mapReportTypeToColor.indexOf(mapReportTypeToColor.find((t) => x.includes(t)));
+          const color = classColorPalet[c % classes][typeIndex];
 
           return <Bar key={x} dataKey={x} stackId={x.split(' ')[0]} fill={color} />;
         })
@@ -61,7 +65,7 @@ export default function ReportGraph(props) {
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="name" />
       <YAxis />
-      <Tooltip cursor={{ stroke: 'red', fill: 'black', strokeWidth: 2 }} offset={40} />
+      <Tooltip cursor={{ stroke: '#007bff', fill: '#00000021', strokeWidth: 1 }} offset={40} />
       <Legend />
       <ReferenceLine y={0} stroke="#000" />
       {bars}
