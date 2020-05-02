@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
@@ -33,6 +33,13 @@ export class CarsService {
   }
 
   async getCarImage(carId: number, width: number, height: number): Promise<string> {
+    const heights = ['1280', '1920'];
+    const widths = ['800', '1080'];
+
+    if (!(!heights.includes(height.toString()) || !widths.includes(width.toString()))) {
+      throw new BadRequestException('Bad image resolution');
+    }
+
     const car = await this.carsRepository.findOne({ where: { id: carId } });
 
     if (!car) {

@@ -44,7 +44,7 @@ export class JimpService {
       });
     })
 
-    await imageBuffer.resize(width, height).write(`${path}/${imageName}`);
+    await imageBuffer.resize(width, height).writeAsync(`${path}/${imageName}`);
 
     return `${pathForResponse}/${imageName}`;
   }
