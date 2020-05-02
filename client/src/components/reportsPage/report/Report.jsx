@@ -19,7 +19,6 @@ import { API_ROOT } from '../../../constants/constants';
 import { modifyReport } from '../../../actions/modifyReportAction';
 
 class Report extends Component {
-
   constructor(props) {
     super(props);
 
@@ -36,15 +35,19 @@ class Report extends Component {
     const { isActive } = this.state;
     const icon = isLoading
       ? <div className="loading-container"><LoadingIdicator center color="white" size={30} /></div>
-      : <FontAwesomeIcon className="drop-icon" icon={faChevronCircleDown} size="1x" onClick={() => this.clickDropHandler(report)} />;
+      : <FontAwesomeIcon className="drop-icon" icon={faChevronCircleDown} size="1x" />;
 
     return (
       <Card className="report-card mb-3">
-        <Card.Header>
-          <span onClick={() => this.clickDropHandler(report)} >{reportTitle}</span>
+        <Card.Header className="cursor-pointer" onClick={() => this.clickDropHandler(report)}>
+          <span>{reportTitle}</span>
           <div className="d-flex">
-            {calendar}
-            {yearPicker}
+            <div onClick={(ev) => ev.stopPropagation()}>
+              <div>
+                {calendar}
+                {yearPicker}
+              </div>
+            </div>
             {icon}
           </div>
         </Card.Header>

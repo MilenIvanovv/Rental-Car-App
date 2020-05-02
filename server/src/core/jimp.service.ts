@@ -23,29 +23,29 @@ export class JimpService {
       .getBufferAsync(Jimp.AUTO);
   }
 
-  async findImage(name, width, height): Promise<Buffer> {
+  async findImage(name, width, height): Promise<string> {
     const imageName = `${name} - ${width}x${height}.jpg`;
     const imageNameMaxRes = `${name} - ${heightRes.width}x${heightRes.height}.jpg`;
-    const path = './src/database/seed/car-images';
+    const pathForResponse = 'database/seed/car-images';
+    const path = `./src/${pathForResponse}`;
 
     const fileNames = await this.fsService.readFileNames(path);
 
     if (fileNames.includes(imageName)) {
-      return await this.fsService.readFile(`${path}/${imageName}`);
+      return `${pathForResponse}/${imageName}`;
     }
 
     const maxResImage = await this.fsService.readFile(`${path}/${imageNameMaxRes}`);
-    const imageBuffer: any = await new Promise((res, rej) => {
+    const imageBuffer: any = await new Promise((resolve, rej) => {
       Jimp.read(maxResImage, (err, data) => {
         if (err) throw err;
 
-        res(data);
+        resolve(data);
       });
     })
 
-    return await imageBuffer
-      .resize(width, height)
-      .write(`${path}/${imageName}`)
-      .getBufferAsync(Jimp.AUTO);
+    await imageBuffer.resize(width, height).write(`${path}/${imageName}`);
+
+    return `${pathForResponse}/${imageName}`;
   }
 }

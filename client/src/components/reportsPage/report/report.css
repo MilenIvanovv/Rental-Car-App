@@ -103,7 +103,17 @@
   to {max-height: 0 }
 }
 
-.report-card span {
+@keyframes slide-left {
+  from {left: 0 }
+  to {left: 200px }
+}
+
+@keyframes slide-left {
+  from {left: 0 }
+  to {left: 200px }
+}
+
+.report-card .cursor-pointer {
   cursor: pointer;
 }
 
@@ -112,3 +122,4 @@
   margin-left: 20px;
   width: 16px;
 }
+

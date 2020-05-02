@@ -24,7 +24,7 @@ export default function RentedCarsTable(props) {
   const elements = rentals
     .map((rental) => (
       <RentedCarsRow
-        key={rental.car.model}
+        key={rental.car.picture}
         rental={rental}
         returnCar={returnCar}
       />

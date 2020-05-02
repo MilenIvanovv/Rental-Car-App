@@ -6,7 +6,7 @@ export const carTypes = {
   brand: PropTypes.string.isRequired,
   class: PropTypes.string.isRequired,
   price: PropTypes.any.isRequired,
-  picture: PropTypes.any.isRequired,
+  picture: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
   insuranceFeePerYear: PropTypes.number.isRequired,
   monthlyExpences: PropTypes.number.isRequired,
@@ -57,4 +57,3 @@ export const reportTypes = {
   loading: PropTypes.bool.isRequired,
   date: PropTypes.date,
 };
-

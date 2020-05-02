@@ -26,13 +26,7 @@ export class RentalsService {
   async getRenals(): Promise<RentalDTO[]> {
     const rentals = await this.rentalsRepository.find({ where: { status: RentalStatus.open }, relations: ['car', 'car.class'] });
 
-    
-    const rentalsWithCarImage = await Promise.all(rentals.map(async (rental) => {
-      rental.car.picture = await this.jimpService.findImage(`${rental.car.picture}`, lowRes.width, lowRes.height);
-      return rental;
-    }));
-
-    return plainToClass(RentalDTO, rentalsWithCarImage);
+    return plainToClass(RentalDTO, rentals);
   }
 
   async rentCar(carId: number, fromDate: Date, estimatedDate: Date, client: ClientDTO): Promise<RentalDTO>  {
@@ -65,8 +59,6 @@ export class RentalsService {
       return await transactionalEntityManager.getRepository(RentedCar).save(rental);
     });
     
-    carToRent.picture = await this.jimpService.findImage(`${carToRent.picture}`, lowRes.width, lowRes.height);
-
     return plainToClass(RentalDTO, newRental);
   }
 
@@ -90,8 +82,6 @@ export class RentalsService {
       return await transactionalEntityManager.getRepository(RentedCar).save(rental);
     });
     
-    rental.car.picture = await this.jimpService.findImage(`${rental.car.picture}`, lowRes.width, lowRes.height);
-
     return plainToClass(RentalDTO, rental);
   }
 }

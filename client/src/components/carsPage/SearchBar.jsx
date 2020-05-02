@@ -8,8 +8,6 @@ export default function SearchBar(props) {
   const [fn, setFn] = useState();
   const { onSearch } = props;
 
-  let debouncedFn;
-
   const onChangeHandler = (e) => {
     /* signal to React not to nullify the event object */
     e.persist();
