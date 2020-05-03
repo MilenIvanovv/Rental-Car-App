@@ -33,16 +33,16 @@ export default function Navigation() {
                       Reports
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <Dropdown.Item>
+                      <div className="dropdown-item">
                         <NavLink className="nav-link" to="/reports-tables">
                           Tables
                         </NavLink>
-                      </Dropdown.Item>
-                      <Dropdown.Item>
+                      </div>
+                      <div className="dropdown-item">
                         <NavLink className="nav-link" to="/reports-graphs">
                           Charts
                         </NavLink>
-                      </Dropdown.Item>
+                      </div>
                     </Dropdown.Menu>
                   </Dropdown>
 

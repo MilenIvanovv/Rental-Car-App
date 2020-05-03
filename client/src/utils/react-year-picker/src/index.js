@@ -73,23 +73,6 @@ class YearPicker extends Component {
 
   componentDidMount() {
     this.panelPosition();
-
-    document.addEventListener(
-      "scroll",
-      function(event) {
-        this.panelPosition();
-      }.bind(this)
-    );
-
-    document.addEventListener(
-      "click",
-      function(event) {
-        if (!event.target.closest(".year-picker")) {
-          this.closePanel();
-        }
-      }.bind(this)
-    );
-
   }
 
   openPanel = event => {
@@ -151,11 +134,13 @@ class YearPicker extends Component {
   };
 
   render() {
+    const { panelIsOpen } = this.state;
+
     return (
       <div className="year-picker">
         <YearInput
           value={this.state.currentYear}
-          openPanel={this.openPanel}
+          openPanel={panelIsOpen ? this.closePanel : this.openPanel}
           selected={this.state.yearIsSelected}
           clear={this.clearYear}
         />
