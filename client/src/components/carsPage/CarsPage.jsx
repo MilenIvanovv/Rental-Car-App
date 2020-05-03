@@ -44,7 +44,7 @@ class CarsPage extends Component {
       cars = await axios.get(`${API_ROOT}/cars`);
       dispatchSetCars(cars.data);
     } catch (error) {
-      toastr.error('Car return error', 'Error occurred while returning car!');
+      toastr.error('Get car return error', 'Error occurred while getting cars!');
     }
     this.setState({ loadingCars: false });
   }
